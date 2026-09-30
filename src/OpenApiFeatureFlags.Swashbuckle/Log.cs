@@ -36,4 +36,10 @@ internal static partial class Log
         Level = LogLevel.Warning,
         Message = "OpenApiFeatureFlags found a <gate> element that is never closed, so the rest of the description is treated as gated. Element: {GateElement}")]
     public static partial void GateUnbalanced(ILogger logger, string gateElement);
+
+    [LoggerMessage(
+        EventId = 106,
+        Level = LogLevel.Warning,
+        Message = "OpenApiFeatureFlags found gates nested deeper than {MaxDepth} levels and hid the innermost content, so the document fails closed (D5). Nested text length: {Length}")]
+    public static partial void GateTooDeep(ILogger logger, int maxDepth, int length);
 }

@@ -13,13 +13,23 @@ namespace OpenApiFeatureFlags;
 /// inject singletons (see BACKLOG.md 4.1). All per-document state therefore lives in
 /// <see cref="RequestScope"/>.
 /// </remarks>
+[SuppressMessage(
+    "Design",
+    "CA1001:Types that own disposable fields should be disposable",
+    Justification = "The disposable field is a ThreadLocal holding managed state only, and this type is a process-lifetime singleton, so there is no scope in which disposing it would run. Disposing it at container shutdown would free per-thread slots that the process is about to release anyway. Implementing IDisposable would add public surface and a lifecycle obligation that callers cannot honour meaningfully.")]
 public sealed class DocumentVisibilityPlanner : IDocumentVisibilityPlanner
 {
     private readonly IFeatureFlagSource _flagSource;
     private readonly IOptions<OpenApiFeatureFlagsOptions> _options;
     private readonly ILogger<DocumentVisibilityPlanner> _logger;
     private readonly IHttpContextAccessor? _httpContextAccessor;
-    private readonly RequestScope _offlineScope = new();
+
+    // The fallback for the path with no HttpContext (offline export). Per-thread on purpose: this
+    // planner is a singleton, so a single shared instance would be mutated by two concurrent
+    // document generations at once — a data race on its dictionaries, and a way to publish one
+    // document's decisions inside another. Document generation is synchronous, so one generation
+    // sees the same scope from the first filter through to the summary line.
+    private readonly ThreadLocal<RequestScope> _offlineScope = new(() => new RequestScope());
 
     /// <summary>
     /// Initialises a new instance of the <see cref="DocumentVisibilityPlanner"/> class.
@@ -97,7 +107,7 @@ public sealed class DocumentVisibilityPlanner : IDocumentVisibilityPlanner
     {
         var options = _options.Value;
         var httpContext = _httpContextAccessor?.HttpContext;
-        var scope = RequestScope.For(httpContext, _offlineScope);
+        var scope = RequestScope.For(httpContext, OfflineScope);
 
         // Flag values are memoised for the request, but the offline fallback scope outlives a single
         // document, so it must not retain them.
@@ -122,7 +132,13 @@ public sealed class DocumentVisibilityPlanner : IDocumentVisibilityPlanner
         return plan;
     }
 
-    private RequestScope CurrentScope() => RequestScope.For(_httpContextAccessor?.HttpContext, _offlineScope);
+    private RequestScope CurrentScope() => RequestScope.For(_httpContextAccessor?.HttpContext, OfflineScope);
+
+    /// <summary>
+    /// Gets the scope used when there is no <see cref="HttpContext"/>. See the field comment for why
+    /// it is per-thread.
+    /// </summary>
+    private RequestScope OfflineScope => _offlineScope.Value!;
 
     [SuppressMessage(
         "Design",

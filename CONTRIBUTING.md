@@ -12,6 +12,13 @@ By contributing you agree that:
   `git commit -s`, certifying that you wrote the change or otherwise have the right to submit it
   under this licence.
 
+## Prerequisites
+
+The **.NET 10 SDK**. The libraries target `net8.0`, `net9.0` and `net10.0`, but the SDK that builds
+them and the test runner are pinned in `global.json` (`rollForward: latestFeature`, and
+`test.runner: Microsoft.Testing.Platform`), so an older SDK will not work. You do **not** need the
+.NET 8 or 9 runtimes installed: those test binaries run on .NET 10 through `RollForward: LatestMajor`.
+
 ## Before you open a pull request
 
 ```shell

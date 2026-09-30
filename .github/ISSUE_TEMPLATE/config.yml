@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/dogukandemir/OpenApiFeatureFlags/security/advisories/new
+    about: Report privately. Please do not open a public issue for a security problem.
+  - name: Question about using the library
+    url: https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/README.md
+    about: The README and docs/ answer most integration questions, including Azure App Configuration.
+  - name: Contributing guide
+    url: https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/CONTRIBUTING.md
+    about: Build and test commands, and the two rules most likely to get a pull request sent back.

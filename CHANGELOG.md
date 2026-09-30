@@ -28,6 +28,31 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
   value, which is what makes it fail closed for free.
 - A runnable sample that generates its document at build time.
 
+### Changed
+
+- The once-per-document summary line now says `flags involved` rather than `flags evaluated`. In
+  `Annotate` mode nothing is ever evaluated — the flag source is deliberately never consulted — so the
+  old wording claimed a provider call that had not happened, which is exactly the thing someone reads
+  that line to find out. `DocumentVisibilityPlan.ToLogSummary()` changed to match.
+- The offline fallback scope — the one used when there is no `HttpContext`, such as `swagger tofile` —
+  is now per-thread. It was a single instance shared by the singleton planner, so two concurrent
+  document generations on that path could share memoised flag values and each other's decisions, which
+  fails quietly by producing a wrong document rather than loudly by crashing.
+- Gate nesting is capped at 32 levels. Deeper nesting hides the innermost content and logs
+  `GateTooDeep` (106) instead of recursing until the stack overflows, which cannot be caught and takes
+  the process down.
+- Symbol packages (`.snupkg`) are published alongside the `.nupkg` files. They were being built and
+  then discarded, so stepping into this library from nuget.org reported the source as unavailable.
+
+### Security
+
+- Added [`SECURITY.md`](SECURITY.md) and [`docs/security.md`](docs/security.md). The latter states
+  plainly what document gating does not do: it is not an access control, it cannot unpublish a document
+  that has already been served, and `Annotate` mode discloses your flag names to anyone who can read
+  the document.
+- Added a CodeQL workflow, gave CI least-privilege `permissions`, and pinned every workflow action to a
+  commit SHA.
+
 ### Notes
 
 - Multi-targets `net8.0`, `net9.0` and `net10.0`.

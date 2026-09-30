@@ -154,6 +154,6 @@ public sealed class DocumentVisibilityPlan
             ? "none"
             : string.Join(", ", DocumentFlags);
 
-        return $"OpenApiFeatureFlags: mode {Mode}; {hidden} hidden, {published} published; flags evaluated: {flags}.";
+        return $"OpenApiFeatureFlags: mode {Mode}; {hidden} hidden, {published} published; flags involved: {flags}.";
     }
 }

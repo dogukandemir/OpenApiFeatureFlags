@@ -92,6 +92,22 @@ public sealed class DescriptionGateResolverTests
         NewResolver("f").Resolve(Text).ShouldBe("aTb<c>code</c>");
     }
 
+    [Fact]
+    public void GatesNestedDeeperThanTheGuardLoseTheirContentInsteadOfOverflowingTheStack()
+    {
+        // The resolver recurses once per nesting level, and a stack overflow cannot be caught: it
+        // takes the process down. Nobody writes 33 nested gates, so the guard only ever fires on
+        // pathological text, and what it does when it fires is fail closed.
+        NewResolver("f").Resolve("a" + Nest(5, "kept") + "b").ShouldBe("akeptb");
+
+        NewResolver("f").Resolve("a" + Nest(40, "secret") + "b").ShouldBe("ab");
+    }
+
+    private static string Nest(int depth, string content) =>
+        string.Concat(Enumerable.Repeat("<gate flag=\"f\">", depth))
+        + content
+        + string.Concat(Enumerable.Repeat("</gate>", depth));
+
     private static DescriptionGateResolver NewResolver(params string[] enabledFlags) =>
         NewResolver(DocumentMode.Remove, enabledFlags);
 

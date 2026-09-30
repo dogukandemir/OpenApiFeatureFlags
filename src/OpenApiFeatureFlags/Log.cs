@@ -27,13 +27,13 @@ internal static partial class Log
     [LoggerMessage(
         EventId = 3,
         Level = LogLevel.Information,
-        Message = "OpenApiFeatureFlags finished the document in mode {Mode}: {HiddenCount} gated element(s) hidden, {PublishedCount} published, flags evaluated {EvaluatedFlags}.")]
+        Message = "OpenApiFeatureFlags finished the document in mode {Mode}: {HiddenCount} gated element(s) hidden, {PublishedCount} published, flags involved {InvolvedFlags}.")]
     public static partial void DocumentGenerated(
         ILogger logger,
         DocumentMode mode,
         int hiddenCount,
         int publishedCount,
-        IReadOnlyCollection<string> evaluatedFlags);
+        IReadOnlyCollection<string> involvedFlags);
 
     [LoggerMessage(
         EventId = 4,

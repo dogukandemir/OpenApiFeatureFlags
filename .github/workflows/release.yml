@@ -28,11 +28,13 @@ jobs:
       id-token: write # required for the OIDC exchange
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
+          # SourceLink needs history; the workflow never pushes to git.
           fetch-depth: 0
+          persist-credentials: false
 
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
         with:
           dotnet-version: 10.0.x
 
@@ -46,22 +48,27 @@ jobs:
       - name: Pack
         run: dotnet pack --configuration Release --output ${{ github.workspace }}/artifacts
 
+      # A tag release must match the version being packed. A manual dispatch carries no tag, so it is
+      # let through: GITHUB_REF_TYPE is what distinguishes the two, because on workflow_dispatch
+      # GITHUB_REF_NAME is the branch name and a "is the ref non-empty" test would always fail.
       - name: Check the tag matches the package version
         shell: bash
         run: |
           set -euo pipefail
           version="$(dotnet msbuild Directory.Build.props -getProperty:VersionPrefix)"
           echo "package version: $version"
-          if [ "${GITHUB_REF_NAME:-}" != "" ]; then
+          if [ "${GITHUB_REF_TYPE:-}" = "tag" ]; then
             tag="${GITHUB_REF_NAME#v}"
             if [ "$tag" != "$version" ]; then
               echo "::error::tag '$GITHUB_REF_NAME' does not match VersionPrefix '$version'"
               exit 1
             fi
+          else
+            echo "ref type '${GITHUB_REF_TYPE:-unknown}' is not a tag, so the version check is skipped"
           fi
 
       - name: NuGet login (OIDC -> short-lived API key)
-        uses: NuGet/login@v1
+        uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841 # v1
         id: login
         with:
           user: ${{ secrets.NUGET_USER }}
@@ -73,8 +80,18 @@ jobs:
           --source https://api.nuget.org/v3/index.json
           --skip-duplicate
 
+      # The packages are built with IncludeSymbols/snupkg, so without this step the debugger would
+      # step over this library on nuget.org with "source not available". Symbols must follow the
+      # package that carries them, hence the second push rather than a single glob.
+      - name: Push symbols to nuget.org
+        run: >-
+          dotnet nuget push "${{ github.workspace }}/artifacts/*.snupkg"
+          --api-key "${{ steps.login.outputs.NUGET_API_KEY }}"
+          --source https://api.nuget.org/v3/index.json
+          --skip-duplicate
+
       - name: Upload packages
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: nupkg
           path: ${{ github.workspace }}/artifacts/*.*nupkg

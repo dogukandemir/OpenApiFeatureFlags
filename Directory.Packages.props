@@ -21,8 +21,10 @@
          Microsoft.OpenApi 3.x is a different, binary-incompatible line: using it produces
          MissingMethodException at document generation time, not a compile error. -->
     <PackageVersion Include="Microsoft.OpenApi" Version="2.7.5" />
-    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="10.0.12" />
-    <PackageVersion Include="NSwag.AspNetCore" Version="14.7.1" />
+    <!-- Microsoft.AspNetCore.OpenApi and NSwag.AspNetCore are deliberately absent. No project
+         references them yet, so pinning them here would only ask Dependabot to raise pull requests for
+         packages nothing builds. The version constraints that will matter when the Phase 7 adapters
+         land are recorded in BACKLOG.md 4.4, which is where they were measured. -->
   </ItemGroup>
 
   <ItemGroup Label="Flag sources">

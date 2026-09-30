@@ -280,6 +280,40 @@ public sealed class DocumentVisibilityPlannerTests
             new DocumentVisibilityPlanner(new FakeFlagSource(), options, null!));
     }
 
+    [Fact]
+    public void TheOfflineFallbackScopeIsNotSharedBetweenThreads()
+    {
+        // The planner is a singleton and, with no HttpContext, has to park per-document state
+        // somewhere. Were that fallback one shared instance, two concurrent offline document
+        // generations would share memoised flags and decisions with each other.
+        var (planner, source) = CreatePlanner(source => source.Enabled("f"));
+
+        planner.IsFlagEnabled("f").ShouldBeTrue();
+        source.Reads.ShouldBe(["f"]);
+
+        Exception? failure = null;
+        var other = new Thread(() =>
+        {
+            try
+            {
+                planner.IsHidden(["f"]).ShouldBeFalse();
+            }
+            catch (Exception exception)
+            {
+                failure = exception;
+            }
+        });
+
+        other.Start();
+        other.Join();
+
+        failure.ShouldBeNull();
+
+        // A second thread gets its own scope, so the flag is read again rather than served from the
+        // first thread's memoised value.
+        source.Reads.Count.ShouldBe(2);
+    }
+
     private static HttpContextAccessor NewAccessor() => new() { HttpContext = new DefaultHttpContext() };
 
     private static (DocumentVisibilityPlanner Planner, FakeFlagSource Source) CreatePlanner(

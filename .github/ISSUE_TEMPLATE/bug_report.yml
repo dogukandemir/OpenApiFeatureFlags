@@ -1,0 +1,105 @@
+name: Bug report
+description: Something behaves differently from how it is documented.
+title: "[Bug] "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time. A short, runnable report is worth more than a long one.
+
+        **Not for security problems.** A public issue tells everyone at once, including people who
+        would use it against an application. Report those privately instead — see
+        [SECURITY.md](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/SECURITY.md).
+
+  - type: checkboxes
+    id: not-security
+    attributes:
+      label: This is not a security report
+      options:
+        - label: Correct — this is a normal bug, and I have read SECURITY.md
+          required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened, and what did you expect instead?
+      description: If it is about a document, paste the relevant part of the JSON before and after.
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Smallest reproducer
+      description: |
+        The registration call, the attribute or `<gate>` you used, and the flag's value. If you can,
+        reduce it to one action or one model property — the smallest case is usually the one that
+        finds the bug.
+      render: csharp
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Package version
+      description: Which version of OpenApiFeatureFlags are you using?
+      placeholder: 0.2.0
+    validations:
+      required: true
+
+  - type: input
+    id: dotnet
+    attributes:
+      label: Target framework
+      placeholder: net8.0 / net9.0 / net10.0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: mode
+    attributes:
+      label: DocumentMode
+      options:
+        - Remove (the default)
+        - Annotate
+        - Include
+        - Not set / do not know
+    validations:
+      required: true
+
+  - type: dropdown
+    id: flag-source
+    attributes:
+      label: Flag source
+      options:
+        - OpenApiFeatureFlags.FeatureManagement
+        - OpenApiFeatureFlags.OpenFeature
+        - A custom IFeatureFlagSource
+        - Not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: |
+        The library logs one summary line per document (`OpenApiFeatureFlags finished the document…`)
+        plus warnings. That line often answers the question on its own. Raise the log level to
+        `Debug` for `OpenApiFeatureFlags` if you have not already.
+      render: text
+    validations:
+      required: false
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else
+      description: |
+        Anything that might be relevant — a document processor of your own, a custom
+        `ISchemaFilter`, another library touching the same document.
+    validations:
+      required: false

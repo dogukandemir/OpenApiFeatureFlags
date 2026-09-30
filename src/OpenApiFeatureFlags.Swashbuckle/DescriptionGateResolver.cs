@@ -41,6 +41,16 @@ internal sealed class DescriptionGateResolver
     private const string CloseTag = "</gate>";
     private const int OpenTagLength = 5;
 
+    /// <summary>
+    /// How deep gates may nest before the resolver stops recursing inside them.
+    /// </summary>
+    /// <remarks>
+    /// Not reachable by accident: it takes 33 levels of nested gates in a single description. It
+    /// exists so that pathological text degrades into hidden content instead of a stack overflow,
+    /// which cannot be caught and takes the whole process down with it.
+    /// </remarks>
+    private const int MaxNestingDepth = 32;
+
     private readonly IDocumentVisibilityPlanner _planner;
     private readonly ILogger _logger;
 
@@ -62,14 +72,21 @@ internal sealed class DescriptionGateResolver
             return null;
         }
 
-        var rewritten = Rewrite(text);
+        var rewritten = Rewrite(text, depth: 0);
 
         // "<gateway>" and friends satisfy the cheap check above without containing a real gate.
         return string.Equals(rewritten, text, StringComparison.Ordinal) ? null : rewritten;
     }
 
-    private string Rewrite(string text)
+    private string Rewrite(string text, int depth)
     {
+        if (depth > MaxNestingDepth)
+        {
+            // Fail closed rather than guess: content this deep is not something a person wrote.
+            Log.GateTooDeep(_logger, MaxNestingDepth, text.Length);
+            return string.Empty;
+        }
+
         var builder = new StringBuilder(text.Length);
         var index = 0;
 
@@ -125,7 +142,7 @@ internal sealed class DescriptionGateResolver
 
             if (!hides)
             {
-                builder.Append(Rewrite(inner));
+                builder.Append(Rewrite(inner, depth + 1));
             }
 
             index = close + CloseTag.Length;

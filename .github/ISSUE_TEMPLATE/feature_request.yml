@@ -1,0 +1,65 @@
+name: Feature request
+description: Suggest a capability, or argue that something should work differently.
+title: "[Feature] "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before you write: [`BACKLOG.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/BACKLOG.md)
+        records what has been decided (D1–D17), what was measured, and what is still open (Q1–Q6).
+        A proposal that contradicts a locked decision is welcome, but it needs to argue for changing
+        that decision rather than working around it.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: |
+        What are you unable to do today? Describe the situation rather than the solution — the best
+        fix for a described problem is often not the one either of us started with.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What you would like to happen
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: What you tried instead
+      description: |
+        Including "nothing, this is new" is a fine answer. If you worked around it, the workaround is
+        useful evidence about how much the gap costs.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: What does this touch?
+      description: Pick the closest one.
+      options:
+        - Gating behaviour (documents, attributes, descriptions)
+        - A flag source (FeatureManagement, OpenFeature, something new)
+        - A document engine (Swashbuckle, or an adapter that does not exist yet)
+        - Configuration or registration
+        - Documentation
+        - Not sure
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Please confirm
+      options:
+        - label: This is about which elements appear in the document, not about runtime behaviour. I understand the library deliberately never changes what an endpoint does.
+          required: false
+        - label: I would be willing to attempt a pull request for this.
+          required: false

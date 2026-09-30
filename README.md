@@ -2,6 +2,17 @@
 
 Feature flags for OpenAPI documents.
 
+[![CI](https://github.com/dogukandemir/OpenApiFeatureFlags/actions/workflows/ci.yml/badge.svg)](https://github.com/dogukandemir/OpenApiFeatureFlags/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/dogukandemir/OpenApiFeatureFlags/actions/workflows/codeql.yml/badge.svg)](https://github.com/dogukandemir/OpenApiFeatureFlags/actions/workflows/codeql.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+> ### ⚠️ Pre-release — not published to nuget.org yet
+>
+> The packages build, the suite is green on all three target frameworks, and the API is stable enough
+> to depend on, but there has been **no published release**. `dotnet add package` will not find it.
+> To try it, build the packages into a local feed and point a `nuget.config` at it:
+> see [`docs/trying-locally.md`](docs/trying-locally.md).
+
 Mark the endpoint, action, property or parameter with `[OpenApiFeatureFlag]` and it only appears in
 the generated document once the flag is enabled — using the same flags the runtime already reads.
 
@@ -14,6 +25,10 @@ public IActionResult Checkout() => Ok();
 With `NewCheckout` off, `/api/orders/checkout` is **not** in `swagger.json`. With it on, it is. No
 restart, no rebuild, no conditional compilation.
 
+Multi-targets `net8.0`, `net9.0` and `net10.0`. Swashbuckle is the document engine supported today, and
+flags can come from Microsoft.FeatureManagement, the CNCF OpenFeature standard, or your own
+`IFeatureFlagSource`.
+
 ---
 
 ## The problem this solves
@@ -25,6 +40,15 @@ cannot use — and, once the document is published, a support conversation about
 
 ## Installation
 
+Not on nuget.org yet, so install by building the packages into a local feed first — one command,
+described in [`docs/trying-locally.md`](docs/trying-locally.md). Once a release is published, this
+becomes:
+
+```shell
+dotnet add package OpenApiFeatureFlags.Swashbuckle
+dotnet add package OpenApiFeatureFlags.FeatureManagement
+```
+
 | Package | What it is for |
 |---|---|
 | `OpenApiFeatureFlags` | Core: the planner and the service registration. |
@@ -32,14 +56,6 @@ cannot use — and, once the document is published, a support conversation about
 | `OpenApiFeatureFlags.FeatureManagement` | Reads flags from Microsoft's `IFeatureManager`. |
 | `OpenApiFeatureFlags.OpenFeature` | Reads flags through the CNCF [OpenFeature](https://openfeature.dev) standard. |
 | `OpenApiFeatureFlags.Abstractions` | Attribute and contracts only. Reference this from assemblies that must not take a dependency on Swashbuckle or a flag library. |
-
-```shell
-dotnet add package OpenApiFeatureFlags.Swashbuckle
-dotnet add package OpenApiFeatureFlags.FeatureManagement
-```
-
-> Not published yet. To try it today, build the packages into the local feed and add it as a source —
-> see [`docs/trying-locally.md`](docs/trying-locally.md).
 
 ## Quickstart
 
@@ -138,6 +154,11 @@ document without a restart.
 | `Annotate` | Gated elements stay, tagged with `x-feature-flag`, so a portal can filter them. |
 | `Include` | The library does nothing; the full document is published. |
 
+> **`Annotate` publishes your flag names** — on each gated operation, and as a document-level list. On
+> a document that anyone can read, that discloses which features exist, including ones you have not
+> released. Use it for internal or authenticated audiences; use `Remove` for public documents. See
+> [`docs/security.md`](docs/security.md).
+
 See [`docs/modes.md`](docs/modes.md) for output samples.
 
 ## What this library does not do
@@ -146,6 +167,11 @@ See [`docs/modes.md`](docs/modes.md) for output samples.
 routeable; hiding a property leaves it serialised. A documentation decision must not silently become
 a behaviour change, and this is the one rule the design refuses to bend — see decision D2 in
 [`BACKLOG.md`](BACKLOG.md). Runtime gating stays in your application code.
+
+**So do not use it to protect an endpoint.** Gating makes unreleased surface less discoverable; it is
+not an access control, and it cannot unpublish a document that has already been served. Authentication
+and authorization belong where they always did. [`docs/security.md`](docs/security.md) sets out what
+this library does and does not do to your security posture, including its availability trade-offs.
 
 ## Guarantees worth knowing
 
@@ -178,8 +204,19 @@ method's XML docs.
 - [`docs/azure-app-configuration.md`](docs/azure-app-configuration.md) — reading flags from Azure App
   Configuration, and the four ways that can go quietly wrong.
 - [`docs/troubleshooting.md`](docs/troubleshooting.md) — nothing is hidden, or too much is.
+- [`docs/security.md`](docs/security.md) — what gating does and does not protect, what `Annotate`
+  discloses, and the availability trade-offs.
 - [`samples/OpenApiFeatureFlags.Sample`](samples/OpenApiFeatureFlags.Sample) — a runnable API.
-- [`BACKLOG.md`](BACKLOG.md) — the design decisions, the measured facts and the remaining work.
+- [`BACKLOG.md`](BACKLOG.md) — the design decisions (D1–D17), the measured facts and what is left.
+
+## Project
+
+- [`CONTRIBUTING.md`](CONTRIBUTING.md) — build and test commands, and the two rules a pull request is
+  most likely to trip over.
+- [`SECURITY.md`](SECURITY.md) — how to report a vulnerability privately. Please do not open a public
+  issue for one.
+- [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) — how people are expected to treat each other here.
+- [`CHANGELOG.md`](CHANGELOG.md) — what changed, and when.
 
 ## Author
 

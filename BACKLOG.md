@@ -72,8 +72,13 @@ This is generalisable and not specific to that team, which is why it is a standa
   regenerated per request: a live `/swagger` endpoint reflects a flag flip without a restart.
 - Because filters and `SwaggerGeneratorOptions` are built **once** (`IOptions<T>.Value` is cached),
   per-request memoization must use `HttpContext.Items`, **not** an instance field.
-- The offline export path (`swagger tofile`) has **no `HttpContext`** — resolve directly there; it is a
-  single pass anyway.
+- The offline export path (`swagger tofile`) has **no `HttpContext`** — resolve directly there. It is a
+  single pass, but the fallback scope is **per-thread** (`ThreadLocal`), not one instance shared by the
+  singleton planner: two concurrent generations on that path would otherwise share memoised flag values
+  and each other's decisions, which is worse than a data race because the output is silently wrong
+  rather than broken. Document generation is synchronous, so one generation sees the same scope from the
+  first filter through to the summary line. Pinned by
+  `TheOfflineFallbackScopeIsNotSharedBetweenThreads`.
 
 ### 4.2 Filter-ordering pitfalls observed in a real integration
 
@@ -325,6 +330,37 @@ the README.
       topics and description. Both are external actions.
 - [ ] Add a package icon. Deliberately postponed: a placeholder icon is worse than the default.
 
+#### Public-readiness review, 2026-09-30
+
+Done on the assumption that the repository will be read and used by people who did not write it, and
+cannot ask the author a question:
+
+- [x] Dependency scan (`dotnet list package --vulnerable --include-transitive`): no known advisories in
+      any project, direct or transitive.
+- [x] Scan of tracked files for secret-shaped strings: clean.
+- [x] Least-privilege `permissions` on every workflow. CI previously inherited the repository default,
+      which on older repositories is read/write.
+- [x] Every workflow action pinned to a commit SHA, so a moved tag cannot silently change what runs.
+- [x] CodeQL (C#, `security-extended`) on push, pull request and a weekly schedule. The schedule is the
+      point: new queries are published without this repository changing at all, so one clean run says
+      nothing about next month.
+- [x] `SECURITY.md` for private reporting, and `docs/security.md` for the consumer-facing trade-offs —
+      including that `Annotate` discloses flag names, that gating cannot unpublish a served document,
+      and that the D6 canary trades a truncated document for a loud 500.
+- [x] `CODE_OF_CONDUCT.md`, issue forms and a pull-request template.
+- [x] `.gitattributes` pinning everything to LF, so a Windows and a macOS contributor produce the same
+      bytes and the golden snapshot cannot be committed with CRLF.
+- [x] `release.yml`: the tag check now applies only to tag refs. On `workflow_dispatch` the ref name is
+      the branch, so the previous check rejected every manual run.
+- [x] `release.yml` publishes `.snupkg`. Symbols were built and then dropped, so debugging from
+      nuget.org would have reported "source not available".
+- [x] `0.2.0` is the first cut a third party should use: it carries description gating, and the version
+  bump is also what keeps a local repack from colliding with NuGet's version cache.
+- [ ] **Not verified from here, and must be checked first after pushing:** the CodeQL workflow, the
+      pinned SHAs, and the three workflows in general. None of them can be executed locally, and a
+      release pipeline that fails on its first real run is worse than one that was never added.
+- [ ] Confirm the badge URLs in `README.md` resolve once the workflows have run at least once.
+
 ### Phase 7 — Post-v1 adapters
 
 - [x] `OpenApiFeatureFlags.OpenFeature` — CNCF standard; the adapter that opens the non-Microsoft world.
@@ -355,7 +391,12 @@ the README.
   names already mean "changes runtime behaviour" in this ecosystem (see §5.1).
 - **Q3 — `Annotate` extension shape.** `x-feature-flag` (singular array per operation) plus a
   document-level map? Confirm naming and whether to nest under an `x-openapifeatureflags` object.
-- **Q4 — should the core expose an async resolution path?** `IFeatureFlagSource` is sync because the
+  **Gap found during the 2026-09-30 review:** `docs/modes.md` claimed a gated *schema property* gains
+  `x-feature-flag` too, and it does not — only gated operations are annotated, so a client can see that
+  a flag exists but not which property it gates. The docs now say so. Deciding the fix belongs with this
+  question, because it changes the shape: annotate schema properties as well, or leave properties
+  unmarked and treat the root array as the only machine-readable signal. Documented rather than changed,
+  so that a consumer already parsing the current shape is not broken by a review.- **Q4 — should the core expose an async resolution path?** `IFeatureFlagSource` is sync because the
   filter pipeline is sync. Some flag providers are async-only. Decide whether to add an async interface
   later rather than now.
 - **Q5 — is `Include` mode needed at all**, given fail-closed already makes the library inert when no

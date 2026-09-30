@@ -88,9 +88,8 @@ configurations.
 
 ## `Annotate`
 
-Nothing is removed. Every gated operation and schema property gains an `x-feature-flag` extension
-listing the flags that govern it, and the document gains one at the root listing every flag it
-knows about.
+Nothing is removed. Every gated **operation** gains an `x-feature-flag` extension listing the flags
+that govern it, and the document gains one at the root listing every flag involved.
 
 ```csharp
 options.Mode = DocumentMode.Annotate;
@@ -121,7 +120,9 @@ Two things it does that are worth knowing:
   start with.
 
 > The exact shape of the extensions is still open — see question Q3 in [`BACKLOG.md`](../BACKLOG.md).
-> Today it is an array of flag names, both per operation and at the root.
+> Today it is an array of flag names, on gated operations and at the root. A gated **schema property**
+> is left unmarked, so a client can tell that a flag governs *something* in the document but not which
+> property it gates; the root array is where that flag name still appears.
 
 ---
 

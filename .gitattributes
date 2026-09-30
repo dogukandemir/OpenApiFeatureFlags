@@ -1,0 +1,23 @@
+# Normalise line endings for everyone, everywhere.
+#
+# Everything textual is stored as LF, and checked out as LF on every platform. Without this, a
+# contributor whose git has core.autocrlf=true gets a different working tree from one who does not,
+# and a file like the golden document snapshot can end up committed with CRLF and then compared
+# against LF on CI.
+* text=auto eol=lf
+
+# These are inputs to tests rather than source to be edited: keep them byte-exact.
+*.json text eol=lf
+
+# Binary. Marked so git never attempts a text merge on them.
+*.nupkg binary
+*.snupkg binary
+*.dll binary
+*.pdb binary
+*.png binary
+*.ico binary
+*.jpg binary
+*.svg text eol=lf
+
+# Generated documentation output from the sample's build-time document generation.
+samples/**/openapi/*.json text eol=lf
