@@ -4,7 +4,7 @@
 nuget.org, so this is how you try the library today.
 
 ```shell
-./eng/pack-local.ps1
+./scripts/pack-local.ps1
 ```
 
 That packs every package in Release configuration, clears the folder first, and prints the
@@ -179,7 +179,7 @@ Once the same version is published to nuget.org, NuGet may prefer one or the oth
 order. For a throwaway trial you can build a distinctly-versioned set instead:
 
 ```shell
-./eng/pack-local.ps1 -VersionSuffix local
+./scripts/pack-local.ps1 -VersionSuffix local
 ```
 
 That produces `0.2.0-local`, which cannot be confused with a published release. Bumping

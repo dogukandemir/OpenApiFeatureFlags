@@ -14,11 +14,11 @@
     edited when the version moves.
 
 .EXAMPLE
-    ./eng/pack-local.ps1
+    ./scripts/pack-local.ps1
     Produces the packages at the version in Directory.Build.props in ./local-packages.
 
 .EXAMPLE
-    ./eng/pack-local.ps1 -VersionSuffix local
+    ./scripts/pack-local.ps1 -VersionSuffix local
     Produces the same packages with a -local suffix, for example 0.2.0-local.
 #>
 param(

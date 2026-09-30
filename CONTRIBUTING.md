@@ -41,7 +41,7 @@ you add public surface, the build tells you the exact line to add; when you remo
 tells you the line to delete. To apply both automatically:
 
 ```shell
-./eng/update-public-api.ps1 -ProjectDir src/OpenApiFeatureFlags.Swashbuckle
+./scripts/update-public-api.ps1 -ProjectDir src/OpenApiFeatureFlags.Swashbuckle
 ```
 
 Hand-formatting is not worth attempting: records alone contribute operators, `Deconstruct`,
