@@ -30,6 +30,9 @@
     <!-- Open question Q1: 0.1.0 to gather feedback, then 1.0.0 once the Swashbuckle adapter
          ordering has been proven. The attribute name is a permanent contract either way. -->
     <VersionPrefix>0.1.0</VersionPrefix>
+    <!-- Authors is what nuget.org renders as "Authors". nuget.org's separate *Owners* list is
+         derived from the account that pushed the package plus the reserved prefix, and cannot be
+         set from here; PackageOwners is ignored by nuget.org, so it is deliberately absent. -->
     <Authors>Dogukan Demir</Authors>
     <Company>Dogukan Demir</Company>
     <Copyright>Copyright (c) 2026 Dogukan Demir</Copyright>

@@ -168,6 +168,10 @@ method's XML docs.
 - [`samples/OpenApiFeatureFlags.Sample`](samples/OpenApiFeatureFlags.Sample) — a runnable API.
 - [`BACKLOG.md`](BACKLOG.md) — the design decisions, the measured facts and the remaining work.
 
+## Author
+
+**Dogukan Demir** — [@dogukandemir](https://github.com/dogukandemir)
+
 ## Licence
 
 MIT.
