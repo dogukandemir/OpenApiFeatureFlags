@@ -243,7 +243,7 @@ public sealed class DocumentVisibilityPlannerTests
         lines.Count.ShouldBe(1);
         lines[0].ShouldContain("Remove");
         lines[0].ShouldContain("1 gated element(s) hidden");
-        lines[0].ShouldContain("1 published");
+        lines[0].ShouldContain("1 kept");
     }
 
     [Fact]

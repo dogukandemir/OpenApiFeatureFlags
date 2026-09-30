@@ -43,7 +43,7 @@ public static class OpenApiFeatureFlagsOpenFeatureExtensions
             services.AddOpenApiFeatureFlags(configure);
         }
 
-        return services.UseOpenFeature();
+        return services.AddOpenFeatureFlagSource();
     }
 
     /// <summary>
@@ -57,10 +57,13 @@ public static class OpenApiFeatureFlagsOpenFeatureExtensions
     /// <code>
     /// builder.Services
     ///     .AddOpenApiFeatureFlags(options =&gt; options.Mode = DocumentMode.Annotate)
-    ///     .UseOpenFeature();
+    ///     .AddOpenFeatureFlagSource();
     /// </code>
+    /// Named <c>Add*</c> rather than <c>Use*</c> because it extends <see cref="IServiceCollection"/>.
+    /// In ASP.NET Core, <c>Use*</c> belongs to <c>IApplicationBuilder</c> and means middleware, so
+    /// <c>builder.Services.UseOpenFeature()</c> reads as the wrong kind of call.
     /// </remarks>
-    public static IServiceCollection UseOpenFeature(this IServiceCollection services)
+    public static IServiceCollection AddOpenFeatureFlagSource(this IServiceCollection services)
     {
         ArgumentNullException.ThrowIfNull(services);
 

@@ -106,7 +106,7 @@ Same symptom, same silence, for a typo in the attribute (`"NewCheckout"` vs `"Ne
 line, which tells you which flags were involved and how many elements were hidden:
 
 ```
-OpenApiFeatureFlags finished the document in mode Remove: 12 gated element(s) hidden, 0 published, flags involved NewCheckout.
+OpenApiFeatureFlags finished the document in mode Remove: 12 gated element(s) hidden, 0 kept, flags involved NewCheckout.
 ```
 
 Twelve hidden from one flag is the signature of a store that answered nothing useful.

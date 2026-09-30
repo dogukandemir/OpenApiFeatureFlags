@@ -3,5 +3,5 @@ Microsoft.Extensions.DependencyInjection.OpenApiFeatureFlagsOpenFeatureExtension
 OpenApiFeatureFlags.OpenFeature.OpenFeatureFlagSource
 OpenApiFeatureFlags.OpenFeature.OpenFeatureFlagSource.IsEnabled(string! flagName) -> bool
 OpenApiFeatureFlags.OpenFeature.OpenFeatureFlagSource.OpenFeatureFlagSource(OpenFeature.IFeatureClient! client) -> void
+static Microsoft.Extensions.DependencyInjection.OpenApiFeatureFlagsOpenFeatureExtensions.AddOpenFeatureFlagSource(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!
 static Microsoft.Extensions.DependencyInjection.OpenApiFeatureFlagsOpenFeatureExtensions.AddOpenApiFeatureFlagsWithOpenFeature(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services, System.Action<OpenApiFeatureFlags.OpenApiFeatureFlagsOptions!>? configure = null) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!
-static Microsoft.Extensions.DependencyInjection.OpenApiFeatureFlagsOpenFeatureExtensions.UseOpenFeature(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!

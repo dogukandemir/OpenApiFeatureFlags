@@ -70,7 +70,7 @@ The library logs the flag names it evaluated at `Debug`, and one summary line pe
 the flags involved:
 
 ```
-OpenApiFeatureFlags finished the document in mode Remove: 3 gated element(s) hidden, 0 published, flags involved Loyalty, NewCheckout.
+OpenApiFeatureFlags finished the document in mode Remove: 3 gated element(s) hidden, 0 kept, flags involved Loyalty, NewCheckout.
 ```
 
 Flag names are configuration, not secrets, but they travel wherever your logs travel. If logs are

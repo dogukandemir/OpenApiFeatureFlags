@@ -4,7 +4,7 @@ Turn on `Debug` logging for the `OpenApiFeatureFlags` category: every document g
 line saying what it hid and which flags it evaluated.
 
 ```
-OpenApiFeatureFlags finished the document in mode Remove: 3 gated element(s) hidden, 5 published, flags involved LoyaltyProgram, NewCheckout.
+OpenApiFeatureFlags finished the document in mode Remove: 3 gated element(s) hidden, 5 kept, flags involved LoyaltyProgram, NewCheckout.
 OpenApiFeatureFlags: no gated elements in this document (mode Remove).
 ```
 

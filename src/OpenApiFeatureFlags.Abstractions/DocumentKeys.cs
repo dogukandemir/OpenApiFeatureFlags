@@ -52,7 +52,7 @@ public readonly record struct OperationKey
 }
 
 /// <summary>
-/// Identifies a schema member (a property) or an operation parameter by its CLR origin.
+/// Identifies a schema member — a property — by its CLR origin.
 /// </summary>
 /// <remarks>
 /// Keying on the CLR type and member name rather than on the emitted JSON name is what makes
@@ -86,4 +86,57 @@ public sealed record MemberKey
     [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider",
         Justification = "Type.FullName and a member name are culture-invariant identifiers.")]
     public override string ToString() => $"{DeclaringType.FullName}.{MemberName}";
+}
+
+/// <summary>
+/// Identifies one parameter of one action in a generated document.
+/// </summary>
+/// <remarks>
+/// <para>
+/// A parameter is <b>not</b> a member of its declaring type: it belongs to a method. Keying one by type
+/// and name alone collides as soon as two actions on one controller declare a parameter of the same
+/// name — <c>id</c>, <c>scope</c>, <c>request</c> — and a collision here is not cosmetic.
+/// <see cref="DocumentVisibilityPlan"/> aggregates its decisions by key, so the two elements merge into
+/// one: the plan under-counts, and a query about either of them answers for the other.
+/// </para>
+/// <para>
+/// Two overloads of the same action that each declare a parameter of the same name would still
+/// collide. ASP.NET Core does not route those to distinct endpoints in the ordinary case, so this is
+/// recorded rather than defended against by putting a full signature in the key.
+/// </para>
+/// </remarks>
+public sealed record ParameterKey
+{
+    /// <summary>
+    /// Initialises a new instance of the <see cref="ParameterKey"/> record.
+    /// </summary>
+    /// <param name="declaringType">The type that declares the action.</param>
+    /// <param name="actionName">The CLR name of the action the parameter belongs to.</param>
+    /// <param name="parameterName">The CLR name of the parameter.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="declaringType"/> is <see langword="null"/>.</exception>
+    /// <exception cref="ArgumentException">A name is null, empty or whitespace.</exception>
+    public ParameterKey(Type declaringType, string actionName, string parameterName)
+    {
+        ArgumentNullException.ThrowIfNull(declaringType);
+        ArgumentException.ThrowIfNullOrWhiteSpace(actionName);
+        ArgumentException.ThrowIfNullOrWhiteSpace(parameterName);
+
+        DeclaringType = declaringType;
+        ActionName = actionName;
+        ParameterName = parameterName;
+    }
+
+    /// <summary>Gets the type that declares the action.</summary>
+    public Type DeclaringType { get; }
+
+    /// <summary>Gets the CLR name of the action the parameter belongs to.</summary>
+    public string ActionName { get; }
+
+    /// <summary>Gets the CLR name of the parameter.</summary>
+    public string ParameterName { get; }
+
+    /// <inheritdoc />
+    [SuppressMessage("Globalization", "CA1305:Specify IFormatProvider",
+        Justification = "Type.FullName and CLR names are culture-invariant identifiers.")]
+    public override string ToString() => $"{DeclaringType.FullName}.{ActionName}({ParameterName})";
 }

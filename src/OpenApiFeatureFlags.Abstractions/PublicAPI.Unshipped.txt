@@ -23,6 +23,7 @@ OpenApiFeatureFlags.DocumentVisibilityPlan.IsHidden(string! elementKey) -> bool
 OpenApiFeatureFlags.DocumentVisibilityPlan.IsMemberHidden(OpenApiFeatureFlags.MemberKey! member) -> bool
 OpenApiFeatureFlags.DocumentVisibilityPlan.IsNoOp.get -> bool
 OpenApiFeatureFlags.DocumentVisibilityPlan.IsOperationHidden(OpenApiFeatureFlags.OperationKey operation) -> bool
+OpenApiFeatureFlags.DocumentVisibilityPlan.IsParameterHidden(OpenApiFeatureFlags.ParameterKey! parameter) -> bool
 OpenApiFeatureFlags.DocumentVisibilityPlan.Mode.get -> OpenApiFeatureFlags.DocumentMode
 OpenApiFeatureFlags.DocumentVisibilityPlan.ToLogSummary() -> string!
 OpenApiFeatureFlags.IFeatureFlagSource
@@ -42,13 +43,25 @@ OpenApiFeatureFlags.OperationKey.Method.get -> string!
 OpenApiFeatureFlags.OperationKey.OperationKey() -> void
 OpenApiFeatureFlags.OperationKey.OperationKey(string! method, string! pathTemplate) -> void
 OpenApiFeatureFlags.OperationKey.PathTemplate.get -> string!
+OpenApiFeatureFlags.ParameterKey
+OpenApiFeatureFlags.ParameterKey.<Clone>$() -> OpenApiFeatureFlags.ParameterKey!
+OpenApiFeatureFlags.ParameterKey.ActionName.get -> string!
+OpenApiFeatureFlags.ParameterKey.DeclaringType.get -> System.Type!
+OpenApiFeatureFlags.ParameterKey.Equals(OpenApiFeatureFlags.ParameterKey? other) -> bool
+OpenApiFeatureFlags.ParameterKey.ParameterKey(System.Type! declaringType, string! actionName, string! parameterName) -> void
+OpenApiFeatureFlags.ParameterKey.ParameterName.get -> string!
 override OpenApiFeatureFlags.MemberKey.Equals(object? obj) -> bool
 override OpenApiFeatureFlags.MemberKey.GetHashCode() -> int
 override OpenApiFeatureFlags.MemberKey.ToString() -> string!
 override OpenApiFeatureFlags.OperationKey.GetHashCode() -> int
 override OpenApiFeatureFlags.OperationKey.ToString() -> string!
+override OpenApiFeatureFlags.ParameterKey.Equals(object? obj) -> bool
+override OpenApiFeatureFlags.ParameterKey.GetHashCode() -> int
+override OpenApiFeatureFlags.ParameterKey.ToString() -> string!
 static OpenApiFeatureFlags.DocumentVisibilityPlan.NoOp.get -> OpenApiFeatureFlags.DocumentVisibilityPlan!
 static OpenApiFeatureFlags.MemberKey.operator !=(OpenApiFeatureFlags.MemberKey? left, OpenApiFeatureFlags.MemberKey? right) -> bool
 static OpenApiFeatureFlags.MemberKey.operator ==(OpenApiFeatureFlags.MemberKey? left, OpenApiFeatureFlags.MemberKey? right) -> bool
 static OpenApiFeatureFlags.OperationKey.operator !=(OpenApiFeatureFlags.OperationKey left, OpenApiFeatureFlags.OperationKey right) -> bool
 static OpenApiFeatureFlags.OperationKey.operator ==(OpenApiFeatureFlags.OperationKey left, OpenApiFeatureFlags.OperationKey right) -> bool
+static OpenApiFeatureFlags.ParameterKey.operator !=(OpenApiFeatureFlags.ParameterKey? left, OpenApiFeatureFlags.ParameterKey? right) -> bool
+static OpenApiFeatureFlags.ParameterKey.operator ==(OpenApiFeatureFlags.ParameterKey? left, OpenApiFeatureFlags.ParameterKey? right) -> bool

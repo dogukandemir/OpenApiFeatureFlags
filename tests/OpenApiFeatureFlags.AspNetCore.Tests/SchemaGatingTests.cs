@@ -49,7 +49,7 @@ public sealed class SchemaGatingTests
     }
 
     [Fact]
-    public async Task AGatedPropertyIsPublishedWhenItsFlagIsOn()
+    public async Task AGatedPropertyIsKeptWhenItsFlagIsOn()
     {
         using var document = await TestDocument.BuildAsync(
             new FakeFlagSource("LoyaltyProgram"),

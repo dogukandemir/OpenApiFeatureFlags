@@ -3,7 +3,7 @@
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.2.0] - 2026-10-01
 
 ### Added
 
@@ -17,6 +17,28 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 - The `<gate>` parser now lives in the core rather than in the Swashbuckle adapter, so both adapters
   share one implementation and cannot drift apart on quoting, nesting or unbalanced tags. This is an
   internal type: the public surface is unchanged.
+- `ParameterKey`, which identifies an operation parameter by its action as well as its name, and
+  `DocumentVisibilityPlan.IsParameterHidden` to query it.
+
+### Changed
+
+- **Breaking:** `UseFeatureManagement()` is now `AddFeatureManagementFlagSource()`, and `UseOpenFeature()`
+  is now `AddOpenFeatureFlagSource()`. Both extend `IServiceCollection`, where `Add*` is the convention
+  and `Use*` means middleware on an `IApplicationBuilder` — so the old names read as the wrong kind of
+  call at the exact call site the documentation recommends.
+- The once-per-document summary line reports `{n} kept` where it reported `{n} published`.
+  "Published" was carrying two meanings at once — an element kept in the document, and the document
+  being served — which made `0 published` readable as "nothing was published".
+  `DocumentVisibilityPlan.ToLogSummary()` changed with it.
+
+### Fixed
+
+- A parameter no longer shares a key with a same-named parameter on another action of the same
+  controller. `DocumentVisibilityPlan` aggregates decisions by key, so the two merged into one: the plan
+  under-counted, and `IsMemberHidden`/`FlagsFor` answered for the wrong element. The generated document
+  was always correct, because parameters are removed per operation from their own `ParameterInfo`, so
+  this affected the plan, its counts and its queries rather than the document.
+
 ## [0.1.1] - 2026-09-30
 
 ### Fixed
@@ -93,6 +115,6 @@ First public release. All five packages ship together at this version.
 - Test projects run on xunit.v3 and Microsoft.Testing.Platform, which the .NET 10 SDK selects through
   `global.json`.
 
-[Unreleased]: https://github.com/dogukandemir/OpenApiFeatureFlags/compare/v0.1.1...HEAD
+[0.2.0]: https://github.com/dogukandemir/OpenApiFeatureFlags/releases/tag/v0.2.0
 [0.1.1]: https://github.com/dogukandemir/OpenApiFeatureFlags/releases/tag/v0.1.1
 [0.1.0]: https://github.com/dogukandemir/OpenApiFeatureFlags/releases/tag/v0.1.0

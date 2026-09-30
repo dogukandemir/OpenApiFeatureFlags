@@ -125,7 +125,7 @@ internal sealed class FeatureFlagOperationTransformer : IOpenApiOperationTransfo
 
             _planner.RecordDecision(new DocumentVisibilityDecision(
                 DocumentElementKind.Parameter,
-                MemberKeyFor(actionMethod, parameter.Name).ToString(),
+                ParameterKeyFor(actionMethod, parameter.Name).ToString(),
                 hidden,
                 flags));
 
@@ -178,6 +178,6 @@ internal sealed class FeatureFlagOperationTransformer : IOpenApiOperationTransfo
         return new OperationKey(method, "/" + relativePath.TrimStart('/'));
     }
 
-    private static MemberKey MemberKeyFor(MethodInfo actionMethod, string? parameterName) =>
-        new(actionMethod.DeclaringType ?? typeof(object), parameterName ?? "<unnamed>");
+    private static ParameterKey ParameterKeyFor(MethodInfo actionMethod, string? parameterName) =>
+        new(actionMethod.DeclaringType ?? typeof(object), actionMethod.Name, parameterName ?? "<unnamed>");
 }

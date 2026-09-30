@@ -32,7 +32,7 @@ public sealed class OperationGatingTests
     }
 
     [Fact]
-    public async Task AGatedOperationIsPublishedWhenItsFlagIsOn()
+    public async Task AGatedOperationIsKeptWhenItsFlagIsOn()
     {
         using var document = await TestDocument.BuildAsync(
             new FakeFlagSource("NewCheckout"),

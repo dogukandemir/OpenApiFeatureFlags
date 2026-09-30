@@ -42,7 +42,7 @@ public static class OpenApiFeatureFlagsFeatureManagementExtensions
             services.AddOpenApiFeatureFlags(configure);
         }
 
-        return services.UseFeatureManagement();
+        return services.AddFeatureManagementFlagSource();
     }
 
     /// <summary>
@@ -55,10 +55,15 @@ public static class OpenApiFeatureFlagsFeatureManagementExtensions
     /// <code>
     /// builder.Services
     ///     .AddOpenApiFeatureFlags(options =&gt; options.Mode = DocumentMode.Annotate)
-    ///     .UseFeatureManagement();
+    ///     .AddFeatureManagementFlagSource();
     /// </code>
     /// </example>
-    public static IServiceCollection UseFeatureManagement(this IServiceCollection services)
+    /// <remarks>
+    /// Named <c>Add*</c> rather than <c>Use*</c> because it extends <see cref="IServiceCollection"/>.
+    /// In ASP.NET Core, <c>Use*</c> belongs to <c>IApplicationBuilder</c> and means middleware, so
+    /// <c>builder.Services.UseFeatureManagement()</c> reads as the wrong kind of call.
+    /// </remarks>
+    public static IServiceCollection AddFeatureManagementFlagSource(this IServiceCollection services)
     {
         ArgumentNullException.ThrowIfNull(services);
 

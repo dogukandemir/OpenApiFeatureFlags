@@ -242,6 +242,12 @@ what this repo uses.
   the engine's XML-comment support fails the build with CS9137 unless the project opts into
   `Microsoft.AspNetCore.OpenApi.Generated` interceptors, and a minimal API's *parameter* cannot be
   gated because its endpoint metadata carries no `ParameterInfo` to match on.
+- Two API revisions came out of the same review, and are recorded because both were corrected before
+  anyone depended on them. `UseFeatureManagement`/`UseOpenFeature` became
+  `AddFeatureManagementFlagSource`/`AddOpenFeatureFlagSource`: they extend `IServiceCollection`, where
+  `Add*` is the convention and `Use*` means middleware on an `IApplicationBuilder`. And a parameter is
+  now keyed by `ParameterKey`, which carries its action, because keying it by declaring type and name let
+  two same-named parameters on one controller collapse into a single plan decision.
 
 ### Not built yet
 
@@ -258,10 +264,12 @@ Scalar needs no adapter: it renders whatever JSON the engine produced.
 - **Q1 — first version.** ✅ **Resolved 2026-09-30 → `0.1.0`.** `[OpenApiFeatureFlag]` is a permanent
   contract either way, so the question was whether to make that promise now at `1.0.0`, or stay pre-1.0
   while the Swashbuckle adapter ordering is unproven. Staying pre-1.0, and `1.0.0` once it is. `0.1.0`
-  rather than the `0.2.0` the tree briefly carried: nothing had been published, so a first public
-  version of `0.2.0` would advertise a `0.1.0` that never existed, and NuGet versions are immutable, so
-  the gap could never be filled afterwards. Bumping the version carries a second benefit locally — it
-  is what keeps a re-pack from colliding with NuGet's version cache.
+  rather than the `0.2.0` the tree carried before that first release: nothing had been published then, so
+  `0.2.0` as a first version would have advertised a `0.1.0` that never existed, and NuGet versions are
+  immutable, so the gap could never have been filled afterwards. The project did reach `0.2.0` later, on
+  2026-10-01 — by then `0.1.0` was a real release, so the two situations share only a number. Bumping the
+  version carries a second benefit locally — it is what keeps a re-pack from colliding with NuGet's
+  version cache.
 - **Q2 — attribute name.** ✅ **Resolved 2026-09-30 → D17.** The type is `OpenApiFeatureFlagAttribute`
   (`[OpenApiFeatureFlag("flagName")]`) and the mode enum is `DocumentMode`. `DocumentedWhenEnabled` was
   rejected because it is false in `Annotate` and `Include` mode, and because the `FeatureGate`-family

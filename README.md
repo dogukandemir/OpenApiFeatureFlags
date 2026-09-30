@@ -76,7 +76,7 @@ management? Chain instead:
 ```csharp
 builder.Services
     .AddOpenApiFeatureFlags(options => options.Mode = DocumentMode.Annotate)
-    .UseFeatureManagement();
+    .AddFeatureManagementFlagSource();
 ```
 
 Bringing your own flag store? Implement one interface and register it:
@@ -146,7 +146,7 @@ document without a restart.
 
 | Mode | Behaviour |
 |---|---|
-| `Remove` (default) | Gated elements are removed from the document. |
+| `Remove` (default) | Gated elements are hidden — removed from the document. |
 | `Annotate` | Gated elements stay, tagged with `x-feature-flag`, so a portal can filter them. |
 | `Include` | The library does nothing; the full document is published. |
 

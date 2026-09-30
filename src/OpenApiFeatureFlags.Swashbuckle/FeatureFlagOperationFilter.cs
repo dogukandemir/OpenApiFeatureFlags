@@ -70,7 +70,7 @@ internal sealed class FeatureFlagOperationFilter : IOperationFilter
 
             _planner.RecordDecision(new DocumentVisibilityDecision(
                 DocumentElementKind.Parameter,
-                MemberKeyFor(context, parameter.Name).ToString(),
+                ParameterKeyFor(context, parameter.Name).ToString(),
                 hidden,
                 flags));
 
@@ -120,9 +120,9 @@ internal sealed class FeatureFlagOperationFilter : IOperationFilter
         return new OperationKey(method, "/" + relativePath.TrimStart('/'));
     }
 
-    private static MemberKey MemberKeyFor(OperationFilterContext context, string? parameterName)
+    private static ParameterKey ParameterKeyFor(OperationFilterContext context, string? parameterName)
     {
         var declaringType = context.MethodInfo.DeclaringType ?? typeof(object);
-        return new MemberKey(declaringType, parameterName ?? "<unnamed>");
+        return new ParameterKey(declaringType, context.MethodInfo.Name, parameterName ?? "<unnamed>");
     }
 }

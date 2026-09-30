@@ -114,10 +114,19 @@ public sealed class DocumentVisibilityPlan
     /// <returns><see langword="true"/> when the operation must be removed.</returns>
     public bool IsOperationHidden(OperationKey operation) => IsHidden(operation.ToString());
 
-    /// <summary>Determines whether the given schema member or parameter must be removed from the document.</summary>
+    /// <summary>Determines whether the given schema member — a property — must be removed from the document.</summary>
     /// <param name="member">The member to test.</param>
     /// <returns><see langword="true"/> when the member must be removed.</returns>
     public bool IsMemberHidden(MemberKey member) => IsHidden(member.ToString());
+
+    /// <summary>Determines whether the given operation parameter must be removed from the document.</summary>
+    /// <param name="parameter">The parameter to test.</param>
+    /// <returns><see langword="true"/> when the parameter must be removed.</returns>
+    /// <remarks>
+    /// Separate from <see cref="IsMemberHidden"/> because a parameter is identified by its action as
+    /// well as its name — see <see cref="ParameterKey"/> for why that is not a detail.
+    /// </remarks>
+    public bool IsParameterHidden(ParameterKey parameter) => IsHidden(parameter.ToString());
 
     /// <summary>
     /// Produces the single human-readable line that is logged once per document generation.
@@ -136,7 +145,7 @@ public sealed class DocumentVisibilityPlan
         }
 
         var hidden = 0;
-        var published = 0;
+        var kept = 0;
 
         foreach (var decision in Decisions)
         {
@@ -146,7 +155,7 @@ public sealed class DocumentVisibilityPlan
             }
             else
             {
-                published++;
+                kept++;
             }
         }
 
@@ -154,6 +163,8 @@ public sealed class DocumentVisibilityPlan
             ? "none"
             : string.Join(", ", DocumentFlags);
 
-        return $"OpenApiFeatureFlags: mode {Mode}; {hidden} hidden, {published} published; flags involved: {flags}.";
+        // "kept" rather than "published": an element that stayed in the document is not the same as a
+        // document that was published, and "0 published" beside a mode name read as the alarming one.
+        return $"OpenApiFeatureFlags: mode {Mode}; {hidden} hidden, {kept} kept; flags involved: {flags}.";
     }
 }

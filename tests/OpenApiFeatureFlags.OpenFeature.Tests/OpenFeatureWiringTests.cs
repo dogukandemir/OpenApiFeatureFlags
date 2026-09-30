@@ -20,12 +20,12 @@ public sealed class OpenFeatureWiringTests
     }
 
     [Fact]
-    public void UseOpenFeatureChainsOffAddOpenApiFeatureFlags()
+    public void FlagSourceCanBeAddedAfterTheCoreServices()
     {
         var services = new ServiceCollection();
         services.AddLogging();
 
-        services.AddOpenApiFeatureFlags().UseOpenFeature();
+        services.AddOpenApiFeatureFlags().AddOpenFeatureFlagSource();
 
         using var provider = services.BuildServiceProvider();
 
@@ -71,7 +71,7 @@ public sealed class OpenFeatureWiringTests
         Should.Throw<ArgumentNullException>(() =>
             OpenApiFeatureFlagsOpenFeatureExtensions.AddOpenApiFeatureFlagsWithOpenFeature(null!));
         Should.Throw<ArgumentNullException>(() =>
-            OpenApiFeatureFlagsOpenFeatureExtensions.UseOpenFeature(null!));
+            OpenApiFeatureFlagsOpenFeatureExtensions.AddOpenFeatureFlagSource(null!));
     }
 
     private sealed class CustomFlagSource : IFeatureFlagSource

@@ -29,7 +29,7 @@
   <PropertyGroup>
     <!-- Pre-1.0 while the Swashbuckle integration settles; see Q1 in docs/design.md. Bumping this is
          also what keeps a local re-pack from colliding with NuGet's version cache. -->
-    <VersionPrefix>0.1.1</VersionPrefix>
+    <VersionPrefix>0.2.0</VersionPrefix>
     <!-- Authors is what nuget.org renders as "Authors". nuget.org's separate *Owners* list is
          derived from the account that pushed the package plus the reserved prefix, and cannot be
          set from here; PackageOwners is ignored by nuget.org, so it is deliberately absent. -->
