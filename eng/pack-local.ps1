@@ -6,17 +6,20 @@
     Nothing is published to nuget.org yet, so this is how the packages get consumed locally. The
     output folder is gitignored: it is build output, not source.
 
-    NuGet caches by version, so re-packing 0.1.0 after a code change may leave a consumer resolving
-    the previous copy. Use -VersionSuffix to produce a distinctly-versioned set instead, which avoids
-    both that cache and any later clash with a real 0.1.0 release.
+    NuGet caches by version, so re-packing the same version after a code change may leave a consumer
+    resolving the previous copy. Use -VersionSuffix to produce a distinctly-versioned set instead,
+    which avoids both that cache and any later clash with a real release of the same version.
+
+    The version comes from VersionPrefix in Directory.Build.props, so this script never has to be
+    edited when the version moves.
 
 .EXAMPLE
     ./eng/pack-local.ps1
-    Produces OpenApiFeatureFlags*.0.1.0.nupkg in ./local-packages.
+    Produces the packages at the version in Directory.Build.props in ./local-packages.
 
 .EXAMPLE
     ./eng/pack-local.ps1 -VersionSuffix local
-    Produces OpenApiFeatureFlags*.0.1.0-local.nupkg instead.
+    Produces the same packages with a -local suffix, for example 0.2.0-local.
 #>
 param(
     [string]$Configuration = 'Release',
@@ -28,6 +31,15 @@ $ErrorActionPreference = 'Stop'
 
 $repoRoot = Split-Path -Parent $PSScriptRoot
 $outputPath = Join-Path $repoRoot $Output
+
+# Single source of truth for the version: the packages are built from this value, so it is also what
+# the consumer has to reference. Read, never duplicated.
+[xml]$buildProps = Get-Content (Join-Path $repoRoot 'Directory.Build.props')
+$versionPrefix = @($buildProps.Project.PropertyGroup.VersionPrefix | Where-Object { $_ }) | Select-Object -First 1
+
+if (-not $versionPrefix) {
+    throw 'Could not read VersionPrefix from Directory.Build.props.'
+}
 
 if (Test-Path $outputPath) {
     Remove-Item $outputPath -Recurse -Force
@@ -71,7 +83,7 @@ foreach ($package in $packages) {
     Write-Host ("  {0}" -f $package.Name)
 }
 
-$version = if ($VersionSuffix) { "0.1.0-$VersionSuffix" } else { '0.1.0' }
+$version = if ($VersionSuffix) { "$versionPrefix-$VersionSuffix" } else { $versionPrefix }
 
 Write-Host ''
 Write-Host 'To consume it, copy this next to the consuming solution:'

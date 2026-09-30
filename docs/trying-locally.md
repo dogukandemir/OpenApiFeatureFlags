@@ -18,11 +18,14 @@ for project in src/*/*.csproj; do dotnet pack "$project" -c Release -o local-pac
 
 | Package | Version |
 |---|---|
-| `OpenApiFeatureFlags` | 0.1.0 |
-| `OpenApiFeatureFlags.Abstractions` | 0.1.0 |
-| `OpenApiFeatureFlags.Swashbuckle` | 0.1.0 |
-| `OpenApiFeatureFlags.FeatureManagement` | 0.1.0 |
-| `OpenApiFeatureFlags.OpenFeature` | 0.1.0 |
+| `OpenApiFeatureFlags` | 0.2.0 |
+| `OpenApiFeatureFlags.Abstractions` | 0.2.0 |
+| `OpenApiFeatureFlags.Swashbuckle` | 0.2.0 |
+| `OpenApiFeatureFlags.FeatureManagement` | 0.2.0 |
+| `OpenApiFeatureFlags.OpenFeature` | 0.2.0 |
+
+All five move together, at the `VersionPrefix` in `Directory.Build.props`. See [`CHANGELOG.md`](../CHANGELOG.md)
+for what changed in this cut.
 
 `local-packages/` is gitignored — it is build output, not source.
 
@@ -67,8 +70,8 @@ upstream feed (BACKLOG.md A.3).
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.3" />
-    <PackageReference Include="OpenApiFeatureFlags.Swashbuckle" Version="0.1.0" />
-    <PackageReference Include="OpenApiFeatureFlags.FeatureManagement" Version="0.1.0" />
+    <PackageReference Include="OpenApiFeatureFlags.Swashbuckle" Version="0.2.0" />
+    <PackageReference Include="OpenApiFeatureFlags.FeatureManagement" Version="0.2.0" />
   </ItemGroup>
 </Project>
 ```
@@ -161,8 +164,8 @@ Flip a flag in `appsettings.json`, rebuild, and watch the element appear or disa
 dotnet pack -c Release -o local-packages
 ```
 
-NuGet caches by version, so a consumer that already restored `0.1.0` may keep using the old copy until
-you clear the cache:
+NuGet caches by version, so a consumer that already restored that version may keep using the old copy
+until you clear the cache:
 
 ```shell
 dotnet nuget locals global-packages --clear     # blunt; or delete the entry under %USERPROFILE%\.nuget\packages\openapifeatureflags
@@ -171,13 +174,14 @@ dotnet nuget locals global-packages --clear     # blunt; or delete the entry und
 The consumer's own `obj/project.assets.json` caching is the more common culprit — `dotnet restore
 --force` on the consumer, or delete its `obj` and `bin` folders.
 
-## Avoiding a clash with a real 0.1.0 later
+## Avoiding a clash with a real release later
 
-Once `0.1.0` is published to nuget.org, NuGet may prefer one or the other depending on source order.
-For a throwaway trial you can build a distinctly-versioned set instead:
+Once the same version is published to nuget.org, NuGet may prefer one or the other depending on source
+order. For a throwaway trial you can build a distinctly-versioned set instead:
 
 ```shell
-dotnet pack -c Release -o local-packages -p:VersionSuffix=local
+./eng/pack-local.ps1 -VersionSuffix local
 ```
 
-That produces `0.1.0-local`, which cannot be confused with a published release.
+That produces `0.2.0-local`, which cannot be confused with a published release. Bumping
+`VersionPrefix` is the other way out, and is what a new feature would do anyway.

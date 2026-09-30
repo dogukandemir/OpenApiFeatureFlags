@@ -311,7 +311,9 @@ the README.
 
 ### Phase 6 — First release
 
-- [x] Decide the version: **Q1 answered — `0.1.0`.** Set as `VersionPrefix` in `Directory.Build.props`.
+- [x] Decide the version: **Q1 answered — stay pre-1.0.** Set as `VersionPrefix` in
+      `Directory.Build.props`: `0.1.0` was consumed locally as the first cut, `0.2.0` is the cut that
+      adds description gating. `eng/pack-local.ps1` reads that property rather than repeating it.
 - [x] Changelog and release notes: `CHANGELOG.md`.
 - [x] Publish via NuGet **trusted publishing (OIDC)** from GitHub Actions — no long-lived API key.
       `.github/workflows/release.yml` exchanges a GitHub OIDC token for a short-lived NuGet key
@@ -344,8 +346,9 @@ the README.
 ## 7. Open questions
 
 - **Q1 — first version.** `0.1.0` to gather feedback, or straight to `1.0.0`? `[OpenApiFeatureFlag]` is a
-  permanent contract either way. Recommendation: `0.1.0`, then `1.0.0` once the Swashbuckle adapter
-  ordering is proven.
+  permanent contract either way. **In progress:** staying pre-1.0 while the Swashbuckle adapter
+  ordering is unproven, `1.0.0` once it is. Bumping the version carries a second benefit locally — it
+  is what keeps a re-pack from colliding with NuGet's version cache.
 - **Q2 — attribute name.** ✅ **Resolved 2026-09-30 → D17.** The type is `OpenApiFeatureFlagAttribute`
   (`[OpenApiFeatureFlag("flagName")]`) and the mode enum is `DocumentMode`. `DocumentedWhenEnabled` was
   rejected because it is false in `Annotate` and `Include` mode, and because the `FeatureGate`-family
