@@ -27,6 +27,7 @@ public static class OpenApiFeatureFlagsSwaggerGenExtensions
     /// <list type="number">
     ///   <item><description>operation filter — marks gated operations and removes gated parameters;</description></item>
     ///   <item><description>document filter A — removes the marked operations and properties;</description></item>
+    ///   <item><description>description filter — resolves <c>&lt;gate&gt;</c> fragments in text;</description></item>
     ///   <item><description>document filter B — prunes orphaned schemas and tags, and completes the plan;</description></item>
     ///   <item><description>schema filter — marks gated properties.</description></item>
     /// </list>
@@ -43,6 +44,7 @@ public static class OpenApiFeatureFlagsSwaggerGenExtensions
 
         options.OperationFilter<FeatureFlagOperationFilter>();
         options.DocumentFilter<FeatureFlagOperationPruningDocumentFilter>();
+        options.DocumentFilter<FeatureFlagDescriptionDocumentFilter>();
         options.DocumentFilter<FeatureFlagTagPruningDocumentFilter>();
         options.SchemaFilter<FeatureFlagSchemaFilter>();
 

@@ -52,6 +52,18 @@ public sealed class DocumentVisibilityPlanner : IDocumentVisibilityPlanner
     public DocumentMode Mode => _options.Value.Mode;
 
     /// <inheritdoc />
+    public bool IsFlagEnabled(string flagName)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(flagName);
+
+        var scope = CurrentScope();
+
+        return scope.TryGetFlag(flagName, out var enabled)
+            ? enabled
+            : Evaluate(flagName, scope);
+    }
+
+    /// <inheritdoc />
     public bool IsHidden(IReadOnlyList<string> flagNames)
     {
         ArgumentNullException.ThrowIfNull(flagNames);
@@ -61,17 +73,10 @@ public sealed class DocumentVisibilityPlanner : IDocumentVisibilityPlanner
             return false;
         }
 
-        var scope = CurrentScope();
-
         foreach (var flagName in flagNames)
         {
-            if (!scope.TryGetFlag(flagName, out var enabled))
-            {
-                enabled = Evaluate(flagName, scope);
-            }
-
             // AND semantics (D3): one disabled flag is enough to hide the element.
-            if (!enabled)
+            if (!IsFlagEnabled(flagName))
             {
                 return true;
             }

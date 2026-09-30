@@ -32,3 +32,5 @@ static OpenApiFeatureFlags.OpenApiFeatureFlagsServiceCollectionExtensions.AddOpe
 static OpenApiFeatureFlags.OpenApiFeatureFlagsServiceCollectionExtensions.AddOpenApiFeatureFlags(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services, OpenApiFeatureFlags.IFeatureFlagSource! flagSource) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!
 static OpenApiFeatureFlags.OpenApiFeatureFlagsServiceCollectionExtensions.AddOpenApiFeatureFlags(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services, System.Action<OpenApiFeatureFlags.OpenApiFeatureFlagsOptions!>! configure) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!
 static OpenApiFeatureFlags.OpenApiFeatureFlagsServiceCollectionExtensions.AddOpenApiFeatureFlags(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!
+OpenApiFeatureFlags.DocumentVisibilityPlanner.IsFlagEnabled(string! flagName) -> bool
+OpenApiFeatureFlags.IDocumentVisibilityPlanner.IsFlagEnabled(string! flagName) -> bool

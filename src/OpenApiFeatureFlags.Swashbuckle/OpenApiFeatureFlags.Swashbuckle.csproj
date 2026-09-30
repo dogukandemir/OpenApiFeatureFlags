@@ -24,4 +24,10 @@
     <ProjectReference Include="..\OpenApiFeatureFlags.Abstractions\OpenApiFeatureFlags.Abstractions.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- The <gate> parser has enough edge cases (nesting, self-closing, unbalanced, quoting) that it
+         deserves direct unit tests rather than only indirect ones through a document. -->
+    <InternalsVisibleTo Include="OpenApiFeatureFlags.Swashbuckle.Tests" />
+  </ItemGroup>
+
 </Project>

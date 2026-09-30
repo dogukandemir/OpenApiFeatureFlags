@@ -30,6 +30,26 @@ public interface IDocumentVisibilityPlanner
     DocumentMode Mode { get; }
 
     /// <summary>
+    /// Evaluates a single flag, independently of <see cref="Mode"/>.
+    /// </summary>
+    /// <param name="flagName">The flag to evaluate.</param>
+    /// <returns><see langword="true"/> when the flag is enabled.</returns>
+    /// <remarks>
+    /// <para>
+    /// <see cref="IsHidden"/> answers a <i>document</i> question and therefore short-circuits in
+    /// <see cref="DocumentMode.Annotate"/> and <see cref="DocumentMode.Include"/>. Description fragments
+    /// are different: gating a sentence is not the same decision as annotating the document, so
+    /// adapters ask this instead.
+    /// </para>
+    /// <para>
+    /// Fail-closed (D5) and memoised per request, exactly like <see cref="IsHidden"/>; an unevaluable
+    /// flag counts towards the D6 canary.
+    /// </para>
+    /// </remarks>
+    /// <exception cref="ArgumentException"><paramref name="flagName"/> is null, empty or whitespace.</exception>
+    bool IsFlagEnabled(string flagName);
+
+    /// <summary>
     /// Determines whether an element carrying the given flags must be hidden from the document.
     /// </summary>
     /// <param name="flagNames">
