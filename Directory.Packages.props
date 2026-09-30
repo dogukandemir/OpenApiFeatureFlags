@@ -20,7 +20,7 @@
     <!-- Must match what Swashbuckle.AspNetCore.Swagger 10.2.3 depends on (checked in its nuspec).
          Microsoft.OpenApi 3.x is a different, binary-incompatible line: using it produces
          MissingMethodException at document generation time, not a compile error. -->
-    <PackageVersion Include="Microsoft.OpenApi" Version="2.7.5" />
+    <PackageVersion Include="Microsoft.OpenApi" Version="2.12.2" />
     <!-- Microsoft.AspNetCore.OpenApi and NSwag.AspNetCore are deliberately absent: no project
          references them yet, so pinning them here would only ask Dependabot to raise pull requests
          for packages nothing builds. -->
