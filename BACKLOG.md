@@ -91,6 +91,17 @@ These were found the hard way in a real application and should be designed for u
   hand-written tag/API descriptions, and intra-document anchors (`#v1-x-y-post`). Needs an explicit
   hygiene pass and a test that fails on dangling anchors.
 
+  **Partly resolved.** `<gate flag="Name">…</gate>` in an XML doc comment now lets an author hide
+  the prose that names a hidden member, in the same edit as the attribute that hides the member — see
+  [`docs/descriptions.md`](docs/descriptions.md). Both directions are pinned by tests:
+  `GatingThePropertyAndTheProseAboutItTogetherLeavesNoDanglingReference` and
+  `ADanglingReferenceSurvivesWhenTheAuthorDidNotGateTheProse`.
+
+  **Still open:** the library cannot *detect* a dangling reference, so prose whose author did not gate
+  it stays. Anchors (`#v1-x-y-post`) and `<see cref="..."/>` cross-references are still unchecked — the
+  latter compiles to plain text before this library ever sees it, so a linter over the generated
+  document would be the right home for that check, not a filter.
+
 ### 4.3 NuGet / packaging
 
 - Any filter/attribute type used by contracts must be in the dependency-free package.

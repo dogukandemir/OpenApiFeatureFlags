@@ -11,6 +11,10 @@ builder.Services.AddOpenApiFeatureFlags(options =>
 
 Every sample below is what the library actually produces; the Swashbuckle test suite asserts them.
 
+A `<gate>` in a description is a partial exception: its *wrapper* is always stripped, in every mode,
+because the markup is the library's own invention and must never reach a consumer. Only the content
+is gated. See [`descriptions.md`](descriptions.md).
+
 ---
 
 ## `Remove` — the default

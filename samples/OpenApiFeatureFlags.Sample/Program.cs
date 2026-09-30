@@ -1,3 +1,4 @@
+using System.Reflection;
 using Microsoft.OpenApi;
 using OpenApiFeatureFlags;
 
@@ -15,6 +16,10 @@ builder.Services.AddOpenApiFeatureFlagsWithFeatureManagement(options =>
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo { Title = "Sample API", Version = "1.0" });
+
+    // Descriptions come from XML doc comments, which is where <gate> fragments live.
+    options.IncludeXmlComments(
+        Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
 
     // Registered last: our operation pruning has to run after any processor that rebuilds Paths,
     // and our tag pruning after any processor that rebuilds Tags.

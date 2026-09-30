@@ -101,6 +101,11 @@ public sealed class ExperimentalController : ControllerBase
 If you want an operation documented when *any* flag is on, the current release does not support it —
 give the operation a single canonical flag and express the OR in your flag store.
 
+If only **part of a description** vanished, that is a `<gate>` fragment and not an attribute. The
+library logs a warning when a gate is unusable — `GateWithoutFlag` (104) when it has no `flag`
+attribute, `GateUnbalanced` (105) when it was never closed — so search the log for those before
+looking anywhere else.
+
 ---
 
 ## A property is hidden but the document still mentions it
@@ -113,7 +118,15 @@ Two leftovers are possible and both are handled, so if you see this, it is worth
 - **Prose** — XML doc cross-references, hand-written tag descriptions and intra-document anchors
   (`#v1-x-y-post`) that pointed at a removed operation are *not* rewritten. The library removes
   structure; it cannot rewrite a sentence. If a sibling property's `<summary>` mentions the hidden
-  property by name, that text stays and needs a manual edit.
+  property by name, that text stays unless you gate it too:
+
+  ```csharp
+  /// The order total.
+  /// <gate flag="LoyaltyProgram">See <c>loyaltyPoints</c> for the points balance.</gate>
+  ```
+
+  Gating a sentence with the same flag that gates the property keeps the two together. Anchors
+  (`#v1-x-y-post`) are still yours to maintain — see [`descriptions.md`](descriptions.md).
 
 ---
 

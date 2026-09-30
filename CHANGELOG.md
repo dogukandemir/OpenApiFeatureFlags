@@ -17,6 +17,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
   operations, parameters and schema properties; drops path items left empty, prunes properties left
   orphaned from `required`, sweeps unreferenced component schemas and prunes orphan tags. Emits
   `x-feature-flag` in `Annotate` mode.
+- Description gating: `<gate flag="Name">…</gate>` inside an XML doc comment hides or keeps a
+  fragment of `summary`, `description`, `remarks` or any other text that reaches the document.
+  Nested gates AND; a gate with no `flag` attribute fails closed; an unclosed gate hides the rest of
+  the string. The wrapper is stripped in every mode, including `Include`.
 - `OpenApiFeatureFlags.FeatureManagement` — `FeatureManagerFlagSource` over `IFeatureManager`, plus the
   one-call `AddOpenApiFeatureFlagsWithFeatureManagement()` wiring.
 - `OpenApiFeatureFlags.OpenFeature` — `OpenFeatureFlagSource` over the CNCF `IFeatureClient`, plus the

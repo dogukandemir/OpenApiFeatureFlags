@@ -114,6 +114,17 @@ public sealed class Order
 The attribute works on a controller, an action, a model property or a parameter. Two attributes on
 one target are **AND**ed: the element is documented only when every flag is enabled.
 
+Doc comments become descriptions, and you cannot put an attribute on half a sentence. Wrap gated
+prose in `<gate>` instead:
+
+```csharp
+/// <summary>
+/// The order total.
+/// <gate flag="LoyaltyProgram">Points are shown in <c>loyaltyPoints</c>.</gate>
+/// </summary>
+public decimal Total { get; set; }
+```
+
 ### 3. Done
 
 Nothing else. The document is regenerated on every request, so flipping a flag changes the published
@@ -162,6 +173,8 @@ method's XML docs.
 - [`docs/trying-locally.md`](docs/trying-locally.md) — build the packages and consume them from a local
   feed, with a minimal project that works.
 - [`docs/modes.md`](docs/modes.md) — what each mode produces.
+- [`docs/descriptions.md`](docs/descriptions.md) — gating part of a description with `<gate>`, and the
+  one thing it cannot do.
 - [`docs/azure-app-configuration.md`](docs/azure-app-configuration.md) — reading flags from Azure App
   Configuration, and the four ways that can go quietly wrong.
 - [`docs/troubleshooting.md`](docs/troubleshooting.md) — nothing is hidden, or too much is.

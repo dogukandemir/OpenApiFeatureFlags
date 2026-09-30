@@ -16,8 +16,11 @@ public sealed class OrdersController : ControllerBase
     public ActionResult<IEnumerable<Order>> List() => Ok(Orders.Values);
 
     /// <summary>
-    /// Always documented, but the <c>loyaltyPoints</c> property of its response is not — see
-    /// <see cref="Order"/>.
+    /// Always documented.
+    /// <gate flag="LoyaltyProgram">
+    /// Its <c>loyaltyPoints</c> property is documented as well, because the loyalty programme has
+    /// been released.
+    /// </gate>
     /// </summary>
     [HttpGet("{id}")]
     public ActionResult<Order> Get(string id) =>
@@ -29,7 +32,8 @@ public sealed class OrdersController : ControllerBase
     public IActionResult Checkout() => Ok();
 
     /// <summary>
-    /// Always documented, but the <c>scope</c> parameter only appears once internal search is on.
+    /// Always documented.
+    /// <gate flag="InternalSearch">The <c>scope</c> parameter appears below too.</gate>
     /// </summary>
     [HttpGet("search")]
     public ActionResult<string?> Search([OpenApiFeatureFlag("InternalSearch")] string? scope) => Ok(scope);
