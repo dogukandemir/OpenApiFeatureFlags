@@ -14,16 +14,15 @@
   <ItemGroup Label="Document engines">
     <!-- Swashbuckle 10.2.3 ships net8.0/net9.0/net10.0 (verified). -->
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="10.2.3" />
-    <PackageVersion Include="Swashbuckle.AspNetCore.Swagger" Version="10.2.3" />
     <PackageVersion Include="Swashbuckle.AspNetCore.SwaggerGen" Version="10.2.3" />
-    <PackageVersion Include="Swashbuckle.AspNetCore.SwaggerUI" Version="10.2.3" />
     <!-- Must match what Swashbuckle.AspNetCore.Swagger 10.2.3 depends on (checked in its nuspec).
          Microsoft.OpenApi 3.x is a different, binary-incompatible line: using it produces
          MissingMethodException at document generation time, not a compile error. -->
     <PackageVersion Include="Microsoft.OpenApi" Version="2.7.5" />
-    <!-- Microsoft.AspNetCore.OpenApi and NSwag.AspNetCore are deliberately absent: no project
-         references them yet, so pinning them here would only ask Dependabot to raise pull requests
-         for packages nothing builds. -->
+    <!-- Only a package some project actually references is pinned here. Swashbuckle.AspNetCore.Swagger
+         and .SwaggerUI arrive transitively through the metapackage. Microsoft.AspNetCore.OpenApi and
+         NSwag.AspNetCore are not used yet. A pin for a package no project builds only asks Dependabot
+         to raise pull requests for it. -->
   </ItemGroup>
 
   <ItemGroup Label="Flag sources">
@@ -50,7 +49,6 @@
     <!-- Shouldly, not FluentAssertions: v8 of the latter is no longer free for
          commercial use, and this library is MIT. -->
     <PackageVersion Include="Shouldly" Version="4.3.0" />
-    <PackageVersion Include="NSubstitute" Version="6.2.0" />
   </ItemGroup>
 
 </Project>
