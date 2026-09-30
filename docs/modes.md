@@ -119,7 +119,7 @@ Two things it does that are worth knowing:
 - Nothing is removed, so the flag source cannot leak anything either. `Annotate` is the safe mode to
   start with.
 
-> The exact shape of the extensions is still open — see [`BACKLOG.md`](../BACKLOG.md).
+> The exact shape of the extensions is still open — see [`design.md`](design.md).
 > Today it is an array of flag names, on gated operations and at the root. A gated **schema property**
 > is left unmarked, so a client can tell that a flag governs *something* in the document but not which
 > property it gates; the root array is where that flag name still appears.

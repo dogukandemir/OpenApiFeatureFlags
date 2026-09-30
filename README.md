@@ -4,14 +4,14 @@ Feature flags for OpenAPI documents.
 
 [![CI](https://github.com/dogukandemir/OpenApiFeatureFlags/actions/workflows/ci.yml/badge.svg)](https://github.com/dogukandemir/OpenApiFeatureFlags/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/dogukandemir/OpenApiFeatureFlags/actions/workflows/codeql.yml/badge.svg)](https://github.com/dogukandemir/OpenApiFeatureFlags/actions/workflows/codeql.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/LICENSE)
 
 > ### ⚠️ Pre-release — not published to nuget.org yet
 >
 > The packages build, the suite is green on all three target frameworks, and the API is stable enough
 > to depend on, but there has been **no published release**. `dotnet add package` will not find it.
 > To try it, build the packages into a local feed and point a `nuget.config` at it:
-> see [`docs/trying-locally.md`](docs/trying-locally.md).
+> see [`docs/trying-locally.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/trying-locally.md).
 
 Mark the endpoint, action, property or parameter with `[OpenApiFeatureFlag]` and it only appears in
 the generated document once the flag is enabled — using the same flags the runtime already reads.
@@ -41,7 +41,7 @@ cannot use — and, once the document is published, a support conversation about
 ## Installation
 
 Not on nuget.org yet, so install by building the packages into a local feed first — one command,
-described in [`docs/trying-locally.md`](docs/trying-locally.md). Once a release is published, this
+described in [`docs/trying-locally.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/trying-locally.md). Once a release is published, this
 becomes:
 
 ```shell
@@ -97,7 +97,7 @@ builder.Services.AddOpenApiFeatureFlags(new MyFlagSource(store));
 **Azure App Configuration needs no adapter of its own.** It is a configuration source that feeds
 `Microsoft.FeatureManagement`, and `OpenApiFeatureFlags.FeatureManagement` reads through
 `IFeatureManager`, so the wiring above is the whole integration — plus the three lines that add the
-store. See [`docs/azure-app-configuration.md`](docs/azure-app-configuration.md).
+store. See [`docs/azure-app-configuration.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/azure-app-configuration.md).
 
 ### 2. Mark what is gated
 
@@ -157,9 +157,9 @@ document without a restart.
 > **`Annotate` publishes your flag names** — on each gated operation, and as a document-level list. On
 > a document that anyone can read, that discloses which features exist, including ones you have not
 > released. Use it for internal or authenticated audiences; use `Remove` for public documents. See
-> [`docs/security.md`](docs/security.md).
+> [`docs/security.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/security.md).
 
-See [`docs/modes.md`](docs/modes.md) for output samples.
+See [`docs/modes.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/modes.md) for output samples.
 
 ## What this library does not do
 
@@ -170,7 +170,7 @@ application code.
 
 **So do not use it to protect an endpoint.** Gating makes unreleased surface less discoverable; it is
 not an access control, and it cannot unpublish a document that has already been served. Authentication
-and authorization belong where they always did. [`docs/security.md`](docs/security.md) sets out what
+and authorization belong where they always did. [`docs/security.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/security.md) sets out what
 this library does and does not do to your security posture, including its availability trade-offs.
 
 ## Guarantees worth knowing
@@ -196,27 +196,27 @@ method's XML docs.
 
 ## Documentation
 
-- [`docs/trying-locally.md`](docs/trying-locally.md) — build the packages and consume them from a local
+- [`docs/trying-locally.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/trying-locally.md) — build the packages and consume them from a local
   feed, with a minimal project that works.
-- [`docs/modes.md`](docs/modes.md) — what each mode produces.
-- [`docs/descriptions.md`](docs/descriptions.md) — gating part of a description with `<gate>`, and the
+- [`docs/modes.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/modes.md) — what each mode produces.
+- [`docs/descriptions.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/descriptions.md) — gating part of a description with `<gate>`, and the
   one thing it cannot do.
-- [`docs/azure-app-configuration.md`](docs/azure-app-configuration.md) — reading flags from Azure App
+- [`docs/azure-app-configuration.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/azure-app-configuration.md) — reading flags from Azure App
   Configuration, and the four ways that can go quietly wrong.
-- [`docs/troubleshooting.md`](docs/troubleshooting.md) — nothing is hidden, or too much is.
-- [`docs/security.md`](docs/security.md) — what gating does and does not protect, what `Annotate`
+- [`docs/troubleshooting.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/troubleshooting.md) — nothing is hidden, or too much is.
+- [`docs/security.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/security.md) — what gating does and does not protect, what `Annotate`
   discloses, and the availability trade-offs.
-- [`samples/OpenApiFeatureFlags.Sample`](samples/OpenApiFeatureFlags.Sample) — a runnable API.
-- [`BACKLOG.md`](BACKLOG.md) — the design decisions, the measured facts and what is left.
+- [`samples/OpenApiFeatureFlags.Sample`](https://github.com/dogukandemir/OpenApiFeatureFlags/tree/main/samples/OpenApiFeatureFlags.Sample) — a runnable API.
+- [`docs/design.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/design.md) — why it is built this way, the decisions behind it, and the measurements those decisions rest on.
 
 ## Project
 
-- [`CONTRIBUTING.md`](CONTRIBUTING.md) — build and test commands, and the two rules a pull request is
+- [`CONTRIBUTING.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/CONTRIBUTING.md) — build and test commands, and the two rules a pull request is
   most likely to trip over.
-- [`SECURITY.md`](SECURITY.md) — how to report a vulnerability privately. Please do not open a public
+- [`SECURITY.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/SECURITY.md) — how to report a vulnerability privately. Please do not open a public
   issue for one.
-- [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) — how people are expected to treat each other here.
-- [`CHANGELOG.md`](CHANGELOG.md) — what changed, and when.
+- [`CODE_OF_CONDUCT.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/CODE_OF_CONDUCT.md) — how people are expected to treat each other here.
+- [`CHANGELOG.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/CHANGELOG.md) — what changed, and when.
 
 ## Author
 

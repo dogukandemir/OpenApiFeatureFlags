@@ -54,7 +54,7 @@ the framework.
 
 ## Design decisions
 
-[`BACKLOG.md`](BACKLOG.md) is the source of truth. It records what was decided, what was *measured*
+[`docs/design.md`](docs/design.md) is the source of truth. It records what was decided, what was *measured*
 rather than assumed, and what is still open. If your change contradicts a settled decision, the pull
 request needs to argue for changing that decision rather than quietly working
 around it.

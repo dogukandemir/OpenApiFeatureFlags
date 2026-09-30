@@ -56,8 +56,7 @@ dotnet nuget add source "C:\Projects\github\dogukandemir\OpenApiFeatureFlags\loc
 list containing only `local` will fail to restore.
 
 If your corporation uses `packageSourceMapping`, add a pattern for `OpenApiFeatureFlags.*`; the packages
-also need their own dependencies to resolve, which the evidence says they already do through the
-upstream feed (BACKLOG.md A.3).
+also need their own dependencies to resolve, which they do through the upstream feed.
 
 ## Minimal project that works
 

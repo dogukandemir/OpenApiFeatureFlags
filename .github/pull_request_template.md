@@ -25,7 +25,7 @@ dotnet test
 - [ ] Public API changes are recorded in `PublicAPI.Unshipped.txt` (the build tells you the exact
       lines; `./eng/update-public-api.ps1 -ProjectDir <project>` applies them).
 - [ ] Commits are signed off (`git commit -s`), per [`CONTRIBUTING.md`](../CONTRIBUTING.md).
-- [ ] If this contradicts a locked decision in [`BACKLOG.md`](../BACKLOG.md), the change argues for
+- [ ] If this contradicts a settled decision in [`docs/design.md`](../docs/design.md), the change argues for
       changing that decision rather than working around it.
 
 ## Behaviour, if it changed

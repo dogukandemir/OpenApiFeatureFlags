@@ -7,7 +7,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Before you write: [`BACKLOG.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/BACKLOG.md)
+        Before you write: [`docs/design.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/design.md)
         records what has been decided, what was measured, and what is still open. A proposal that
         contradicts a settled decision is welcome, but it needs to argue for changing that decision
         rather than working around it.

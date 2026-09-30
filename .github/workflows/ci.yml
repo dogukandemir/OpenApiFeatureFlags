@@ -50,6 +50,23 @@ jobs:
       - name: Test (${{ matrix.tfm }})
         run: dotnet test --configuration Release -p:TargetFramework=${{ matrix.tfm }}
 
+  format:
+    name: format (dotnet format)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
+        with:
+          dotnet-version: 10.0.x
+
+      # .editorconfig is only advisory until something enforces it. Without this the first
+      # contributor whose IDE formats differently turns every later diff into a style argument.
+      - name: Check formatting
+        run: dotnet format --verify-no-changes --verbosity diagnostic
+
   pack:
     name: pack (validates packaging metadata)
     runs-on: ubuntu-latest

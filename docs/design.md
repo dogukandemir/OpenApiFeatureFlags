@@ -1,10 +1,23 @@
-# BACKLOG — OpenApiFeatureFlags
+# Design
 
-Single source of truth for the decisions already made and the work remaining.
+Why this library is shaped the way it is, and the measurements that shaped it. For how to *use* it,
+see the [README](../README.md).
 
-Everything under "Decisions", "Design invariants" and "Verified technical facts" is committed to: it
-was settled or measured rather than guessed, so changing one of those is a design change rather than a
-cleanup. "Open questions" is where choices are still live.
+Two independent axes — the document engine and the flag source — are the whole design. Adding a second
+engine must not touch the core; adding a second provider must not touch the adapter.
+
+```mermaid
+flowchart LR
+    Attribute["[OpenApiFeatureFlag]<br/>controller, action, property, parameter"] --> Planner
+    Source["IFeatureFlagSource<br/>FeatureManagement, OpenFeature, or your own"] --> Planner
+    Planner["IDocumentVisibilityPlanner<br/>core, singleton, one decision per element"] --> Plan
+    Plan["DocumentVisibilityPlan<br/>engine-agnostic"] --> Adapter["OpenApiFeatureFlags.Swashbuckle<br/>operation, schema and document filters"]
+    Plan -.-> Future["a future adapter applies<br/>the same plan"]
+```
+
+Everything under "Decisions", "Design invariants" and "Verified technical facts" was settled or
+measured rather than guessed, so changing one of those is a design change rather than a cleanup.
+"Open questions" is where choices are still live.
 
 ---
 
@@ -98,7 +111,7 @@ These were found the hard way in a real integration and should be designed for u
 
   **Partly resolved.** `<gate flag="Name">…</gate>` in an XML doc comment now lets an author hide
   the prose that names a hidden member, in the same edit as the attribute that hides the member — see
-  [`docs/descriptions.md`](docs/descriptions.md). Both directions are pinned by tests:
+  [`descriptions.md`](descriptions.md). Both directions are pinned by tests:
   `GatingThePropertyAndTheProseAboutItTogetherLeavesNoDanglingReference` and
   `ADanglingReferenceSurvivesWhenTheAuthorDidNotGateTheProse`.
 
@@ -164,7 +177,7 @@ property that was already removed.
 
 ---
 
-## 5. Landscape and naming (verified 2026-09-30)
+## 5. Naming and licensing
 
 ### 5.1 Prior art
 
@@ -209,172 +222,23 @@ what this repo uses.
 
 ---
 
-## 6. Backlog
+## 6. Open questions and future work
 
-### Status (2026-09-30)
+### Not built yet
 
-| Phase | State |
-|---|---|
-| 0 Repository foundation | Done, apart from the external actions listed under Phase 6 and the deliberately deferred package icon. |
-| 1 `Abstractions` | Done, including the test that asserts the built assembly references nothing but the framework. |
-| 2 Core | Done: attribute discovery, AND semantics, fail-closed resolution, the D6 canary, request-scoped memoisation, one structured log line per document. |
-| 3 `Swashbuckle` | Done: operation filter, two document filters, schema filter, `Annotate`/`Include` modes, the byte-identical regression test, a golden snapshot, and ordering tests. |
-| 4 `FeatureManagement` | Done. |
-| 5 Documentation and samples | Done: README quickstart, `docs/modes.md`, `docs/troubleshooting.md`, `CONTRIBUTING.md`, and a sample whose build-time document generation also proves the offline path. |
-| 6 First release | Prepared but not executed: publishing needs one-time external setup on nuget.org. |
-| 7 Post-v1 adapters | `OpenFeature` done. `NSwag` and `AspNetCore` **not started** — see Phase 7 and the new measured facts in 4.4. |
+Two adapters are deliberately absent, and the reason for each is recorded so it is not rediscovered:
 
-The unchecked boxes below are kept as the record of intent; the table above is the accurate state.
+- **`OpenApiFeatureFlags.NSwag`.** NSwag's processor model and its `NJsonSchema` document model have not
+  been measured yet, and guessing at a document model is how the `Microsoft.OpenApi` trap in 4.4
+  happened. Measure first, then write it.
+- **`OpenApiFeatureFlags.AspNetCore`**, a transformer for the built-in `Microsoft.AspNetCore.OpenApi`.
+  Not a small job: that engine sits on three mutually incompatible `Microsoft.OpenApi` lines across
+  net8.0/net9.0/net10.0, and its 10.x line (`>= 2.12.0`) cannot coexist with Swashbuckle 10.2.3's exact
+  2.7.5. The honest shape is a `net10.0`-only package, with the cost recorded rather than discovered.
 
-### Phase 0 — Repository foundation
+Scalar needs no adapter: it renders whatever JSON the engine produced.
 
-- [ ] `Directory.Build.props`: common metadata, `TreatWarningsAsErrors`, deterministic build, SourceLink,
-      `PackageLicenseExpression=MIT`, `Copyright`.
-- [ ] `Directory.Packages.props`: central package versions (Swashbuckle, Microsoft.OpenApi,
-      Microsoft.FeatureManagement, xunit, FluentAssertions/NSubstitute or Shouldly).
-- [ ] `.editorconfig` — mirror the 2-space rule for project/props files, 4-space C#.
-- [ ] Solution file with the project layout below.
-- [ ] CI on GitHub Actions: build + test on `net8.0`, `net9.0`, `net10.0`.
-- [ ] `dependabot.yml` for NuGet and GitHub Actions.
-- [ ] **Reserve the `OpenApiFeatureFlags` prefix on nuget.org.**
-- [ ] Redirect the package `projectUrl`/`RepositoryUrl` back so the NuGet page gets the *verified* badge.
-- [ ] Write `true` on the GitHub repo "Website" field, topics, and description (see §5.3 wording).
-
-**Acceptance:** `dotnet build` and `dotnet test` succeed on all three TFMs locally and in CI; the repo
-builds from a clean clone with no warnings.
-
-### Phase 1 — `OpenApiFeatureFlags.Abstractions` (zero dependencies)
-
-- [ ] `OpenApiFeatureFlagAttribute(string flagName)` — `AllowMultiple = true`, targets
-      Class/Method/Property/Parameter.
-- [ ] `DocumentMode` enum — `Remove`, `Annotate`, `Include`; defaults to `Remove`.
-- [ ] `IFeatureFlagSource` with `bool IsEnabled(string flagName)` (sync; the pipeline is sync).
-- [ ] `DocumentVisibilityPlan` + entry types (path + method, type + property name) — plain data, no
-      document-model types.
-- [ ] `PublicAPI.Shipped.txt` / `PublicAPI.Unshipped.txt` established.
-- [ ] Unit tests: attribute usage compiles at every granularity; attribute is not inherited by accident;
-      `DocumentMode` defaults to `Remove`.
-
-**Acceptance:** the assembly has zero references (assert in a test, so a future PR cannot regress it).
-
-### Phase 2 — Core (`OpenApiFeatureFlags`)
-
-- [ ] Attribute discovery for a given action/member set (reflection over controller + action + model).
-- [ ] Flag resolution through `IFeatureFlagSource`, with per-request memoization via `HttpContext.Items`
-      and a no-context fallback for offline export.
-- [ ] Plan builder: AND semantics across multiple attributes; stable, deterministic ordering.
-- [ ] Structured logging of what was hidden and why — one line per document generation.
-- [ ] **Fail-closed** on resolution error, and the **canary guard** from D6.
-- [ ] `DocumentMode.Include` short-circuits to a no-op plan.
-- [ ] `OpenApiFeatureFlagsOptions` — mode selection (D4) and the per-environment off switch (Q5).
-- [ ] Tests: AND semantics, fail-closed, canary abort, memoization does not outlive a request.
-
-**Acceptance:** the core can be unit-tested with a lambda flag source and no ASP.NET host.
-
-### Phase 3 — `OpenApiFeatureFlags.Swashbuckle`
-
-- [ ] Operation filter: remove hidden operations.
-- [ ] Document filter (A): drop empty path items after operation removal.
-- [ ] Document filter (B): prune orphan tags — **registered after** any processor that rebuilds `Tags`.
-- [ ] Schema filter: prune hidden properties, strip nils from `required`, **registered after** other
-      schema filters that populate `required`.
-- [ ] Schema reachability sweep: drop unreferenced `components.schemas`.
-- [ ] `Annotate` mode: emit `x-feature-flag: [...]` per operation and a document-level map.
-- [ ] Ordering documented in code comments and in `docs/`, with a test that pins the registration order.
-- [ ] Tests: each behaviour × enabled/disabled; ordering regression test; golden-file document snapshot
-      for a representative controller.
-
-**Acceptance:** with zero attributes applied, the produced document is **byte-identical** to one
-generated without the library (this is the single most important regression test).
-
-### Phase 4 — `OpenApiFeatureFlags.FeatureManagement`
-
-- [ ] Adapter over `IFeatureManager` → `IFeatureFlagSource`.
-- [ ] `UseFeatureManagement()` extension on `OpenApiFeatureFlagsOptions`, so the whole setup is
-      `services.AddOpenApiFeatureFlags(o => o.UseFeatureManagement())`.
-- [ ] Tests: resolves via `IFeatureManager`; a `FeatureManagementException` is treated as fail-closed.
-
-**Acceptance:** one extension-method call wires the whole thing up for a `Microsoft.FeatureManagement`
-consumer.
-
-### Phase 5 — Documentation and samples
-
-- [ ] `README.md` quickstart: install → one call → attribute. Currently only a one-line description.
-- [ ] `docs/modes.md` — Remove vs Annotate vs Include, with output samples.
-- [ ] `docs/troubleshooting.md` — nothing hidden? check fail-closed logging; hidden too much? canary.
-- [ ] `docs/azure-app-configuration.md` — how an App Configuration store is reached through
-      `IFeatureManager`, and the four ways a misconfigured store hides everything silently. It needs no
-      adapter, because Azure is a *store behind* the flag source (D8), not a flag API.
-- [ ] `samples/` — a minimal controller `WebApplication` sample, referenced from the README.
-- [ ] `CONTRIBUTING.md` (inbound = outbound + DCO sign-off).
-
-**Acceptance:** a developer unfamiliar with the project can go from zero to a gated document using only
-the README.
-
-### Phase 6 — First release
-
-- [x] Decide the version: **Q1 answered — stay pre-1.0.** Set as `VersionPrefix` in
-      `Directory.Build.props`: `0.1.0` was consumed locally as the first cut, `0.2.0` is the cut that
-      adds description gating. `eng/pack-local.ps1` reads that property rather than repeating it.
-- [x] Changelog and release notes: `CHANGELOG.md`.
-- [x] Publish via NuGet **trusted publishing (OIDC)** from GitHub Actions — no long-lived API key.
-      `.github/workflows/release.yml` exchanges a GitHub OIDC token for a short-lived NuGet key
-      (`NuGet/login@v1`) and refuses to publish when the tag does not match `VersionPrefix`.
-- [ ] Smoke-test the published package from a throwaway project that restores from nuget.org.
-      **Cannot be done from here:** it needs the one-time trusted-publisher setup on nuget.org
-      (repository, workflow file `release.yml`, environment `release`) and the `NUGET_USER` secret.
-- [ ] Reserve the `OpenApiFeatureFlags` prefix on nuget.org, and set the GitHub repository website,
-      topics and description. Both are external actions.
-- [ ] Add a package icon. Deliberately postponed: a placeholder icon is worse than the default.
-
-#### Public-readiness review, 2026-09-30
-
-Done on the assumption that the repository will be read and used by people who did not write it, and
-cannot ask the author a question:
-
-- [x] Dependency scan (`dotnet list package --vulnerable --include-transitive`): no known advisories in
-      any project, direct or transitive.
-- [x] Scan of tracked files for secret-shaped strings: clean.
-- [x] Least-privilege `permissions` on every workflow. CI previously inherited the repository default,
-      which on older repositories is read/write.
-- [x] Every workflow action pinned to a commit SHA, so a moved tag cannot silently change what runs.
-- [x] CodeQL (C#, `security-extended`) on push, pull request and a weekly schedule. The schedule is the
-      point: new queries are published without this repository changing at all, so one clean run says
-      nothing about next month.
-- [x] `SECURITY.md` for private reporting, and `docs/security.md` for the consumer-facing trade-offs —
-      including that `Annotate` discloses flag names, that gating cannot unpublish a served document,
-      and that the D6 canary trades a truncated document for a loud 500.
-- [x] `CODE_OF_CONDUCT.md`, issue forms and a pull-request template.
-- [x] `.gitattributes` pinning everything to LF, so a Windows and a macOS contributor produce the same
-      bytes and the golden snapshot cannot be committed with CRLF.
-- [x] `release.yml`: the tag check now applies only to tag refs. On `workflow_dispatch` the ref name is
-      the branch, so the previous check rejected every manual run.
-- [x] `release.yml` publishes `.snupkg`. Symbols were built and then dropped, so debugging from
-      nuget.org would have reported "source not available".
-- [x] `0.2.0` is the first cut a third party should use: it carries description gating, and the version
-  bump is also what keeps a local repack from colliding with NuGet's version cache.
-- [ ] **Not verified from here, and must be checked first after pushing:** the CodeQL workflow, the
-      pinned SHAs, and the three workflows in general. None of them can be executed locally, and a
-      release pipeline that fails on its first real run is worse than one that was never added.
-- [ ] Confirm the badge URLs in `README.md` resolve once the workflows have run at least once.
-
-### Phase 7 — Post-v1 adapters
-
-- [x] `OpenApiFeatureFlags.OpenFeature` — CNCF standard; the adapter that opens the non-Microsoft world.
-- [ ] `OpenApiFeatureFlags.NSwag` — closes the gap against the existing NSwag-only competitor.
-      **Not started.** NSwag's processor model and its `NJsonSchema` document model have not been
-      measured yet, and guessing at them is how the `Microsoft.OpenApi` trap in 4.4 happened.
-- [ ] `OpenApiFeatureFlags.AspNetCore` — transformer for the built-in `Microsoft.AspNetCore.OpenApi`.
-      **Not started, and 4.4 explains why it is not a small job:** the built-in engine depends on three
-      mutually incompatible `Microsoft.OpenApi` lines across net8.0/net9.0/net10.0, and its 10.x line
-      (>= 2.12.0) cannot coexist with Swashbuckle 10.2.3's exact 2.7.5. The honest shape is a
-      `net10.0`-only package, with the cost recorded rather than discovered later.
-- [x] Confirm **Scalar needs no adapter** (it renders whatever JSON the engine produced). Optional later:
-      a UI affordance for `Annotate` mode only.
-
----
-
-## 7. Open questions
+### Open questions
 
 - **Q1 — first version.** `0.1.0` to gather feedback, or straight to `1.0.0`? `[OpenApiFeatureFlag]` is a
   permanent contract either way. **In progress:** staying pre-1.0 while the Swashbuckle adapter

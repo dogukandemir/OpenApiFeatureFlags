@@ -102,7 +102,7 @@ it once per flag.
 
 Memoisation limits this: each flag is read at most once per request. The default adapters additionally
 lean on the caching the underlying SDK already does. If your provider is genuinely slow, the answer
-is an async resolution path, as recorded in [`BACKLOG.md`](../BACKLOG.md) — rather than something to
+is an async resolution path, as recorded in [`design.md`](design.md) — rather than something to
 solve with a longer timeout.
 
 ### Blocking on asynchronous providers

@@ -1,8 +1,8 @@
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
-using OpenFeature;
 using OpenApiFeatureFlags;
 using OpenApiFeatureFlags.OpenFeature;
+using OpenFeature;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
