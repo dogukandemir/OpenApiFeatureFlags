@@ -75,6 +75,11 @@ public sealed class MyFlagSource(IMyToggleStore store) : IFeatureFlagSource
 builder.Services.AddOpenApiFeatureFlags(new MyFlagSource(store));
 ```
 
+**Azure App Configuration needs no adapter of its own.** It is a configuration source that feeds
+`Microsoft.FeatureManagement`, and `OpenApiFeatureFlags.FeatureManagement` reads through
+`IFeatureManager`, so the wiring above is the whole integration — plus the three lines that add the
+store. See [`docs/azure-app-configuration.md`](docs/azure-app-configuration.md).
+
 ### 2. Mark what is gated
 
 ```csharp
@@ -152,6 +157,8 @@ method's XML docs.
 ## Documentation
 
 - [`docs/modes.md`](docs/modes.md) — what each mode produces.
+- [`docs/azure-app-configuration.md`](docs/azure-app-configuration.md) — reading flags from Azure App
+  Configuration, and the four ways that can go quietly wrong.
 - [`docs/troubleshooting.md`](docs/troubleshooting.md) — nothing is hidden, or too much is.
 - [`samples/OpenApiFeatureFlags.Sample`](samples/OpenApiFeatureFlags.Sample) — a runnable API.
 - [`BACKLOG.md`](BACKLOG.md) — the design decisions, the measured facts and the remaining work.

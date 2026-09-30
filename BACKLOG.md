@@ -287,6 +287,11 @@ consumer.
 - [ ] `README.md` quickstart: install → one call → attribute. Currently only a one-line description.
 - [ ] `docs/modes.md` — Remove vs Annotate vs Include, with output samples.
 - [ ] `docs/troubleshooting.md` — nothing hidden? check fail-closed logging; hidden too much? canary.
+- [ ] `docs/azure-app-configuration.md` — how an application's store is reached through
+      `IFeatureManager`, and the four ways a misconfigured store hides everything silently. Added
+      2026-09-30 in answer to "how is Azure App Configuration covered?": it needs no adapter, because
+      Azure is a *store behind* the flag source (D8), not a flag API. Appendix A.2 is the consumer-side
+      counterpart.
 - [ ] `samples/` — a minimal controller `WebApplication` sample, referenced from the README.
 - [ ] `CONTRIBUTING.md` (inbound = outbound + DCO sign-off).
 

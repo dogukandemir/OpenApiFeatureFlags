@@ -62,7 +62,14 @@ controller-level attributes do apply, because that is where the action actually 
 `[OpenApiFeatureFlag]` is read from the property. If the property is serialised under a different
 name, or replaced by a custom converter, the attribute still has to be on the CLR member.
 
-**7. Zero flags resolved at all?**
+**7. Is the flag store actually answering?**
+
+With Azure App Configuration this is the usual cause: `AddAzureAppConfiguration(...)` without
+`UseFeatureFlags()`, or a `Label` that does not match the environment, selects no flags at all — and
+"the flag is missing" is indistinguishable from "the flag is off" to a fail-closed library. See
+[`azure-app-configuration.md`](azure-app-configuration.md).
+
+**8. Zero flags resolved at all?**
 
 ```
 OpenApiFeatureFlags.FeatureFlagSourceUnavailableException
