@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+    <PackageId>OpenApiFeatureFlags.FeatureManagement</PackageId>
+    <AssemblyName>OpenApiFeatureFlags.FeatureManagement</AssemblyName>
+    <RootNamespace>OpenApiFeatureFlags.FeatureManagement</RootNamespace>
+    <Title>OpenApiFeatureFlags.FeatureManagement</Title>
+    <Description>Microsoft.FeatureManagement flag source for OpenApiFeatureFlags: point the library at your existing IFeatureManager and one call wires the whole thing up.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.FeatureManagement.AspNetCore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OpenApiFeatureFlags\OpenApiFeatureFlags.csproj" />
+    <ProjectReference Include="..\OpenApiFeatureFlags.Abstractions\OpenApiFeatureFlags.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

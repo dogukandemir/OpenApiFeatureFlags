@@ -1,0 +1,8 @@
+#nullable enable
+const OpenApiFeatureFlags.FeatureManagement.FeatureManagerFlagSource.MissingFeatureDefault = false -> bool
+Microsoft.Extensions.DependencyInjection.OpenApiFeatureFlagsFeatureManagementExtensions
+OpenApiFeatureFlags.FeatureManagement.FeatureManagerFlagSource
+OpenApiFeatureFlags.FeatureManagement.FeatureManagerFlagSource.FeatureManagerFlagSource(Microsoft.FeatureManagement.IFeatureManager! featureManager) -> void
+OpenApiFeatureFlags.FeatureManagement.FeatureManagerFlagSource.IsEnabled(string! flagName) -> bool
+static Microsoft.Extensions.DependencyInjection.OpenApiFeatureFlagsFeatureManagementExtensions.AddOpenApiFeatureFlagsWithFeatureManagement(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services, System.Action<OpenApiFeatureFlags.OpenApiFeatureFlagsOptions!>? configure = null) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!
+static Microsoft.Extensions.DependencyInjection.OpenApiFeatureFlagsFeatureManagementExtensions.UseFeatureManagement(this Microsoft.Extensions.DependencyInjection.IServiceCollection! services) -> Microsoft.Extensions.DependencyInjection.IServiceCollection!
