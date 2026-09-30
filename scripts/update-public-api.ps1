@@ -16,7 +16,7 @@
     Run it after adding or removing public surface. The resulting diff is part of the change.
 
 .EXAMPLE
-    ./eng/update-public-api.ps1 -ProjectDir src/OpenApiFeatureFlags.Swashbuckle
+    ./scripts/update-public-api.ps1 -ProjectDir src/OpenApiFeatureFlags.Swashbuckle
 #>
 param(
     [string]$RepoRoot = (Split-Path -Parent $PSScriptRoot),

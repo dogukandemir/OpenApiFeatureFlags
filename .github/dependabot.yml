@@ -25,9 +25,7 @@ updates:
       test-tooling:
         patterns:
           - "xunit*"
-          - "Microsoft.NET.Test.Sdk"
           - "Shouldly"
-          - "NSubstitute"
         update-types:
           - minor
           - patch
@@ -38,6 +36,20 @@ updates:
         update-types:
           - minor
           - patch
+
+    # Microsoft.OpenApi 3.x is a different, binary-incompatible API line. Bumping it does not fail the
+    # build: it fails at document generation time with MissingMethodException, because
+    # Swashbuckle.AspNetCore.Swagger depends on 2.7.5 exactly (docs/design.md 4.4).
+    #
+    # Ignoring *major* updates is the precise rule: 2.x minors and patches still arrive, which is what
+    # we want to hear about, and 3.x and later never do. It also avoids spelling the range in NuGet's
+    # syntax, which `versions` would require.
+    #
+    # If a security fix ever lands only in 3.x, the fix is to move the document engine, not to bump this.
+    # Remove this rule when Swashbuckle moves to the 3.x line.
+    ignore:
+      - dependency-name: "Microsoft.OpenApi"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: github-actions
     directory: "/"
