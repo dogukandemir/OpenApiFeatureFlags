@@ -28,7 +28,7 @@ jobs:
       id-token: write # required for the OIDC exchange
 
     steps:
-      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           # SourceLink needs history; the workflow never pushes to git.
           fetch-depth: 0
