@@ -1,0 +1,53 @@
+<Project>
+
+  <!-- =====================================================================
+       Common build settings for every project in the repository.
+       See BACKLOG.md Phase 0. Decisions D13/D14/D16 are enforced here.
+       ===================================================================== -->
+
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <Deterministic>true</Deterministic>
+    <AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
+    <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- CS1591 (missing XML comment) is not worth failing a build over, but the
+         documented surface is still emitted so IntelliSense consumers get it. -->
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <!-- The repository targets three frameworks so consumers on .NET 8 are served. -->
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+    <!-- Only .NET 10 runtimes are assumed on developer machines; tests still
+         execute the net8.0/net9.0 binaries through roll-forward. -->
+    <RollForward>LatestMajor</RollForward>
+  </PropertyGroup>
+
+  <!-- Package metadata (D11, D13, D16). -->
+  <PropertyGroup>
+    <Authors>Dogukan Demir</Authors>
+    <Company>Dogukan Demir</Company>
+    <Copyright>Copyright (c) 2026 Dogukan Demir</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/dogukandemir/OpenApiFeatureFlags</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/dogukandemir/OpenApiFeatureFlags</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageTags>openapi;swagger;openapi-document;feature-flags;feature-management;swashbuckle;nswag;openfeature</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <!-- Deliberately no PackageIcon yet: a placeholder icon is worse than the
+         default. Phase 6 adds a real one together with the first release. -->
+  </PropertyGroup>
+
+  <!-- The public surface is a permanent contract, so it is tracked explicitly (D16). -->
+  <ItemGroup Condition="'$(IsPackable)' == 'true'">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/OpenApiFeatureFlags.Abstractions/OpenApiFeatureFlags.Abstractions.csproj" />
+    <Project Path="src/OpenApiFeatureFlags.Swashbuckle/OpenApiFeatureFlags.Swashbuckle.csproj" />
+    <Project Path="src/OpenApiFeatureFlags/OpenApiFeatureFlags.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/OpenApiFeatureFlags.Swashbuckle.Tests/OpenApiFeatureFlags.Swashbuckle.Tests.csproj" />
+    <Project Path="tests/OpenApiFeatureFlags.Tests/OpenApiFeatureFlags.Tests.csproj" />
+  </Folder>
+</Solution>

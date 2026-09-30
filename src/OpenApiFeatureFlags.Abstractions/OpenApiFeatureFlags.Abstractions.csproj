@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+    <PackageId>OpenApiFeatureFlags.Abstractions</PackageId>
+    <AssemblyName>OpenApiFeatureFlags.Abstractions</AssemblyName>
+    <!-- Consumers write `using OpenApiFeatureFlags;` and never see ".Abstractions" (D10/D11). -->
+    <RootNamespace>OpenApiFeatureFlags</RootNamespace>
+    <Title>OpenApiFeatureFlags.Abstractions</Title>
+    <Description>Dependency-free contracts for OpenApiFeatureFlags: the [OpenApiFeatureFlag] attribute, DocumentMode, the IFeatureFlagSource seam and the engine-agnostic document visibility plan. Reference this from contract assemblies.</Description>
+  </PropertyGroup>
+
+  <!-- D10 / invariant 1: this project intentionally has NO PackageReference and
+       NO ProjectReference. A test asserts the built assembly has no non-framework
+       references so a future PR cannot regress it. -->
+
+</Project>

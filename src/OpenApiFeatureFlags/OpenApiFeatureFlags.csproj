@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+    <PackageId>OpenApiFeatureFlags</PackageId>
+    <AssemblyName>OpenApiFeatureFlags</AssemblyName>
+    <RootNamespace>OpenApiFeatureFlags</RootNamespace>
+    <Title>OpenApiFeatureFlags</Title>
+    <Description>Makes an OpenAPI document respect the feature flags the runtime already respects. The core builds an engine-agnostic visibility plan; document-engine adapters apply it.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- The core needs HttpContext (per-request flag memoization, 4.1), ILogger and
+         IServiceCollection. It deliberately does NOT reference a document engine (D9),
+         which is why Swashbuckle/NSwag appear only in the adapter packages. -->
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OpenApiFeatureFlags.Abstractions\OpenApiFeatureFlags.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

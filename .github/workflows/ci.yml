@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+
+jobs:
+  build-test:
+    name: build + test (${{ matrix.tfm }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        tfm: [ net8.0, net9.0, net10.0 ]
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      # D14 acceptance: every target framework builds and passes.
+      # Test projects run on xunit.v3 + Microsoft.Testing.Platform, which the .NET 10
+      # SDK selects through global.json (test.runner). In that mode --logger and
+      # --framework are not valid arguments, and unknown options are forwarded to the
+      # test application, so the target framework is passed as an MSBuild property.
+      - name: Test (${{ matrix.tfm }})
+        run: dotnet test --configuration Release -p:TargetFramework=${{ matrix.tfm }}
+
+  pack:
+    name: pack (validates packaging metadata)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Pack
+        run: dotnet pack --configuration Release --output ${{ github.workspace }}/artifacts
+
+      - name: Verify the packages were produced
+        shell: bash
+        run: |
+          ls -1 "${{ github.workspace }}/artifacts"
+          test "$(find "${{ github.workspace }}/artifacts" -name '*.nupkg' | wc -l)" -ge 5
+
+      - name: Upload packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: nupkg
+          path: ${{ github.workspace }}/artifacts/*.*nupkg

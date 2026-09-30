@@ -1,0 +1,54 @@
+#nullable enable
+~override OpenApiFeatureFlags.OperationKey.Equals(object obj) -> bool
+OpenApiFeatureFlags.DocumentElementKind
+OpenApiFeatureFlags.DocumentElementKind.Operation = 0 -> OpenApiFeatureFlags.DocumentElementKind
+OpenApiFeatureFlags.DocumentElementKind.Parameter = 2 -> OpenApiFeatureFlags.DocumentElementKind
+OpenApiFeatureFlags.DocumentElementKind.Property = 1 -> OpenApiFeatureFlags.DocumentElementKind
+OpenApiFeatureFlags.DocumentMode
+OpenApiFeatureFlags.DocumentMode.Annotate = 1 -> OpenApiFeatureFlags.DocumentMode
+OpenApiFeatureFlags.DocumentMode.Include = 2 -> OpenApiFeatureFlags.DocumentMode
+OpenApiFeatureFlags.DocumentMode.Remove = 0 -> OpenApiFeatureFlags.DocumentMode
+OpenApiFeatureFlags.DocumentVisibilityDecision
+OpenApiFeatureFlags.DocumentVisibilityDecision.DocumentVisibilityDecision(OpenApiFeatureFlags.DocumentElementKind kind, string! elementKey, bool hidden, System.Collections.Generic.IReadOnlyList<string!>? flags) -> void
+OpenApiFeatureFlags.DocumentVisibilityDecision.ElementKey.get -> string!
+OpenApiFeatureFlags.DocumentVisibilityDecision.Flags.get -> System.Collections.Generic.IReadOnlyList<string!>!
+OpenApiFeatureFlags.DocumentVisibilityDecision.Hidden.get -> bool
+OpenApiFeatureFlags.DocumentVisibilityDecision.Kind.get -> OpenApiFeatureFlags.DocumentElementKind
+OpenApiFeatureFlags.DocumentVisibilityPlan
+OpenApiFeatureFlags.DocumentVisibilityPlan.Decisions.get -> System.Collections.Generic.IReadOnlyList<OpenApiFeatureFlags.DocumentVisibilityDecision!>!
+OpenApiFeatureFlags.DocumentVisibilityPlan.DocumentFlags.get -> System.Collections.Generic.IReadOnlyCollection<string!>!
+OpenApiFeatureFlags.DocumentVisibilityPlan.DocumentVisibilityPlan(OpenApiFeatureFlags.DocumentMode mode, System.Collections.Generic.IEnumerable<OpenApiFeatureFlags.DocumentVisibilityDecision!>? decisions) -> void
+OpenApiFeatureFlags.DocumentVisibilityPlan.FlagsFor(string! elementKey) -> System.Collections.Generic.IReadOnlyList<string!>!
+OpenApiFeatureFlags.DocumentVisibilityPlan.IsHidden(string! elementKey) -> bool
+OpenApiFeatureFlags.DocumentVisibilityPlan.IsMemberHidden(OpenApiFeatureFlags.MemberKey! member) -> bool
+OpenApiFeatureFlags.DocumentVisibilityPlan.IsNoOp.get -> bool
+OpenApiFeatureFlags.DocumentVisibilityPlan.IsOperationHidden(OpenApiFeatureFlags.OperationKey operation) -> bool
+OpenApiFeatureFlags.DocumentVisibilityPlan.Mode.get -> OpenApiFeatureFlags.DocumentMode
+OpenApiFeatureFlags.DocumentVisibilityPlan.ToLogSummary() -> string!
+OpenApiFeatureFlags.IFeatureFlagSource
+OpenApiFeatureFlags.IFeatureFlagSource.IsEnabled(string! flagName) -> bool
+OpenApiFeatureFlags.MemberKey
+OpenApiFeatureFlags.MemberKey.<Clone>$() -> OpenApiFeatureFlags.MemberKey!
+OpenApiFeatureFlags.MemberKey.DeclaringType.get -> System.Type!
+OpenApiFeatureFlags.MemberKey.Equals(OpenApiFeatureFlags.MemberKey? other) -> bool
+OpenApiFeatureFlags.MemberKey.MemberKey(System.Type! declaringType, string! memberName) -> void
+OpenApiFeatureFlags.MemberKey.MemberName.get -> string!
+OpenApiFeatureFlags.OpenApiFeatureFlagAttribute
+OpenApiFeatureFlags.OpenApiFeatureFlagAttribute.FlagName.get -> string!
+OpenApiFeatureFlags.OpenApiFeatureFlagAttribute.OpenApiFeatureFlagAttribute(string! flagName) -> void
+OpenApiFeatureFlags.OperationKey
+OpenApiFeatureFlags.OperationKey.Equals(OpenApiFeatureFlags.OperationKey other) -> bool
+OpenApiFeatureFlags.OperationKey.Method.get -> string!
+OpenApiFeatureFlags.OperationKey.OperationKey() -> void
+OpenApiFeatureFlags.OperationKey.OperationKey(string! method, string! pathTemplate) -> void
+OpenApiFeatureFlags.OperationKey.PathTemplate.get -> string!
+override OpenApiFeatureFlags.MemberKey.Equals(object? obj) -> bool
+override OpenApiFeatureFlags.MemberKey.GetHashCode() -> int
+override OpenApiFeatureFlags.MemberKey.ToString() -> string!
+override OpenApiFeatureFlags.OperationKey.GetHashCode() -> int
+override OpenApiFeatureFlags.OperationKey.ToString() -> string!
+static OpenApiFeatureFlags.DocumentVisibilityPlan.NoOp.get -> OpenApiFeatureFlags.DocumentVisibilityPlan!
+static OpenApiFeatureFlags.MemberKey.operator !=(OpenApiFeatureFlags.MemberKey? left, OpenApiFeatureFlags.MemberKey? right) -> bool
+static OpenApiFeatureFlags.MemberKey.operator ==(OpenApiFeatureFlags.MemberKey? left, OpenApiFeatureFlags.MemberKey? right) -> bool
+static OpenApiFeatureFlags.OperationKey.operator !=(OpenApiFeatureFlags.OperationKey left, OpenApiFeatureFlags.OperationKey right) -> bool
+static OpenApiFeatureFlags.OperationKey.operator ==(OpenApiFeatureFlags.OperationKey left, OpenApiFeatureFlags.OperationKey right) -> bool
