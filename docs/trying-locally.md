@@ -4,7 +4,16 @@
 nuget.org, so this is how you try the library today.
 
 ```shell
-dotnet pack -c Release -o local-packages
+./eng/pack-local.ps1
+```
+
+That packs every package in Release configuration, clears the folder first, and prints the
+`nuget.config` you need. There is also a `-VersionSuffix` switch, explained at the bottom of this page.
+
+It is equivalent to packing each package project:
+
+```shell
+for project in src/*/*.csproj; do dotnet pack "$project" -c Release -o local-packages; done
 ```
 
 | Package | Version |

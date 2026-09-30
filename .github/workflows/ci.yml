@@ -55,8 +55,15 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
+      # Pack the projects under src/ rather than the solution: the solution also contains the sample,
+      # which is deliberately not packable and would emit a nuisance warning on every run.
       - name: Pack
-        run: dotnet pack --configuration Release --output ${{ github.workspace }}/artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          for project in src/*/*.csproj; do
+            dotnet pack "$project" --configuration Release --output "${{ github.workspace }}/artifacts"
+          done
 
       - name: Verify the packages were produced
         shell: bash
