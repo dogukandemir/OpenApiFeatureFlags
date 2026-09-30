@@ -147,6 +147,9 @@ Consequences, all observed rather than reasoned about:
   `Microsoft.OpenApi` version**: 10.x floors at 2.12.0 while Swashbuckle 10.2.3 needs 2.7.5.
 - net8.0 and net9.0 are on the 1.x model, so an ASP.NET Core adapter is not one source file across the
   three target frameworks; it is three implementations.
+- Dependabot is configured to ignore *major* updates of `Microsoft.OpenApi` (`.github/dependabot.yml`),
+  so the constraint does not have to be re-explained on every pull request that proposes it. 2.x minors
+  and patches still come through, and 3.x and later never do.
 
 ### 4.5 Swashbuckle schema-filter semantics are load-bearing (measured 2026-09-30)
 
