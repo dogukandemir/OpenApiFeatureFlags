@@ -19,9 +19,9 @@ public IActionResult Checkout() => Ok();
 With `NewCheckout` off, `/api/orders/checkout` is **not** in `swagger.json`. With it on, it is. No
 restart, no rebuild, no conditional compilation.
 
-Multi-targets `net8.0`, `net9.0` and `net10.0`. Swashbuckle is the document engine supported today, and
-flags can come from Microsoft.FeatureManagement, the CNCF OpenFeature standard, or your own
-`IFeatureFlagSource`.
+Multi-targets `net8.0`, `net9.0` and `net10.0`. Both document engines are supported — Swashbuckle, and
+the built-in `Microsoft.AspNetCore.OpenApi` through a `net10.0`-only package — and flags can come from
+Microsoft.FeatureManagement, the CNCF OpenFeature standard, or your own `IFeatureFlagSource`.
 
 ---
 
@@ -48,6 +48,7 @@ leave it out if you are implementing `IFeatureFlagSource` yourself.
 |---|---|
 | `OpenApiFeatureFlags` | Core: the planner and the service registration. |
 | `OpenApiFeatureFlags.Swashbuckle` | Swashbuckle filter set. Add this if you use `AddSwaggerGen`. |
+| `OpenApiFeatureFlags.AspNetCore` | Transformer set for the built-in `Microsoft.AspNetCore.OpenApi`. Add this if you use `AddOpenApi`. **`net10.0` only**, and it cannot share an application with the Swashbuckle adapter. |
 | `OpenApiFeatureFlags.FeatureManagement` | Reads flags from Microsoft's `IFeatureManager`. |
 | `OpenApiFeatureFlags.OpenFeature` | Reads flags through the CNCF [OpenFeature](https://openfeature.dev) standard. |
 | `OpenApiFeatureFlags.Abstractions` | Attribute and contracts only. Reference this from assemblies that must not take a dependency on Swashbuckle or a flag library. |
@@ -194,6 +195,8 @@ method's XML docs.
 - [`docs/trying-locally.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/trying-locally.md) — build the packages from source into a local
   feed, for trying a change before it is released.
 - [`docs/modes.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/modes.md) — what each mode produces.
+- [`docs/aspnetcore.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/aspnetcore.md) — the `Microsoft.AspNetCore.OpenApi` adapter: wiring, what a
+  minimal API can and cannot gate, and why the package is `net10.0` only.
 - [`docs/descriptions.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/descriptions.md) — gating part of a description with `<gate>`, and the
   one thing it cannot do.
 - [`docs/azure-app-configuration.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/azure-app-configuration.md) — reading flags from Azure App

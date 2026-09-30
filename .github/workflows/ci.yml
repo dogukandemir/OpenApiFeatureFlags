@@ -47,8 +47,28 @@ jobs:
       # SDK selects through global.json (test.runner). In that mode --logger and
       # --framework are not valid arguments, and unknown options are forwarded to the
       # test application, so the target framework is passed as an MSBuild property.
+      #
+      # Projects are tested one at a time so that one which does not target the matrix
+      # framework can be skipped. OpenApiFeatureFlags.AspNetCore is net10.0 only by
+      # necessity - the engine's 10.x line cannot coexist with Swashbuckle's exact
+      # Microsoft.OpenApi 2.7.5 (docs/design.md 4.4) - and forcing net8.0 onto it is
+      # NETSDK1005, a configuration error rather than a test failure, which would drown
+      # out the signal this matrix exists to give.
       - name: Test (${{ matrix.tfm }})
-        run: dotnet test --configuration Release -p:TargetFramework=${{ matrix.tfm }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for project in tests/*/*.csproj; do
+            frameworks="$(dotnet msbuild "$project" -getProperty:TargetFrameworks)"
+            if [[ ",$frameworks," != *",${{ matrix.tfm }},"* ]]; then
+              echo "skipping $project: targets $frameworks, not ${{ matrix.tfm }}"
+              continue
+            fi
+
+            echo "testing $project for ${{ matrix.tfm }}"
+            dotnet test --project "$project" --configuration Release -p:TargetFramework=${{ matrix.tfm }}
+          done
 
   format:
     name: format (dotnet format)
@@ -94,7 +114,9 @@ jobs:
         shell: bash
         run: |
           ls -1 "${{ github.workspace }}/artifacts"
-          test "$(find "${{ github.workspace }}/artifacts" -name '*.nupkg' | wc -l)" -ge 5
+          # Exactly one package per project under src/: a lower bound would not notice a project that
+          # silently stopped packing.
+          test "$(find "${{ github.workspace }}/artifacts" -name '*.nupkg' | wc -l)" -eq 6
 
       - name: Upload packages
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7

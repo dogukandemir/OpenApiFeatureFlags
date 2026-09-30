@@ -4,12 +4,14 @@
   </Folder>
   <Folder Name="/src/">
     <Project Path="src/OpenApiFeatureFlags.Abstractions/OpenApiFeatureFlags.Abstractions.csproj" />
+    <Project Path="src/OpenApiFeatureFlags.AspNetCore/OpenApiFeatureFlags.AspNetCore.csproj" />
     <Project Path="src/OpenApiFeatureFlags.FeatureManagement/OpenApiFeatureFlags.FeatureManagement.csproj" />
     <Project Path="src/OpenApiFeatureFlags.OpenFeature/OpenApiFeatureFlags.OpenFeature.csproj" />
     <Project Path="src/OpenApiFeatureFlags.Swashbuckle/OpenApiFeatureFlags.Swashbuckle.csproj" />
     <Project Path="src/OpenApiFeatureFlags/OpenApiFeatureFlags.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/OpenApiFeatureFlags.AspNetCore.Tests/OpenApiFeatureFlags.AspNetCore.Tests.csproj" />
     <Project Path="tests/OpenApiFeatureFlags.FeatureManagement.Tests/OpenApiFeatureFlags.FeatureManagement.Tests.csproj" />
     <Project Path="tests/OpenApiFeatureFlags.OpenFeature.Tests/OpenApiFeatureFlags.OpenFeature.Tests.csproj" />
     <Project Path="tests/OpenApiFeatureFlags.Swashbuckle.Tests/OpenApiFeatureFlags.Swashbuckle.Tests.csproj" />

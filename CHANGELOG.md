@@ -3,6 +3,20 @@
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **`OpenApiFeatureFlags.AspNetCore`** — an adapter for the built-in `Microsoft.AspNetCore.OpenApi`
+  document engine, as three transformers. Gated operations, parameters and schema properties behave
+  as they do under Swashbuckle, `Annotate` and `Include` mean the same thing, and `<gate>` works in
+  descriptions identically. It is **`net10.0` only**, and that is a documented cost rather than an
+  oversight: this engine's 10.x line floors `Microsoft.OpenApi` at 2.12.0, while Swashbuckle 10.2.3
+  requires exactly 2.7.5, so the two engines cannot coexist in one process and the adapter cannot be
+  multi-targeted onto the 1.x document model. See [`docs/aspnetcore.md`](docs/aspnetcore.md).
+- The `<gate>` parser now lives in the core rather than in the Swashbuckle adapter, so both adapters
+  share one implementation and cannot drift apart on quoting, nesting or unbalanced tags. This is an
+  internal type: the public surface is unchanged.
 ## [0.1.1] - 2026-09-30
 
 ### Fixed
@@ -79,5 +93,6 @@ First public release. All five packages ship together at this version.
 - Test projects run on xunit.v3 and Microsoft.Testing.Platform, which the .NET 10 SDK selects through
   `global.json`.
 
+[Unreleased]: https://github.com/dogukandemir/OpenApiFeatureFlags/compare/v0.1.1...HEAD
 [0.1.1]: https://github.com/dogukandemir/OpenApiFeatureFlags/releases/tag/v0.1.1
 [0.1.0]: https://github.com/dogukandemir/OpenApiFeatureFlags/releases/tag/v0.1.0

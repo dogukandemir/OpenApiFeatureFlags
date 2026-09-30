@@ -20,9 +20,13 @@
          MissingMethodException at document generation time, not a compile error. -->
     <PackageVersion Include="Microsoft.OpenApi" Version="2.7.5" />
     <!-- Only a package some project actually references is pinned here. Swashbuckle.AspNetCore.Swagger
-         and .SwaggerUI arrive transitively through the metapackage. Microsoft.AspNetCore.OpenApi and
-         NSwag.AspNetCore are not used yet. A pin for a package no project builds only asks Dependabot
-         to raise pull requests for it. -->
+         and .SwaggerUI arrive transitively through the metapackage; NSwag.AspNetCore is still unused.
+         A pin for a package no project builds only asks Dependabot to raise pull requests for it. -->
+    <!-- The built-in ASP.NET Core document engine, used by OpenApiFeatureFlags.AspNetCore, which is net10.0
+         only. That project references this WITHOUT a Microsoft.OpenApi pin on purpose: the engine
+         brings its own [2.12.0, 3.0.0) floor, which the 2.7.5 above would violate. Transitive pinning
+         is off, so the two engines resolve independently inside one solution. -->
+    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="10.0.12" />
   </ItemGroup>
 
   <ItemGroup Label="Flag sources">
@@ -41,6 +45,10 @@
   </ItemGroup>
 
   <ItemGroup Label="Testing">
+    <!-- A real in-memory host. Unlike Swashbuckle, the ASP.NET Core engine exposes no public document
+         provider, so the only way to obtain a generated document is to ask the endpoint that serves
+         it — which also means the transformers are tested in the position they really run in. -->
+    <PackageVersion Include="Microsoft.AspNetCore.TestHost" Version="10.0.12" />
     <!-- Test projects run on xunit.v3 + Microsoft.Testing.Platform, which the
          .NET 10 SDK requires: VSTest is no longer supported for MTP projects, so
          Microsoft.NET.Test.Sdk is deliberately absent. -->

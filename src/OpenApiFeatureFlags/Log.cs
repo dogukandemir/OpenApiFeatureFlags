@@ -40,4 +40,32 @@ internal static partial class Log
         Level = LogLevel.Warning,
         Message = "OpenApiFeatureFlags could not evaluate the flag {FlagName}; treating it as disabled so the document fails closed.")]
     public static partial void FlagUnreadable(ILogger logger, string flagName, Exception exception);
+
+    // Event ids 101-106 are shared with the adapters: these are emitted through the adapter's own
+    // logger instance, so the category a consumer filters on is still the adapter's. They live here
+    // because DescriptionGateResolver emits them and that type is in this assembly.
+
+    [LoggerMessage(
+        EventId = 103,
+        Level = LogLevel.Debug,
+        Message = "OpenApiFeatureFlags hid a description fragment gated by the flag {FlagName}.")]
+    public static partial void DescriptionFragmentHidden(ILogger logger, string flagName);
+
+    [LoggerMessage(
+        EventId = 104,
+        Level = LogLevel.Warning,
+        Message = "OpenApiFeatureFlags found a <gate> element without a usable flag attribute and hid its content, so the document fails closed. Element: {GateElement}")]
+    public static partial void GateWithoutFlag(ILogger logger, string gateElement);
+
+    [LoggerMessage(
+        EventId = 105,
+        Level = LogLevel.Warning,
+        Message = "OpenApiFeatureFlags found a <gate> element that is never closed, so the rest of the description is treated as gated. Element: {GateElement}")]
+    public static partial void GateUnbalanced(ILogger logger, string gateElement);
+
+    [LoggerMessage(
+        EventId = 106,
+        Level = LogLevel.Warning,
+        Message = "OpenApiFeatureFlags found gates nested deeper than {MaxDepth} levels and hid the innermost content, so the document fails closed. Nested text length: {Length}")]
+    public static partial void GateTooDeep(ILogger logger, int maxDepth, int length);
 }

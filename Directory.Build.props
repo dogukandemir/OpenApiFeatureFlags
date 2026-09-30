@@ -44,7 +44,7 @@
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <PackageTags>openapi;swagger;openapi-document;feature-flags;feature-management;swashbuckle;nswag;openfeature</PackageTags>
+    <PackageTags>openapi;swagger;openapi-document;feature-flags;feature-management;swashbuckle;nswag;openfeature;aspnetcore</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <!-- Deliberately no PackageIcon while no real mark exists: a placeholder is worse than
          nuget.org's default. Adding one is a metadata-only change that ships with any later

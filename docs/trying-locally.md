@@ -24,11 +24,13 @@ for project in src/*/*.csproj; do dotnet pack "$project" -c Release -o local-pac
 | `OpenApiFeatureFlags` | 0.1.1 |
 | `OpenApiFeatureFlags.Abstractions` | 0.1.1 |
 | `OpenApiFeatureFlags.Swashbuckle` | 0.1.1 |
+| `OpenApiFeatureFlags.AspNetCore` | 0.1.1 |
 | `OpenApiFeatureFlags.FeatureManagement` | 0.1.1 |
 | `OpenApiFeatureFlags.OpenFeature` | 0.1.1 |
 
-All five move together, at the `VersionPrefix` in `Directory.Build.props`. See [`CHANGELOG.md`](../CHANGELOG.md)
-for what changed in this cut.
+Every package moves together, at the `VersionPrefix` in `Directory.Build.props`. See [`CHANGELOG.md`](../CHANGELOG.md)
+for what changed in this cut. `OpenApiFeatureFlags.AspNetCore` targets `net10.0` only, so it does not
+appear in a `net8.0` or `net9.0` output path.
 
 `local-packages/` is gitignored — it is build output, not source.
 

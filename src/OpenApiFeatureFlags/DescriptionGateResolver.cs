@@ -1,7 +1,7 @@
 using System.Text;
 using Microsoft.Extensions.Logging;
 
-namespace OpenApiFeatureFlags.Swashbuckle;
+namespace OpenApiFeatureFlags;
 
 /// <summary>
 /// Resolves <c>&lt;gate flag="X"&gt;…&lt;/gate&gt;</c> fragments inside text that becomes part of the
@@ -9,12 +9,17 @@ namespace OpenApiFeatureFlags.Swashbuckle;
 /// </summary>
 /// <remarks>
 /// <para>
-/// The syntax is deliberately an XML element rather than something invented, because Swashbuckle's
-/// XML comment humanizer passes unknown tags through <b>verbatim</b> (measured, see
-/// <c>tests/OpenApiFeatureFlags.Swashbuckle.Tests/XmlCommentsHumanizerTests.cs</c>). That means an
-/// author can write the gate in a normal XML doc comment and it arrives in
+/// The syntax is deliberately an XML element rather than something invented, because an XML comment
+/// that reaches the document as text carries unknown tags through <b>verbatim</b> — measured for
+/// Swashbuckle in <c>tests/OpenApiFeatureFlags.Swashbuckle.Tests/XmlCommentsHumanizerTests.cs</c>.
+/// That means an author can write the gate in a normal XML doc comment and it arrives in
 /// <c>OpenApiOperation.Description</c> / <c>OpenApiSchema.Description</c> intact, ready to resolve —
 /// no need to reimplement XML comment reading, and no fragile name matching against prose.
+/// </para>
+/// <para>
+/// It lives in the core rather than in one adapter because it is pure text plus
+/// <see cref="IDocumentVisibilityPlanner"/>: nothing here knows about a document model, and two
+/// adapters must not be allowed to drift apart on quoting, nesting or unbalanced-tag behaviour.
 /// </para>
 /// <para>
 /// Semantics, in priority order:

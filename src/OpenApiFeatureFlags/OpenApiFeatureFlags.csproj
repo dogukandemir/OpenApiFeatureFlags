@@ -20,4 +20,15 @@
     <ProjectReference Include="..\OpenApiFeatureFlags.Abstractions\OpenApiFeatureFlags.Abstractions.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- DescriptionGateResolver is internal here and shared by every document-engine adapter, so the
+         gates have one implementation and cannot drift apart on quoting, nesting or unbalanced tags.
+         Its direct unit tests stay with the Swashbuckle suite, next to the humanizer measurement they
+         depend on. -->
+    <InternalsVisibleTo Include="OpenApiFeatureFlags.Swashbuckle" />
+    <InternalsVisibleTo Include="OpenApiFeatureFlags.Swashbuckle.Tests" />
+    <InternalsVisibleTo Include="OpenApiFeatureFlags.AspNetCore" />
+    <InternalsVisibleTo Include="OpenApiFeatureFlags.AspNetCore.Tests" />
+  </ItemGroup>
+
 </Project>

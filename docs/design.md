@@ -144,9 +144,14 @@ Consequences, all observed rather than reasoned about:
   *document generation time* with `MissingMethodException: Microsoft.OpenApi.IOpenApiRequestBody.get_Content()`.
   Alias the version to what the engine actually depends on.
 - A Swashbuckle adapter and an ASP.NET Core `Microsoft.AspNetCore.OpenApi` adapter **cannot share one
-  `Microsoft.OpenApi` version**: 10.x floors at 2.12.0 while Swashbuckle 10.2.3 needs 2.7.5.
+  `Microsoft.OpenApi` version**: 10.x floors at 2.12.0 while Swashbuckle 10.2.3 needs 2.7.5. Confirmed
+  in practice by `OpenApiFeatureFlags.AspNetCore`: the two engines **cannot coexist in one application**,
+  though they coexist fine in one solution because each project resolves its own copy and
+  `CentralPackageTransitivePinningEnabled` is `false`. The adapter therefore references the engine
+  without a `Microsoft.OpenApi` reference of its own — an explicit one would take the centrally pinned
+  2.7.5 and fail restore.
 - net8.0 and net9.0 are on the 1.x model, so an ASP.NET Core adapter is not one source file across the
-  three target frameworks; it is three implementations.
+  three target frameworks; it is three implementations. Only the 10.x one ships.
 - Dependabot is configured to ignore *major* updates of `Microsoft.OpenApi` (`.github/dependabot.yml`),
   so the constraint does not have to be re-explained on every pull request that proposes it. 2.x minors
   and patches still come through, and 3.x and later never do.
@@ -227,17 +232,24 @@ what this repo uses.
 
 ## 6. Open questions and future work
 
+### Built since
+
+- **`OpenApiFeatureFlags.AspNetCore`** — a transformer set for the built-in
+  `Microsoft.AspNetCore.OpenApi`. The prediction below held and is now measured: 10.0.12 is `net10.0`
+  only and depends on `Microsoft.OpenApi` `[2.12.0, 3.0.0)`, so the **`net10.0`-only** package is what
+  was built, and it cannot share an application with the Swashbuckle adapter. Two further facts were
+  discovered while building it and are recorded in [`aspnetcore.md`](aspnetcore.md) rather than here:
+  the engine's XML-comment support fails the build with CS9137 unless the project opts into
+  `Microsoft.AspNetCore.OpenApi.Generated` interceptors, and a minimal API's *parameter* cannot be
+  gated because its endpoint metadata carries no `ParameterInfo` to match on.
+
 ### Not built yet
 
-Two adapters are deliberately absent, and the reason for each is recorded so it is not rediscovered:
+One adapter is still deliberately absent, and the reason is recorded so it is not rediscovered:
 
 - **`OpenApiFeatureFlags.NSwag`.** NSwag's processor model and its `NJsonSchema` document model have not
   been measured yet, and guessing at a document model is how the `Microsoft.OpenApi` trap in 4.4
   happened. Measure first, then write it.
-- **`OpenApiFeatureFlags.AspNetCore`**, a transformer for the built-in `Microsoft.AspNetCore.OpenApi`.
-  Not a small job: that engine sits on three mutually incompatible `Microsoft.OpenApi` lines across
-  net8.0/net9.0/net10.0, and its 10.x line (`>= 2.12.0`) cannot coexist with Swashbuckle 10.2.3's exact
-  2.7.5. The honest shape is a `net10.0`-only package, with the cost recorded rather than discovered.
 
 Scalar needs no adapter: it renders whatever JSON the engine produced.
 
