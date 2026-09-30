@@ -433,3 +433,6 @@ samples/**/openapi/
 
 # Pack output
 artifacts/
+
+# Local NuGet feed produced by './eng/pack-local.ps1'
+local-packages/

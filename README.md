@@ -38,6 +38,9 @@ dotnet add package OpenApiFeatureFlags.Swashbuckle
 dotnet add package OpenApiFeatureFlags.FeatureManagement
 ```
 
+> Not published yet. To try it today, build the packages into the local feed and add it as a source —
+> see [`docs/trying-locally.md`](docs/trying-locally.md).
+
 ## Quickstart
 
 ### 1. Register the services
@@ -156,6 +159,8 @@ method's XML docs.
 
 ## Documentation
 
+- [`docs/trying-locally.md`](docs/trying-locally.md) — build the packages and consume them from a local
+  feed, with a minimal project that works.
 - [`docs/modes.md`](docs/modes.md) — what each mode produces.
 - [`docs/azure-app-configuration.md`](docs/azure-app-configuration.md) — reading flags from Azure App
   Configuration, and the four ways that can go quietly wrong.
