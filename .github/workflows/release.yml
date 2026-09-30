@@ -1,14 +1,26 @@
 name: Release
 
 # Publishes with NuGet trusted publishing (OIDC). There is no long-lived API key anywhere in this
-# repository: the workflow exchanges a GitHub OIDC token for a short-lived NuGet key.
+# repository: the workflow exchanges a GitHub OIDC token for a short-lived key, which nuget.org only
+# issues when the token matches a trusted publishing policy on the account.
 #
-# One-time setup on nuget.org (account -> Trusted Publishing):
+# One-time setup, on nuget.org: sign in, click your username, then Trusted Publishing, and add a policy.
 #   Repository owner : dogukandemir
 #   Repository       : OpenApiFeatureFlags
-#   Workflow file    : release.yml
-#   Environment      : release
-# Then add a repository secret NUGET_USER holding the nuget.org profile name.
+#   Workflow file    : release.yml            <- the file name only, no .github/workflows/ prefix
+#   Environment      : release                <- must match `environment:` on the publish job below
+#   Package scopes   : OpenApiFeatureFlags*   <- limits what the policy can publish
+#
+# Then, in GitHub: Settings, Environments, create an environment named `release`, and add a secret to
+# it named NUGET_USER holding the nuget.org *username* (the profile name) -- not the email address.
+# That environment is also the place for protection rules, such as requiring a reviewer to approve a
+# publish. Without them the environment is just a name.
+#
+# To release, tag the commit whose VersionPrefix you are shipping and push the tag:
+#   git tag v0.2.0 && git push origin v0.2.0
+# The tag must match VersionPrefix in Directory.Build.props, or the run stops before publishing.
+# A manual workflow_dispatch run skips that check, which is the fallback if a tag-triggered run is
+# rejected by the policy.
 
 on:
   push:
