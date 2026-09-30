@@ -17,7 +17,7 @@ name: Release
 # publish. Without them the environment is just a name.
 #
 # To release, tag the commit whose VersionPrefix you are shipping and push the tag:
-#   git tag v0.1.0 && git push origin v0.1.0
+#   git tag v<version> && git push origin v<version>
 # The tag must match VersionPrefix in Directory.Build.props, or the run stops before publishing.
 # A manual workflow_dispatch run skips that check, which is the fallback if a tag-triggered run is
 # rejected by the policy.

@@ -3,6 +3,21 @@
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] - 2026-09-30
+
+### Fixed
+
+- The readme claimed there had been no release and that `dotnet add package` would not find these
+  packages. That was true when it was written and false from the moment `0.1.0` was published. The
+  claim is replaced by a version badge that reads the live release from nuget.org, so it cannot rot the
+  same way, and Installation now gives the real `dotnet add package` commands.
+
+### Notes
+
+- Readme and documentation only: no code, no assembly and no dependency differences from `0.1.0`. A
+  new version is required because a package readme is read from inside the package and cannot be
+  edited on nuget.org once published.
+
 ## [0.1.0] - 2026-09-30
 
 First public release. All five packages ship together at this version.
@@ -64,4 +79,5 @@ First public release. All five packages ship together at this version.
 - Test projects run on xunit.v3 and Microsoft.Testing.Platform, which the .NET 10 SDK selects through
   `global.json`.
 
+[0.1.1]: https://github.com/dogukandemir/OpenApiFeatureFlags/releases/tag/v0.1.1
 [0.1.0]: https://github.com/dogukandemir/OpenApiFeatureFlags/releases/tag/v0.1.0

@@ -1,7 +1,10 @@
 # Trying the packages locally
 
-`local-packages/` is a local NuGet feed containing the built packages. Nothing has been published to
-nuget.org, so this is how you try the library today.
+The released packages are on [nuget.org](https://www.nuget.org/packages/OpenApiFeatureFlags), and that
+is how they are normally consumed. This page covers the other case: building from source to try a
+change that has not been released yet.
+
+`local-packages/` is a local NuGet feed containing the built packages.
 
 ```shell
 ./scripts/pack-local.ps1
@@ -18,11 +21,11 @@ for project in src/*/*.csproj; do dotnet pack "$project" -c Release -o local-pac
 
 | Package | Version |
 |---|---|
-| `OpenApiFeatureFlags` | 0.1.0 |
-| `OpenApiFeatureFlags.Abstractions` | 0.1.0 |
-| `OpenApiFeatureFlags.Swashbuckle` | 0.1.0 |
-| `OpenApiFeatureFlags.FeatureManagement` | 0.1.0 |
-| `OpenApiFeatureFlags.OpenFeature` | 0.1.0 |
+| `OpenApiFeatureFlags` | 0.1.1 |
+| `OpenApiFeatureFlags.Abstractions` | 0.1.1 |
+| `OpenApiFeatureFlags.Swashbuckle` | 0.1.1 |
+| `OpenApiFeatureFlags.FeatureManagement` | 0.1.1 |
+| `OpenApiFeatureFlags.OpenFeature` | 0.1.1 |
 
 All five move together, at the `VersionPrefix` in `Directory.Build.props`. See [`CHANGELOG.md`](../CHANGELOG.md)
 for what changed in this cut.
@@ -69,8 +72,8 @@ also need their own dependencies to resolve, which they do through the upstream 
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.3" />
-    <PackageReference Include="OpenApiFeatureFlags.Swashbuckle" Version="0.1.0" />
-    <PackageReference Include="OpenApiFeatureFlags.FeatureManagement" Version="0.1.0" />
+    <PackageReference Include="OpenApiFeatureFlags.Swashbuckle" Version="0.1.1" />
+    <PackageReference Include="OpenApiFeatureFlags.FeatureManagement" Version="0.1.1" />
   </ItemGroup>
 </Project>
 ```
@@ -173,14 +176,15 @@ dotnet nuget locals global-packages --clear     # blunt; or delete the entry und
 The consumer's own `obj/project.assets.json` caching is the more common culprit — `dotnet restore
 --force` on the consumer, or delete its `obj` and `bin` folders.
 
-## Avoiding a clash with a real release later
+## Avoiding a clash with the published release
 
-Once the same version is published to nuget.org, NuGet may prefer one or the other depending on source
-order. For a throwaway trial you can build a distinctly-versioned set instead:
+The version in `VersionPrefix` is normally published already, so a local build at that same version
+can be shadowed by the published one depending on source order. For a throwaway trial you can build a
+distinctly-versioned set instead:
 
 ```shell
 ./scripts/pack-local.ps1 -VersionSuffix local
 ```
 
-That produces `0.1.0-local`, which cannot be confused with a published release. Bumping
+That produces `0.1.1-local`, which cannot be confused with a published release. Bumping
 `VersionPrefix` is the other way out, and is what a new feature would do anyway.

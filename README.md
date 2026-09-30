@@ -4,14 +4,8 @@ Feature flags for OpenAPI documents.
 
 [![CI](https://github.com/dogukandemir/OpenApiFeatureFlags/actions/workflows/ci.yml/badge.svg)](https://github.com/dogukandemir/OpenApiFeatureFlags/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/dogukandemir/OpenApiFeatureFlags/actions/workflows/codeql.yml/badge.svg)](https://github.com/dogukandemir/OpenApiFeatureFlags/actions/workflows/codeql.yml)
+[![NuGet](https://img.shields.io/nuget/v/OpenApiFeatureFlags.svg)](https://www.nuget.org/packages/OpenApiFeatureFlags)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/LICENSE)
-
-> ### ⚠️ Pre-release — not published to nuget.org yet
->
-> The packages build, the suite is green on all three target frameworks, and the API is stable enough
-> to depend on, but there has been **no published release**. `dotnet add package` will not find it.
-> To try it, build the packages into a local feed and point a `nuget.config` at it:
-> see [`docs/trying-locally.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/trying-locally.md).
 
 Mark the endpoint, action, property or parameter with `[OpenApiFeatureFlag]` and it only appears in
 the generated document once the flag is enabled — using the same flags the runtime already reads.
@@ -40,14 +34,15 @@ cannot use — and, once the document is published, a support conversation about
 
 ## Installation
 
-Not on nuget.org yet, so install by building the packages into a local feed first — one command,
-described in [`docs/trying-locally.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/trying-locally.md). Once a release is published, this
-becomes:
-
 ```shell
 dotnet add package OpenApiFeatureFlags.Swashbuckle
 dotnet add package OpenApiFeatureFlags.FeatureManagement
 ```
+
+That is the whole install for a Swashbuckle API reading flags through Microsoft's feature management:
+`OpenApiFeatureFlags` and `OpenApiFeatureFlags.Abstractions` arrive as dependencies. Swap the second
+line for `OpenApiFeatureFlags.OpenFeature` to read flags through the CNCF OpenFeature standard, or
+leave it out if you are implementing `IFeatureFlagSource` yourself.
 
 | Package | What it is for |
 |---|---|
@@ -196,8 +191,8 @@ method's XML docs.
 
 ## Documentation
 
-- [`docs/trying-locally.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/trying-locally.md) — build the packages and consume them from a local
-  feed, with a minimal project that works.
+- [`docs/trying-locally.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/trying-locally.md) — build the packages from source into a local
+  feed, for trying a change before it is released.
 - [`docs/modes.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/modes.md) — what each mode produces.
 - [`docs/descriptions.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/descriptions.md) — gating part of a description with `<gate>`, and the
   one thing it cannot do.

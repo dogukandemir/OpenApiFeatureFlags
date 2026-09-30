@@ -3,8 +3,9 @@
     Builds the Release packages into the local feed folder described in docs/trying-locally.md.
 
 .DESCRIPTION
-    Nothing is published to nuget.org yet, so this is how the packages get consumed locally. The
-    output folder is gitignored: it is build output, not source.
+    For trying changes that are not released yet. The packages on nuget.org are the normal way to
+    consume the library; this builds the same packages into a local feed instead. The output folder is
+    gitignored: it is build output, not source.
 
     NuGet caches by version, so re-packing the same version after a code change may leave a consumer
     resolving the previous copy. Use -VersionSuffix to produce a distinctly-versioned set instead,
@@ -19,7 +20,8 @@
 
 .EXAMPLE
     ./scripts/pack-local.ps1 -VersionSuffix local
-    Produces the same packages with a -local suffix, for example 0.1.0-local.
+    Produces the same packages with a -local suffix, so a local trial cannot be mistaken for a
+    release.
 #>
 param(
     [string]$Configuration = 'Release',
