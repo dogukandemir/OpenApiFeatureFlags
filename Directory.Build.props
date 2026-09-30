@@ -27,10 +27,9 @@
 
   <!-- Package metadata. -->
   <PropertyGroup>
-    <!-- Pre-1.0 while the Swashbuckle integration settles. 0.1.0 was the first cut; 0.2.0 adds
-         description gating. Bumping this is also what keeps a local re-pack from colliding with
-         NuGet's version cache. -->
-    <VersionPrefix>0.2.0</VersionPrefix>
+    <!-- Pre-1.0 while the Swashbuckle integration settles; see Q1 in docs/design.md. Bumping this is
+         also what keeps a local re-pack from colliding with NuGet's version cache. -->
+    <VersionPrefix>0.1.0</VersionPrefix>
     <!-- Authors is what nuget.org renders as "Authors". nuget.org's separate *Owners* list is
          derived from the account that pushed the package plus the reserved prefix, and cannot be
          set from here; PackageOwners is ignored by nuget.org, so it is deliberately absent. -->
@@ -47,8 +46,9 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageTags>openapi;swagger;openapi-document;feature-flags;feature-management;swashbuckle;nswag;openfeature</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <!-- Deliberately no PackageIcon yet: a placeholder icon is worse than the
-         default. Phase 6 adds a real one together with the first release. -->
+    <!-- Deliberately no PackageIcon while no real mark exists: a placeholder is worse than
+         nuget.org's default. Adding one is a metadata-only change that ships with any later
+         version, so it does not gate the first release. -->
   </PropertyGroup>
 
   <!-- The public surface is a permanent contract, so it is tracked explicitly. -->

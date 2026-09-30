@@ -18,11 +18,11 @@ for project in src/*/*.csproj; do dotnet pack "$project" -c Release -o local-pac
 
 | Package | Version |
 |---|---|
-| `OpenApiFeatureFlags` | 0.2.0 |
-| `OpenApiFeatureFlags.Abstractions` | 0.2.0 |
-| `OpenApiFeatureFlags.Swashbuckle` | 0.2.0 |
-| `OpenApiFeatureFlags.FeatureManagement` | 0.2.0 |
-| `OpenApiFeatureFlags.OpenFeature` | 0.2.0 |
+| `OpenApiFeatureFlags` | 0.1.0 |
+| `OpenApiFeatureFlags.Abstractions` | 0.1.0 |
+| `OpenApiFeatureFlags.Swashbuckle` | 0.1.0 |
+| `OpenApiFeatureFlags.FeatureManagement` | 0.1.0 |
+| `OpenApiFeatureFlags.OpenFeature` | 0.1.0 |
 
 All five move together, at the `VersionPrefix` in `Directory.Build.props`. See [`CHANGELOG.md`](../CHANGELOG.md)
 for what changed in this cut.
@@ -69,8 +69,8 @@ also need their own dependencies to resolve, which they do through the upstream 
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.3" />
-    <PackageReference Include="OpenApiFeatureFlags.Swashbuckle" Version="0.2.0" />
-    <PackageReference Include="OpenApiFeatureFlags.FeatureManagement" Version="0.2.0" />
+    <PackageReference Include="OpenApiFeatureFlags.Swashbuckle" Version="0.1.0" />
+    <PackageReference Include="OpenApiFeatureFlags.FeatureManagement" Version="0.1.0" />
   </ItemGroup>
 </Project>
 ```
@@ -182,5 +182,5 @@ order. For a throwaway trial you can build a distinctly-versioned set instead:
 ./scripts/pack-local.ps1 -VersionSuffix local
 ```
 
-That produces `0.2.0-local`, which cannot be confused with a published release. Bumping
+That produces `0.1.0-local`, which cannot be confused with a published release. Bumping
 `VersionPrefix` is the other way out, and is what a new feature would do anyway.

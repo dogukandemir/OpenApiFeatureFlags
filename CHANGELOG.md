@@ -3,7 +3,9 @@
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.1.0] - 2026-09-30
+
+First public release. All five packages ship together at this version.
 
 ### Added
 
@@ -62,4 +64,4 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 - Test projects run on xunit.v3 and Microsoft.Testing.Platform, which the .NET 10 SDK selects through
   `global.json`.
 
-[Unreleased]: https://github.com/dogukandemir/OpenApiFeatureFlags/commits/main
+[0.1.0]: https://github.com/dogukandemir/OpenApiFeatureFlags/releases/tag/v0.1.0

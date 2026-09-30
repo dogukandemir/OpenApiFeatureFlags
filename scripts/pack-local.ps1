@@ -19,7 +19,7 @@
 
 .EXAMPLE
     ./scripts/pack-local.ps1 -VersionSuffix local
-    Produces the same packages with a -local suffix, for example 0.2.0-local.
+    Produces the same packages with a -local suffix, for example 0.1.0-local.
 #>
 param(
     [string]$Configuration = 'Release',
