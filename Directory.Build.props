@@ -27,6 +27,9 @@
 
   <!-- Package metadata (D11, D13, D16). -->
   <PropertyGroup>
+    <!-- Open question Q1: 0.1.0 to gather feedback, then 1.0.0 once the Swashbuckle adapter
+         ordering has been proven. The attribute name is a permanent contract either way. -->
+    <VersionPrefix>0.1.0</VersionPrefix>
     <Authors>Dogukan Demir</Authors>
     <Company>Dogukan Demir</Company>
     <Copyright>Copyright (c) 2026 Dogukan Demir</Copyright>

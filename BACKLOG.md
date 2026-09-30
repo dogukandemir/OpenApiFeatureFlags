@@ -98,6 +98,54 @@ These were found the hard way in a real application and should be designed for u
 - Consumers resolving through a corporate feed that upstreams nuget.org need no config change, but the
   feed owner may have to **admit the new package id** if the upstream has an allowlist.
 
+### 4.4 Microsoft.OpenApi is several incompatible API lines (measured 2026-09-30)
+
+The package version and the assembly version do not agree, and the majors are not interchangeable:
+
+| Consumer | Its `Microsoft.OpenApi` dependency | Model shape |
+|---|---|---|
+| `Swashbuckle.AspNetCore.Swagger` 10.2.3 | `2.7.5` (exact) | `Microsoft.OpenApi.IOpenApiSchema`, `OpenApiExtensibleDictionary<T>` |
+| `Microsoft.AspNetCore.OpenApi` 10.0.x | `[2.12.0, 3.0.0)` | the same 2.x line |
+| `Microsoft.AspNetCore.OpenApi` 9.0.x | `1.6.17` | `Microsoft.OpenApi.Models.*` |
+| `Microsoft.AspNetCore.OpenApi` 8.0.x | `1.4.3` | `Microsoft.OpenApi.Models.*` |
+
+Consequences, all observed rather than reasoned about:
+
+- Pinning `Microsoft.OpenApi` to the newest package (3.10.2) does **not** fail the build. It fails at
+  *document generation time* with `MissingMethodException: Microsoft.OpenApi.IOpenApiRequestBody.get_Content()`.
+  Alias the version to what the engine actually depends on.
+- A Swashbuckle adapter and an ASP.NET Core `Microsoft.AspNetCore.OpenApi` adapter **cannot share one
+  `Microsoft.OpenApi` version**: 10.x floors at 2.12.0 while Swashbuckle 10.2.3 needs 2.7.5.
+- net8.0 and net9.0 are on the 1.x model, so an ASP.NET Core adapter is not one source file across the
+  three target frameworks; it is three implementations.
+
+### 4.5 Swashbuckle schema-filter semantics are load-bearing (measured 2026-09-30)
+
+`ISchemaFilter` is invoked for a **type** (`MemberInfo == null`, `Properties` populated) and for each
+**member** (`MemberInfo` set, and the member's *own* schema is passed). Members are visited **before**
+the type that contains them, and `$ref` usages arrive separately as an `OpenApiSchemaReference` whose
+`Properties` is empty.
+
+That is what makes hiding a property safe without reimplementing the application's JSON naming rules:
+tag the member's schema instance when the member is visited, then resolve the tag by **object identity**
+while walking the parent's `Properties`. Matching by name would have to reproduce camel-casing and
+`[JsonPropertyName]`, and would silently miss when it got them wrong.
+
+Corollary: property pruning belongs in a *document* filter, not in the schema filter. Document filters
+run after every schema filter, so a consumer filter that populates `required` cannot resurrect a
+property that was already removed.
+
+### 4.6 Build and test toolchain (measured 2026-09-30)
+
+- Only the .NET 10 SDK is installed; net8.0/net9.0 libraries build because the targeting packs restore
+  from NuGet, and their tests *run* on the .NET 10 runtime through `<RollForward>LatestMajor</RollForward>`.
+- Test projects use xunit.v3, which runs on `Microsoft.Testing.Platform`. The .NET 10 SDK refuses to run
+  MTP projects through VSTest, and `<TestingPlatformDotnetTestSupport>` does **not** fix it: the opt-in
+  is `global.json` -> `{ "test": { "runner": "Microsoft.Testing.Platform" } }`. In that mode there is no
+  positional project argument (`--project`), `--logger` is invalid, and **unrecognised options are
+  forwarded to the test application** — `dotnet test --nologo` reports "Zero tests ran" with exit code 5.
+  Select one framework with `-p:TargetFramework=net8.0`.
+
 ---
 
 ## 5. Landscape and naming (verified 2026-09-30)
@@ -146,6 +194,22 @@ what this repo uses.
 ---
 
 ## 6. Backlog
+
+### Status (2026-09-30)
+
+| Phase | State |
+|---|---|
+| 0 Repository foundation | Done, apart from the external actions listed under Phase 6 and the deliberately deferred package icon. |
+| 1 `Abstractions` | Done, including the test that asserts the built assembly references nothing but the framework. |
+| 2 Core | Done: attribute discovery, AND semantics, fail-closed resolution, the D6 canary, request-scoped memoisation, one structured log line per document. |
+| 3 `Swashbuckle` | Done: operation filter, two document filters, schema filter, `Annotate`/`Include` modes, the byte-identical regression test, a golden snapshot, and ordering tests. |
+| 4 `FeatureManagement` | Done. |
+| 5 Documentation and samples | Done: README quickstart, `docs/modes.md`, `docs/troubleshooting.md`, `CONTRIBUTING.md`, and a sample whose build-time document generation also proves the offline path. |
+| 6 First release | Prepared but not executed: publishing needs one-time external setup on nuget.org. |
+| 7 Post-v1 adapters | `OpenFeature` done. `NSwag` and `AspNetCore` **not started** — see Phase 7 and the new measured facts in 4.4. |
+| 8 Consumer adoption | A different repository (Appendix A); untouched. |
+
+The unchecked boxes below are kept as the record of intent; the table above is the accurate state.
 
 ### Phase 0 — Repository foundation
 
@@ -231,17 +295,30 @@ the README.
 
 ### Phase 6 — First release
 
-- [ ] Decide the version: **open question Q1**.
-- [ ] Changelog, release notes, tags.
-- [ ] Publish via NuGet **trusted publishing (OIDC)** from GitHub Actions — no long-lived API key.
+- [x] Decide the version: **Q1 answered — `0.1.0`.** Set as `VersionPrefix` in `Directory.Build.props`.
+- [x] Changelog and release notes: `CHANGELOG.md`.
+- [x] Publish via NuGet **trusted publishing (OIDC)** from GitHub Actions — no long-lived API key.
+      `.github/workflows/release.yml` exchanges a GitHub OIDC token for a short-lived NuGet key
+      (`NuGet/login@v1`) and refuses to publish when the tag does not match `VersionPrefix`.
 - [ ] Smoke-test the published package from a throwaway project that restores from nuget.org.
+      **Cannot be done from here:** it needs the one-time trusted-publisher setup on nuget.org
+      (repository, workflow file `release.yml`, environment `release`) and the `NUGET_USER` secret.
+- [ ] Reserve the `OpenApiFeatureFlags` prefix on nuget.org, and set the GitHub repository website,
+      topics and description. Both are external actions.
+- [ ] Add a package icon. Deliberately postponed: a placeholder icon is worse than the default.
 
 ### Phase 7 — Post-v1 adapters
 
+- [x] `OpenApiFeatureFlags.OpenFeature` — CNCF standard; the adapter that opens the non-Microsoft world.
 - [ ] `OpenApiFeatureFlags.NSwag` — closes the gap against the existing NSwag-only competitor.
+      **Not started.** NSwag's processor model and its `NJsonSchema` document model have not been
+      measured yet, and guessing at them is how the `Microsoft.OpenApi` trap in 4.4 happened.
 - [ ] `OpenApiFeatureFlags.AspNetCore` — transformer for the built-in `Microsoft.AspNetCore.OpenApi`.
-- [ ] `OpenApiFeatureFlags.OpenFeature` — CNCF standard; the adapter that opens the non-Microsoft world.
-- [ ] Confirm **Scalar needs no adapter** (it renders whatever JSON the engine produced). Optional later:
+      **Not started, and 4.4 explains why it is not a small job:** the built-in engine depends on three
+      mutually incompatible `Microsoft.OpenApi` lines across net8.0/net9.0/net10.0, and its 10.x line
+      (>= 2.12.0) cannot coexist with Swashbuckle 10.2.3's exact 2.7.5. The honest shape is a
+      `net10.0`-only package, with the cost recorded rather than discovered later.
+- [x] Confirm **Scalar needs no adapter** (it renders whatever JSON the engine produced). Optional later:
       a UI affordance for `Annotate` mode only.
 
 ### Phase 8 — Consumer adoption (different repository — see Appendix A)

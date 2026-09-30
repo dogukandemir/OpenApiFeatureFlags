@@ -31,7 +31,14 @@ framework.
 `PublicAPI.Shipped.txt` / `PublicAPI.Unshipped.txt` next to its project, and the
 `Microsoft.CodeAnalysis.PublicApiAnalyzers` package fails the build when the two drift apart. When
 you add public surface, the build tells you the exact line to add; when you remove it, the build
-tells you the line to delete.
+tells you the line to delete. To apply both automatically:
+
+```shell
+./eng/update-public-api.ps1 -ProjectDir src/OpenApiFeatureFlags.Swashbuckle
+```
+
+Hand-formatting is not worth attempting: records alone contribute operators, `Deconstruct`,
+`<Clone>$` and `PrintMembers` entries.
 
 **2. `OpenApiFeatureFlags.Abstractions` has no dependencies.** Not a package reference, not a
 project reference. Contract assemblies must be able to carry the attribute without being dragged

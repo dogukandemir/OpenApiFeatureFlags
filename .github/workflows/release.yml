@@ -1,0 +1,80 @@
+name: Release
+
+# Publishes with NuGet trusted publishing (OIDC). There is no long-lived API key anywhere in this
+# repository: the workflow exchanges a GitHub OIDC token for a short-lived NuGet key.
+#
+# One-time setup on nuget.org (account -> Trusted Publishing):
+#   Repository owner : dogukandemir
+#   Repository       : OpenApiFeatureFlags
+#   Workflow file    : release.yml
+#   Environment      : release
+# Then add a repository secret NUGET_USER holding the nuget.org profile name.
+
+on:
+  push:
+    tags: [ 'v*' ]
+  workflow_dispatch:
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      contents: read
+      id-token: write # required for the OIDC exchange
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Build
+        run: dotnet build --configuration Release
+
+      # A release must not go out on a red test suite, on any target framework.
+      - name: Test
+        run: dotnet test --configuration Release
+
+      - name: Pack
+        run: dotnet pack --configuration Release --output ${{ github.workspace }}/artifacts
+
+      - name: Check the tag matches the package version
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="$(dotnet msbuild Directory.Build.props -getProperty:VersionPrefix)"
+          echo "package version: $version"
+          if [ "${GITHUB_REF_NAME:-}" != "" ]; then
+            tag="${GITHUB_REF_NAME#v}"
+            if [ "$tag" != "$version" ]; then
+              echo "::error::tag '$GITHUB_REF_NAME' does not match VersionPrefix '$version'"
+              exit 1
+            fi
+          fi
+
+      - name: NuGet login (OIDC -> short-lived API key)
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
+      - name: Push to nuget.org
+        run: >-
+          dotnet nuget push "${{ github.workspace }}/artifacts/*.nupkg"
+          --api-key "${{ steps.login.outputs.NUGET_API_KEY }}"
+          --source https://api.nuget.org/v3/index.json
+          --skip-duplicate
+
+      - name: Upload packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: nupkg
+          path: ${{ github.workspace }}/artifacts/*.*nupkg
