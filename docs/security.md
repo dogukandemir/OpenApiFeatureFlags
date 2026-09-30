@@ -101,8 +101,8 @@ provider that blocks on network I/O adds that latency to the request, and a per-
 it once per flag.
 
 Memoisation limits this: each flag is read at most once per request. The default adapters additionally
-lean on the caching the underlying SDK already does. If your provider is genuinely slow, that is
-open question Q4 in [`BACKLOG.md`](../BACKLOG.md) — an async resolution path — rather than something to
+lean on the caching the underlying SDK already does. If your provider is genuinely slow, the answer
+is an async resolution path, as recorded in [`BACKLOG.md`](../BACKLOG.md) — rather than something to
 solve with a longer timeout.
 
 ### Blocking on asynchronous providers

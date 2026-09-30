@@ -2,13 +2,13 @@ namespace OpenApiFeatureFlags;
 
 /// <summary>
 /// The engine-agnostic outcome of evaluating every <see cref="OpenApiFeatureFlagAttribute"/>
-/// that applies to one document (decision D9).
+/// that applies to one document.
 /// </summary>
 /// <remarks>
 /// <para>
 /// The core produces this object and each document-engine adapter applies it. The plan never
 /// references a document model, which is what allows an NSwag or
-/// <c>Microsoft.AspNetCore.OpenApi</c> adapter to be added without touching the core (D8).
+/// <c>Microsoft.AspNetCore.OpenApi</c> adapter to be added without touching the core.
 /// </para>
 /// <para>
 /// Mode semantics are enforced here rather than trusted from the caller: in

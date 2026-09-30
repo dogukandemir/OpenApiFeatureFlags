@@ -7,9 +7,8 @@ using Xunit;
 namespace OpenApiFeatureFlags.Swashbuckle.Tests;
 
 /// <summary>
-/// Pins the Swashbuckle behaviour the adapter depends on. These facts were measured, not assumed
-/// (BACKLOG.md 4.1): schema filters run for members, and each member is visited before the type that
-/// contains it. If a Swashbuckle upgrade changes either, marker-based property pruning stops working
+/// Pins the Swashbuckle behaviour the adapter depends on: schema filters run for members, and each
+/// member is visited before the type that contains it. If a Swashbuckle upgrade changes either, marker-based property pruning stops working
 /// and these tests fail with an explanation rather than a mysterious leaked property.
 /// </summary>
 public sealed class SchemaFilterSemanticsTests

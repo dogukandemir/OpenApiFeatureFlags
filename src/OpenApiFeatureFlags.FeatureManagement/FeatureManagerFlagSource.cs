@@ -8,7 +8,7 @@ namespace OpenApiFeatureFlags.FeatureManagement;
 /// <remarks>
 /// <para>
 /// Deliberately does not catch anything. The core already treats a failed read as "not enabled"
-/// (D5), and letting the exception through is what allows the canary from D6 to notice that the flag
+/// and letting the exception through is what allows the canary to notice that the flag
 /// store is unreachable — a caught-and-swallowed failure would look exactly like "every flag is off",
 /// which is the dangerous case.
 /// </para>
@@ -16,7 +16,7 @@ namespace OpenApiFeatureFlags.FeatureManagement;
 /// <see cref="IFeatureManager"/> is asynchronous while document engines expose a synchronous
 /// pipeline, so the call is blocked on. Microsoft's implementation completes from an in-memory
 /// snapshot in the common case, and <c>IFeatureManager</c> caches per request. If a provider turns
-/// out to be genuinely slow here, that is the trigger for open question Q4 (an async resolution path)
+/// out to be genuinely slow here, that is the trigger for an async resolution path
 /// rather than a reason to start leaking tasks from a filter.
 /// </para>
 /// </remarks>

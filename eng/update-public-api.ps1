@@ -3,7 +3,7 @@
     Keeps a project's PublicAPI.Shipped.txt / PublicAPI.Unshipped.txt in sync with its actual surface.
 
 .DESCRIPTION
-    The public API of this repository is a permanent contract (decision D16), enforced by
+    The public API of this repository is a permanent contract, enforced by
     Microsoft.CodeAnalysis.PublicApiAnalyzers. Keeping the file up to date by hand is tedious because
     records alone contribute operators, Deconstruct, <Clone>$ and PrintMembers entries.
 

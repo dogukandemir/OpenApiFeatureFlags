@@ -40,7 +40,7 @@ log.
 Look for this warning:
 
 ```
-OpenApiFeatureFlags could not evaluate the flag {FlagName}; treating it as disabled so the document fails closed (D5).
+OpenApiFeatureFlags could not evaluate the flag {FlagName}; treating it as disabled so the document fails closed.
 ```
 
 If it is there, the element *was* hidden — the flag source threw. Note that fail-closed means the

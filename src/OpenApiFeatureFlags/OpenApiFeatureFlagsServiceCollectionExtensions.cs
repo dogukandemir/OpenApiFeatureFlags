@@ -83,7 +83,7 @@ public static class OpenApiFeatureFlagsServiceCollectionExtensions
             services.Configure(configure);
         }
 
-        // Memoisation is keyed off the request (4.1 / invariant 4). Registering the accessor is
+        // Memoisation is keyed off the request. Registering the accessor is
         // idempotent, so it cannot clash with the application's own call.
         services.AddHttpContextAccessor();
 

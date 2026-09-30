@@ -54,9 +54,9 @@ the framework.
 
 ## Design decisions
 
-[`BACKLOG.md`](BACKLOG.md) is the source of truth. It records what was decided (D1–D17), what was
-*measured* rather than assumed, and what is still open (Q1–Q6). If your change contradicts a locked
-decision, the pull request needs to argue for changing that decision rather than quietly working
+[`BACKLOG.md`](BACKLOG.md) is the source of truth. It records what was decided, what was *measured*
+rather than assumed, and what is still open. If your change contradicts a settled decision, the pull
+request needs to argue for changing that decision rather than quietly working
 around it.
 
 Two invariants that are easy to break by accident:

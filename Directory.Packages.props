@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup Label="Document engines">
-    <!-- Swashbuckle 10.2.3 ships net8.0/net9.0/net10.0 (verified, D14). -->
+    <!-- Swashbuckle 10.2.3 ships net8.0/net9.0/net10.0 (verified). -->
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="10.2.3" />
     <PackageVersion Include="Swashbuckle.AspNetCore.Swagger" Version="10.2.3" />
     <PackageVersion Include="Swashbuckle.AspNetCore.SwaggerGen" Version="10.2.3" />
@@ -21,19 +21,18 @@
          Microsoft.OpenApi 3.x is a different, binary-incompatible line: using it produces
          MissingMethodException at document generation time, not a compile error. -->
     <PackageVersion Include="Microsoft.OpenApi" Version="2.7.5" />
-    <!-- Microsoft.AspNetCore.OpenApi and NSwag.AspNetCore are deliberately absent. No project
-         references them yet, so pinning them here would only ask Dependabot to raise pull requests for
-         packages nothing builds. The version constraints that will matter when the Phase 7 adapters
-         land are recorded in BACKLOG.md 4.4, which is where they were measured. -->
+    <!-- Microsoft.AspNetCore.OpenApi and NSwag.AspNetCore are deliberately absent: no project
+         references them yet, so pinning them here would only ask Dependabot to raise pull requests
+         for packages nothing builds. -->
   </ItemGroup>
 
   <ItemGroup Label="Flag sources">
     <!-- Plain Microsoft.FeatureManagement, not the .AspNetCore flavour: the adapter only needs
-         IFeatureManager, and the ASP.NET version would drag MVC in for nothing (D15). -->
+         IFeatureManager, and the ASP.NET version would drag MVC in for nothing. -->
     <PackageVersion Include="Microsoft.FeatureManagement" Version="4.8.0" />
     <!-- Azure App Configuration is not referenced by the library: it is reached through
          IFeatureManager, so there is no Azure-specific code to ship. See docs/azure-app-configuration.md. -->
-    <!-- OpenFeature is the CNCF vendor-neutral standard (D8: the flag axis). -->
+    <!-- OpenFeature is the CNCF vendor-neutral standard. -->
     <PackageVersion Include="OpenFeature" Version="2.14.1" />
   </ItemGroup>
 
@@ -49,7 +48,7 @@
     <PackageVersion Include="xunit.v3" Version="4.0.1" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.0" />
     <!-- Shouldly, not FluentAssertions: v8 of the latter is no longer free for
-         commercial use, and this library is MIT (D13). -->
+         commercial use, and this library is MIT. -->
     <PackageVersion Include="Shouldly" Version="4.3.0" />
     <PackageVersion Include="NSubstitute" Version="6.2.0" />
   </ItemGroup>

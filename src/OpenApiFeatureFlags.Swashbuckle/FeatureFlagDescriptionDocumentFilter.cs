@@ -18,7 +18,7 @@ namespace OpenApiFeatureFlags.Swashbuckle;
 /// <para>
 /// It runs after the operation-pruning filter, so text belonging to removed operations is already
 /// gone, and before the filter that completes the plan, so flags involved for a fragment count
-/// towards the D6 canary like any other read.
+/// towards the canary like any other read.
 /// </para>
 /// </remarks>
 internal sealed class FeatureFlagDescriptionDocumentFilter : IDocumentFilter

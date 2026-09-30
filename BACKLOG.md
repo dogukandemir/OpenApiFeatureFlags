@@ -2,9 +2,9 @@
 
 Single source of truth for the decisions already made and the work remaining.
 
-This file was distilled from the original design conversation, because that conversation could not be
-migrated into this workspace. Treat it as authoritative: everything under "Decisions" and "Verified
-facts" was settled or measured, not guessed.
+Everything under "Decisions", "Design invariants" and "Verified technical facts" is committed to: it
+was settled or measured rather than guessed, so changing one of those is a design change rather than a
+cleanup. "Open questions" is where choices are still live.
 
 ---
 
@@ -66,8 +66,8 @@ This is generalisable and not specific to that team, which is why it is a standa
   `ActivatorUtilities.CreateInstance(_serviceProvider, d.Type, d.Arguments)` from
   `ConfigureSwaggerGeneratorOptions` / `ConfigureSchemaGeneratorOptions`.
 - That `_serviceProvider` is the **root** provider (the configure-options object is a singleton).
-  Therefore **only singletons can be injected** — with `ValidateScopes = true` (set by at least one
-  a real application, and a sane default) a scoped dependency throws at options build.
+  Therefore **only singletons can be injected** — with `ValidateScopes = true` (a sane default, and what
+  a real application sets) a scoped dependency throws at options build.
 - `SwaggerGenerator` is registered **transient** and there is **no document cache**, so the document is
   regenerated per request: a live `/swagger` endpoint reflects a flag flip without a restart.
 - Because filters and `SwaggerGeneratorOptions` are built **once** (`IOptions<T>.Value` is cached),
@@ -82,7 +82,7 @@ This is generalisable and not specific to that team, which is why it is a standa
 
 ### 4.2 Filter-ordering pitfalls observed in a real integration
 
-These were found the hard way in a real application and should be designed for up front:
+These were found the hard way in a real integration and should be designed for up front:
 
 - A document processor that **clears and rebuilds `Paths`** and **replaces `Tags`** means:
   **operation pruning must run before it, orphan-tag pruning after it.** A single document filter doing
@@ -223,7 +223,6 @@ what this repo uses.
 | 5 Documentation and samples | Done: README quickstart, `docs/modes.md`, `docs/troubleshooting.md`, `CONTRIBUTING.md`, and a sample whose build-time document generation also proves the offline path. |
 | 6 First release | Prepared but not executed: publishing needs one-time external setup on nuget.org. |
 | 7 Post-v1 adapters | `OpenFeature` done. `NSwag` and `AspNetCore` **not started** — see Phase 7 and the new measured facts in 4.4. |
-| 8 Consumer adoption | A different repository (Appendix A); untouched. |
 
 The unchecked boxes below are kept as the record of intent; the table above is the accurate state.
 
@@ -303,11 +302,9 @@ consumer.
 - [ ] `README.md` quickstart: install → one call → attribute. Currently only a one-line description.
 - [ ] `docs/modes.md` — Remove vs Annotate vs Include, with output samples.
 - [ ] `docs/troubleshooting.md` — nothing hidden? check fail-closed logging; hidden too much? canary.
-- [ ] `docs/azure-app-configuration.md` — how an application's store is reached through
-      `IFeatureManager`, and the four ways a misconfigured store hides everything silently. Added
-      2026-09-30 in answer to "how is Azure App Configuration covered?": it needs no adapter, because
-      Azure is a *store behind* the flag source (D8), not a flag API. Appendix A.2 is the consumer-side
-      counterpart.
+- [ ] `docs/azure-app-configuration.md` — how an App Configuration store is reached through
+      `IFeatureManager`, and the four ways a misconfigured store hides everything silently. It needs no
+      adapter, because Azure is a *store behind* the flag source (D8), not a flag API.
 - [ ] `samples/` — a minimal controller `WebApplication` sample, referenced from the README.
 - [ ] `CONTRIBUTING.md` (inbound = outbound + DCO sign-off).
 
@@ -375,8 +372,6 @@ cannot ask the author a question:
 - [x] Confirm **Scalar needs no adapter** (it renders whatever JSON the engine produced). Optional later:
       a UI affordance for `Annotate` mode only.
 
-### Phase 8 — Consumer adoption (different repository — see Appendix A)
-
 ---
 
 ## 7. Open questions
@@ -396,11 +391,12 @@ cannot ask the author a question:
   a flag exists but not which property it gates. The docs now say so. Deciding the fix belongs with this
   question, because it changes the shape: annotate schema properties as well, or leave properties
   unmarked and treat the root array as the only machine-readable signal. Documented rather than changed,
-  so that a consumer already parsing the current shape is not broken by a review.- **Q4 — should the core expose an async resolution path?** `IFeatureFlagSource` is sync because the
+  so that a consumer already parsing the current shape is not broken by a review.
+- **Q4 — should the core expose an async resolution path?** `IFeatureFlagSource` is sync because the
   filter pipeline is sync. Some flag providers are async-only. Decide whether to add an async interface
   later rather than now.
 - **Q5 — is `Include` mode needed at all**, given fail-closed already makes the library inert when no
   attributes are present? Kept for the per-environment off switch; revisit if it earns no usage.
 - **Q6 — Swagger setup helpers.** Absorbing `AddSwaggerGen`/`UseSwagger`/`MapScalar` wrappers would
-  collapse three duplicated setups in a real application, but commits the library to a Scalar version
-  matrix. Recommendation: a **separate optional package**, not the core.
+  collapse duplicated Swagger setups in a typical application, but commits the library to a Scalar
+  version matrix. Recommendation: a **separate optional package**, not the core.

@@ -6,8 +6,7 @@ using Xunit;
 namespace OpenApiFeatureFlags.FeatureManagement.Tests;
 
 /// <summary>
-/// Phase 4 acceptance: one extension-method call wires the whole thing up for a
-/// Microsoft.FeatureManagement consumer.
+/// One extension-method call wires the whole thing up for a Microsoft.FeatureManagement consumer.
 /// </summary>
 public sealed class FeatureManagementWiringTests
 {

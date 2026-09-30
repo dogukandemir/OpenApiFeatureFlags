@@ -92,7 +92,7 @@ public sealed class DescriptionGateTests
     [Fact]
     public void GatingThePropertyAndTheProseAboutItTogetherLeavesNoDanglingReference()
     {
-        // The case BACKLOG.md 4.2 warned about: the property goes because it is gated, and the
+        // The property goes because it is gated, and the
         // sentence that named it goes too because it is gated by the same flag.
         var document = Build();
 

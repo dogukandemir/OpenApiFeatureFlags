@@ -5,7 +5,7 @@ using Xunit;
 namespace OpenApiFeatureFlags.Tests;
 
 /// <summary>
-/// Phase 2 acceptance: attribute discovery, AND semantics, fail-closed (D5), the canary (D6),
+/// Attribute discovery, AND semantics, fail-closed behaviour, the canary,
 /// memoisation and the once-per-document log line.
 /// </summary>
 public sealed class DocumentVisibilityPlannerTests
@@ -22,7 +22,7 @@ public sealed class DocumentVisibilityPlannerTests
     [Fact]
     public void IsHiddenWhenAnyOneFlagIsDisabled()
     {
-        // D3: multiple attributes on one target are ANDed.
+        // Multiple attributes on one target are ANDed.
         var (planner, _) = CreatePlanner(source => source.Enabled("a").Disabled("b"));
 
         planner.IsHidden(["a", "b"]).ShouldBeTrue();
@@ -48,7 +48,7 @@ public sealed class DocumentVisibilityPlannerTests
     [Fact]
     public void FailsClosedWhenTheSourceThrows()
     {
-        // D5: an unreadable flag must hide the surface, never leak it.
+        // An unreadable flag must hide the surface, never leak it.
         var (planner, _) = CreatePlanner(source => source.Unreadable("broken"));
 
         planner.IsHidden(["broken"]).ShouldBeTrue();
@@ -69,7 +69,7 @@ public sealed class DocumentVisibilityPlannerTests
     [Fact]
     public void CanaryThrowsWhenNoFlagCouldBeEvaluated()
     {
-        // D6: an unreachable source plus fail-closed would silently delete released endpoints.
+        // An unreachable source plus fail-closed would silently delete released endpoints.
         var (planner, _) = CreatePlanner(source => source.Unreadable("a", "b"));
 
         planner.IsHidden(["a"]);

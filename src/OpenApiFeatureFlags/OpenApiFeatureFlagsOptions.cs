@@ -6,18 +6,18 @@ namespace OpenApiFeatureFlags;
 public sealed class OpenApiFeatureFlagsOptions
 {
     /// <summary>
-    /// Gets or sets how a flag that is not enabled affects the document (decision D4).
+    /// Gets or sets how a flag that is not enabled affects the document.
     /// Defaults to <see cref="DocumentMode.Remove"/>.
     /// </summary>
     public DocumentMode Mode { get; set; } = DocumentMode.Remove;
 
     /// <summary>
-    /// Gets or sets a value indicating whether the safety guard from decision D6 is active.
+    /// Gets or sets a value indicating whether the canary guard is active.
     /// Defaults to <see langword="true"/>.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Failing closed (D5) is only safe while the flag source is actually reachable. If the source
+    /// Failing closed is only safe while the flag source is actually reachable. If the source
     /// is down, every flag reads as "disabled" and a fail-closed filter would quietly <i>delete
     /// released endpoints</i> from a published document — the opposite of the bug this library
     /// fixes, and worse, because it is silent.

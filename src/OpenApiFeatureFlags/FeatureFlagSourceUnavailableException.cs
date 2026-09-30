@@ -2,7 +2,7 @@ namespace OpenApiFeatureFlags;
 
 /// <summary>
 /// Thrown when a document contains gated elements but the flag source could not be reached for
-/// any of them, so the generated document cannot be trusted (decision D6).
+/// any of them, so the generated document cannot be trusted.
 /// </summary>
 /// <remarks>
 /// This exception deliberately surfaces as a failure rather than degrading to "hide everything".
@@ -57,5 +57,5 @@ public sealed class FeatureFlagSourceUnavailableException : InvalidOperationExce
         "OpenApiFeatureFlags could not evaluate any feature flag for the generated document, so the " +
         "document cannot be trusted: fail-closed would have removed released endpoints. Check that " +
         "IFeatureFlagSource is configured and reachable, or set " +
-        "OpenApiFeatureFlagsOptions.CanaryEnabled to false to accept the risk (decision D6).";
+        "OpenApiFeatureFlagsOptions.CanaryEnabled to false to accept the risk.";
 }

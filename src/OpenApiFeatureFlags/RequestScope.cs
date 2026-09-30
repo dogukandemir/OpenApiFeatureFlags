@@ -7,9 +7,8 @@ namespace OpenApiFeatureFlags;
 /// </summary>
 /// <remarks>
 /// <para>
-/// This is the implementation of invariant 4: flag state and decisions live here, never in a field
-/// of a filter. Swashbuckle builds filters once for the lifetime of the application, so a field
-/// would hold the first request's snapshot forever.
+/// Flag state and decisions live here, never in a field of a filter. Swashbuckle builds filters once
+/// for the lifetime of the application, so a field would hold the first request's snapshot forever.
 /// </para>
 /// <para>
 /// When a request is in flight the scope is parked in <c>HttpContext.Items</c>, so it dies with the
@@ -60,14 +59,13 @@ internal sealed class RequestScope
     }
 
     /// <summary>Reads a memoised flag value.</summary>
-    /// <param name="flagName">The flag name.</param>
-    /// <param name="enabled">The memoised value when the flag has already been read.</param>
-    /// <returns><see langword="true"/> when the value was already known.</returns>
+    /// <returns>
+    /// <see langword="true"/> when the value was already known, in which case <paramref name="enabled"/>
+    /// holds it.
+    /// </returns>
     public bool TryGetFlag(string flagName, out bool enabled) => _flags.TryGetValue(flagName, out enabled);
 
     /// <summary>Memoises a flag value for the rest of the request.</summary>
-    /// <param name="flagName">The flag name.</param>
-    /// <param name="enabled">The resolved value.</param>
     public void SetFlag(string flagName, bool enabled) => _flags[flagName] = enabled;
 
     /// <summary>Counts one attempted flag read.</summary>
@@ -77,7 +75,6 @@ internal sealed class RequestScope
     public void CountSuccess() => SuccessfulEvaluations++;
 
     /// <summary>Records a decision about one document element.</summary>
-    /// <param name="decision">The decision.</param>
     public void Add(DocumentVisibilityDecision decision) => _decisions.Add(decision);
 
     /// <summary>

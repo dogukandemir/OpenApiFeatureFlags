@@ -6,15 +6,14 @@ namespace OpenApiFeatureFlags;
 /// </summary>
 /// <remarks>
 /// <para>
-/// This attribute is <b>documentation-only</b> (decision D2). It never changes runtime
+/// This attribute is <b>documentation-only</b>. It never changes runtime
 /// behaviour: a hidden operation is still served, and a hidden property is still
 /// serialised. Gating behaviour at runtime remains the job of the application, for
 /// example with <c>Microsoft.FeatureManagement</c>'s <c>[FeatureGate]</c>.
 /// </para>
 /// <para>
 /// When more than one attribute is applied to the same target, the flags are combined
-/// with <b>AND</b> semantics: the element is only documented when every flag is enabled
-/// (decision D3).
+/// with <b>AND</b> semantics: the element is only documented when every flag is enabled.
 /// </para>
 /// <para>
 /// The attribute is deliberately <b>not inherited</b>. Placing it on a base class must not

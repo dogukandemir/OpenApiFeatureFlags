@@ -9,13 +9,13 @@ namespace OpenApiFeatureFlags.OpenFeature;
 /// <remarks>
 /// <para>
 /// The default value passed to OpenFeature is <see langword="false"/>, which is what makes this
-/// adapter fail closed (D5) without any extra work: a flag the provider does not know, or a provider
+/// adapter fail closed without any extra work: a flag the provider does not know, or a provider
 /// that is not ready, evaluates to <see langword="false"/> and the element stays hidden.
 /// </para>
 /// <para>
 /// OpenFeature is asynchronous while document engines expose a synchronous pipeline, so the call is
 /// blocked on. That is the same trade-off as the Microsoft.FeatureManagement adapter, and the same
-/// open question Q4 applies: if a provider turns out to be genuinely slow, an async resolution path
+/// the same reasoning applies: if a provider turns out to be genuinely slow, an async resolution path
 /// is the answer rather than leaking tasks from a filter.
 /// </para>
 /// </remarks>
@@ -38,7 +38,7 @@ public sealed class OpenFeatureFlagSource : IFeatureFlagSource
     [SuppressMessage(
         "Design",
         "CA1031:Do not catch general exception types",
-        Justification = "Not catching here is deliberate: the core fails closed (D5) and the canary (D6) needs to see that the provider is unreachable.")]
+        Justification = "Not catching here is deliberate: the core fails closed and the canary needs to see that the provider is unreachable.")]
     public bool IsEnabled(string flagName)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(flagName);

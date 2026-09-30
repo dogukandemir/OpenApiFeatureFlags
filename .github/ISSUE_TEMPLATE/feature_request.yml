@@ -8,9 +8,9 @@ body:
     attributes:
       value: |
         Before you write: [`BACKLOG.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/BACKLOG.md)
-        records what has been decided (D1–D17), what was measured, and what is still open (Q1–Q6).
-        A proposal that contradicts a locked decision is welcome, but it needs to argue for changing
-        that decision rather than working around it.
+        records what has been decided, what was measured, and what is still open. A proposal that
+        contradicts a settled decision is welcome, but it needs to argue for changing that decision
+        rather than working around it.
 
   - type: textarea
     id: problem

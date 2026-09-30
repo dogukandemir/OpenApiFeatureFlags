@@ -5,7 +5,7 @@ namespace OpenApiFeatureFlags;
 /// </summary>
 /// <remarks>
 /// A decision is always recorded, whether the element ends up hidden or annotated, because
-/// the decision list is what the structured log line reports (Phase 2). A non-empty
+/// the decision list is what the structured log line reports. A non-empty
 /// <see cref="Flags"/> list with <see cref="Hidden"/> set to <see langword="false"/> means
 /// the element was gated but every flag resolved to enabled.
 /// </remarks>

@@ -2,7 +2,7 @@ namespace OpenApiFeatureFlags;
 
 /// <summary>
 /// Turns feature-flag state into decisions about the generated document, and assembles those
-/// decisions into an engine-agnostic <see cref="DocumentVisibilityPlan"/> (decision D9).
+/// decisions into an engine-agnostic <see cref="DocumentVisibilityPlan"/>.
 /// </summary>
 /// <remarks>
 /// <para>
@@ -15,11 +15,10 @@ namespace OpenApiFeatureFlags;
 ///   <item><description><see cref="RecordDecision"/> for each element, so the plan can report what
 ///   happened.</description></item>
 ///   <item><description><see cref="CompleteDocument"/> once at the end, which returns the plan, logs
-///   a single summary line and enforces the canary guard from D6.</description></item>
+///   a single summary line and enforces the canary guard.</description></item>
 /// </list>
 /// <para>
-/// Implementations are registered as singletons, so they must hold no per-document state in fields
-/// (invariant 4).
+/// Implementations are registered as singletons, so they must hold no per-document state in fields.
 /// </para>
 /// </remarks>
 public interface IDocumentVisibilityPlanner
@@ -42,8 +41,8 @@ public interface IDocumentVisibilityPlanner
     /// adapters ask this instead.
     /// </para>
     /// <para>
-    /// Fail-closed (D5) and memoised per request, exactly like <see cref="IsHidden"/>; an unevaluable
-    /// flag counts towards the D6 canary.
+    /// Fail-closed and memoised per request, exactly like <see cref="IsHidden"/>; an unevaluable flag
+    /// counts towards the canary.
     /// </para>
     /// </remarks>
     /// <exception cref="ArgumentException"><paramref name="flagName"/> is null, empty or whitespace.</exception>
@@ -60,9 +59,9 @@ public interface IDocumentVisibilityPlanner
     /// and <see cref="DocumentMode.Include"/> this is always <see langword="false"/>.
     /// </returns>
     /// <remarks>
-    /// Flags are combined with <b>AND</b> semantics (D3): the element is hidden unless every flag is
-    /// enabled. A flag that cannot be evaluated is treated as disabled, so the document fails closed
-    /// (D5). Results are memoised for the current request.
+    /// Flags are combined with <b>AND</b> semantics: the element is hidden unless every flag is
+    /// enabled. A flag that cannot be evaluated is treated as disabled, so the document fails closed.
+    /// Results are memoised for the current request.
     /// </remarks>
     bool IsHidden(IReadOnlyList<string> flagNames);
 
@@ -74,7 +73,7 @@ public interface IDocumentVisibilityPlanner
 
     /// <summary>
     /// Finishes the current document generation: returns the plan, writes the single summary log
-    /// line and applies the D6 canary guard.
+    /// line and applies the canary guard.
     /// </summary>
     /// <returns>The plan for the document that just finished.</returns>
     /// <exception cref="FeatureFlagSourceUnavailableException">

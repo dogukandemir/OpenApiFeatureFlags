@@ -26,7 +26,7 @@ namespace OpenApiFeatureFlags.Swashbuckle;
 ///   nothing, so they keep the text and only strip the wrapper. Gating a sentence is a different
 ///   decision from annotating a document.</description></item>
 ///   <item><description>A gate with a <b>missing or empty</b> <c>flag</c> attribute cannot be evaluated,
-///   so it hides its content and warns — fail closed (D5).</description></item>
+///   so it hides its content and warns — fail closed.</description></item>
 ///   <item><description>An <b>unbalanced</b> opening gate hides the rest of the string and warns. A typo
 ///   must not become a leak.</description></item>
 /// </list>

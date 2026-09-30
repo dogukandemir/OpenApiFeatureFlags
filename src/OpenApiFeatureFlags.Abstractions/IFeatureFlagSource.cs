@@ -1,13 +1,12 @@
 namespace OpenApiFeatureFlags;
 
 /// <summary>
-/// The seam between the document engines and whatever evaluates feature flags
-/// (decision D8: the flag source is an independent axis from the document engine).
+/// The seam between the document engines and whatever evaluates feature flags.
 /// </summary>
 /// <remarks>
 /// The interface is synchronous because every supported document engine generates its
 /// document synchronously. Flag providers that are async-only are adapted by their
-/// integration package, not by widening this contract (open question Q4).
+/// integration package, not by widening this contract.
 /// </remarks>
 public interface IFeatureFlagSource
 {
@@ -18,7 +17,7 @@ public interface IFeatureFlagSource
     /// <returns><see langword="true"/> when the flag is enabled; otherwise <see langword="false"/>.</returns>
     /// <remarks>
     /// Throwing is a supported response. Callers treat any exception as "not enabled" so the
-    /// document fails closed (decision D5): an unreachable flag source must hide unreleased
+    /// document fails closed: an unreachable flag source must hide unreleased
     /// surface, never leak it.
     /// </remarks>
     bool IsEnabled(string flagName);

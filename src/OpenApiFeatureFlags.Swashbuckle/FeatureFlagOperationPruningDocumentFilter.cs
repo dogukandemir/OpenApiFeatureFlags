@@ -10,14 +10,13 @@ namespace OpenApiFeatureFlags.Swashbuckle;
 /// </summary>
 /// <remarks>
 /// <para>
-/// This is "document filter (A)" from the design. It runs <b>before</b> any consumer processor that
-/// clears and rebuilds <c>Paths</c>, because such a processor would otherwise re-add the operations
-/// that were just removed.
+/// It runs <b>before</b> any consumer processor that clears and rebuilds <c>Paths</c>, because such a
+/// processor would otherwise re-add the operations that were just removed.
 /// </para>
 /// <para>
 /// Property pruning happens here rather than in the schema filter because this filter runs after
 /// <i>every</i> schema filter, so a consumer filter that populates <c>required</c> cannot resurrect a
-/// removed property. That is the ordering trap recorded in BACKLOG.md 4.2.
+/// removed property.
 /// </para>
 /// <para>
 /// Every action is driven by a marker, so a document with no gated elements passes through
@@ -136,7 +135,7 @@ internal sealed class FeatureFlagOperationPruningDocumentFilter : IDocumentFilte
     /// <remarks>
     /// Two things put junk here: removing a property leaves its name behind, and a consumer schema
     /// filter written as <c>Required.Add(properties.FirstOrDefault(...).Key)</c> adds a literal
-    /// <see langword="null"/> when the property it wanted is already gone (BACKLOG.md 4.2).
+    /// <see langword="null"/> when the property it wanted is already gone.
     /// </remarks>
     private static void RemoveStaleRequiredEntries(OpenApiSchema schema)
     {

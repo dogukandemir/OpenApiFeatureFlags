@@ -1,7 +1,7 @@
 namespace OpenApiFeatureFlags;
 
 /// <summary>
-/// Describes how a feature flag affects the generated OpenAPI document (decision D4).
+/// Describes how a feature flag affects the generated OpenAPI document.
 /// </summary>
 public enum DocumentMode
 {

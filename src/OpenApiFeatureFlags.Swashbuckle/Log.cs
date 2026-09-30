@@ -28,7 +28,7 @@ internal static partial class Log
     [LoggerMessage(
         EventId = 104,
         Level = LogLevel.Warning,
-        Message = "OpenApiFeatureFlags found a <gate> element without a usable flag attribute and hid its content, so the document fails closed (D5). Element: {GateElement}")]
+        Message = "OpenApiFeatureFlags found a <gate> element without a usable flag attribute and hid its content, so the document fails closed. Element: {GateElement}")]
     public static partial void GateWithoutFlag(ILogger logger, string gateElement);
 
     [LoggerMessage(
@@ -40,6 +40,6 @@ internal static partial class Log
     [LoggerMessage(
         EventId = 106,
         Level = LogLevel.Warning,
-        Message = "OpenApiFeatureFlags found gates nested deeper than {MaxDepth} levels and hid the innermost content, so the document fails closed (D5). Nested text length: {Length}")]
+        Message = "OpenApiFeatureFlags found gates nested deeper than {MaxDepth} levels and hid the innermost content, so the document fails closed. Nested text length: {Length}")]
     public static partial void GateTooDeep(ILogger logger, int maxDepth, int length);
 }

@@ -22,7 +22,7 @@ public sealed class OpenFeatureFlagSourceTests
         var source = new OpenFeatureFlagSource(new FakeFeatureClient());
 
         // The adapter passes false as OpenFeature's default value, which is what makes it fail
-        // closed (D5) for free: an unknown flag cannot leak an element.
+        // closed for free: an unknown flag cannot leak an element.
         source.IsEnabled("never-configured").ShouldBeFalse();
     }
 

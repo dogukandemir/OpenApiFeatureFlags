@@ -63,7 +63,7 @@ public sealed class DescriptionGateResolverTests
     [Fact]
     public void AnUnclosedGateHidesTheRestOfTheText()
     {
-        // A typo must not become a leak (D5).
+        // A typo must not become a leak.
         NewResolver().Resolve("a<gate flag=\"f\">T and more").ShouldBe("a");
         NewResolver("f").Resolve("a<gate flag=\"f\">T and more").ShouldBe("aT and more");
     }

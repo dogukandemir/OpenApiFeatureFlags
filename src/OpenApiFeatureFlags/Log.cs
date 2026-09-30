@@ -38,6 +38,6 @@ internal static partial class Log
     [LoggerMessage(
         EventId = 4,
         Level = LogLevel.Warning,
-        Message = "OpenApiFeatureFlags could not evaluate the flag {FlagName}; treating it as disabled so the document fails closed (D5).")]
+        Message = "OpenApiFeatureFlags could not evaluate the flag {FlagName}; treating it as disabled so the document fails closed.")]
     public static partial void FlagUnreadable(ILogger logger, string flagName, Exception exception);
 }

@@ -8,7 +8,7 @@ namespace OpenApiFeatureFlags.Swashbuckle.Tests;
 
 /// <summary>
 /// <see cref="DocumentMode.Annotate"/> and <see cref="DocumentMode.Include"/>, plus the filter
-/// ordering contract from BACKLOG.md 4.2.
+/// ordering contract the adapter relies on.
 /// </summary>
 public sealed class SwashbuckleAdapterModeTests
 {
@@ -101,7 +101,7 @@ public sealed class SwashbuckleAdapterModeTests
     [Fact]
     public void OperationPruningRunsAfterAConsumerProcessorThatRebuildsPaths()
     {
-        // BACKLOG.md 4.2: a processor that clears and rebuilds Paths would re-add removed operations,
+        // A processor that clears and rebuilds Paths would re-add removed operations,
         // so operation pruning has to survive it. Registering our filters last is what guarantees it.
         var document = TestSwagger.Build(
             new StubFlagSource(),

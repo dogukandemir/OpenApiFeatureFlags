@@ -22,7 +22,6 @@ internal static class FeatureFlagExtensions
     public const string FlagAnnotation = "x-feature-flag";
 
     /// <summary>Marks an operation for removal.</summary>
-    /// <param name="operation">The operation.</param>
     public static void MarkForRemoval(this OpenApiOperation operation)
     {
         var extensions = operation.Extensions ??= new Dictionary<string, IOpenApiExtension>(StringComparer.Ordinal);
@@ -30,8 +29,6 @@ internal static class FeatureFlagExtensions
     }
 
     /// <summary>Annotates an operation with the flags that gate it.</summary>
-    /// <param name="operation">The operation.</param>
-    /// <param name="flagNames">The gating flags.</param>
     public static void AnnotateWithFlags(this OpenApiOperation operation, IReadOnlyList<string> flagNames)
     {
         var extensions = operation.Extensions ??= new Dictionary<string, IOpenApiExtension>(StringComparer.Ordinal);
@@ -39,36 +36,27 @@ internal static class FeatureFlagExtensions
     }
 
     /// <summary>Marks a schema for removal from its parent.</summary>
-    /// <param name="schema">The schema.</param>
     /// <returns><see langword="true"/> when the schema could be marked.</returns>
     public static bool TryMarkForRemoval(this IOpenApiSchema schema) =>
         TrySetExtension(schema, RemoveMarker, new JsonNodeExtension(JsonValue.Create(true)));
 
     /// <summary>Determines whether an operation is marked for removal.</summary>
-    /// <param name="operation">The operation.</param>
-    /// <returns><see langword="true"/> when it is marked.</returns>
     public static bool IsMarkedForRemoval(this OpenApiOperation operation) =>
         HasExtension(operation.Extensions, RemoveMarker);
 
     /// <summary>Determines whether a schema is marked for removal.</summary>
-    /// <param name="schema">The schema.</param>
-    /// <returns><see langword="true"/> when it is marked.</returns>
     public static bool IsMarkedForRemoval(this IOpenApiSchema? schema) =>
         HasExtension(ExtensionsOf(schema), RemoveMarker);
 
     /// <summary>Removes the internal marker from an operation.</summary>
-    /// <param name="operation">The operation.</param>
     public static void StripMarker(this OpenApiOperation operation) =>
         operation.Extensions?.Remove(RemoveMarker);
 
     /// <summary>Removes the internal marker from a schema.</summary>
-    /// <param name="schema">The schema.</param>
     public static void StripMarker(this IOpenApiSchema? schema) =>
         ExtensionsOf(schema)?.Remove(RemoveMarker);
 
     /// <summary>Builds a JSON array of flag names.</summary>
-    /// <param name="flagNames">The flag names.</param>
-    /// <returns>The JSON array.</returns>
     public static JsonArray ToJsonArray(IReadOnlyList<string> flagNames)
     {
         var array = new JsonArray();

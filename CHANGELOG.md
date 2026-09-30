@@ -12,7 +12,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
   `DocumentVisibilityPlan`.
 - `OpenApiFeatureFlags` — the engine-agnostic planner. AND semantics across attributes, fail-closed
   resolution, per-request memoisation through `HttpContext.Items`, one structured summary line per
-  document, and the D6 canary that refuses to publish a document whose every flag read failed.
+  document, and the canary that refuses to publish a document whose every flag read failed.
 - `OpenApiFeatureFlags.Swashbuckle` — operation, schema and document filters. Removes gated
   operations, parameters and schema properties; drops path items left empty, prunes properties left
   orphaned from `required`, sweeps unreferenced component schemas and prunes orphan tags. Emits
@@ -30,10 +30,11 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 
 ### Changed
 
-- The once-per-document summary line now says `flags involved` rather than `flags evaluated`. In
-  `Annotate` mode nothing is ever evaluated — the flag source is deliberately never consulted — so the
-  old wording claimed a provider call that had not happened, which is exactly the thing someone reads
-  that line to find out. `DocumentVisibilityPlan.ToLogSummary()` changed to match.
+- Log messages no longer carry internal decision numbers, and the once-per-document summary line says
+  `flags involved` rather than `flags evaluated`. In `Annotate` mode nothing is ever evaluated — the flag
+  source is deliberately never consulted — so the old wording claimed a provider call that had not
+  happened, which is exactly the thing someone reads that line to find out.
+  `DocumentVisibilityPlan.ToLogSummary()` changed to match.
 - The offline fallback scope — the one used when there is no `HttpContext`, such as `swagger tofile` —
   is now per-thread. It was a single instance shared by the singleton planner, so two concurrent
   document generations on that path could share memoised flag values and each other's decisions, which

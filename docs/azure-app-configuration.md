@@ -12,7 +12,7 @@ Azure App Configuration  ->  IConfiguration  ->  IFeatureManager  ->  IFeatureFl
    (the store)              (the provider)     (Microsoft)          (this library)
 ```
 
-The whole point of decision D8 is that these are two independent axes: the document engine is one, the
+The whole point is that these are two independent axes: the document engine is one, the
 flag source is the other. Azure is a *store behind* the flag source, so it needs no adapter of its own.
 
 ---
@@ -73,9 +73,7 @@ app.MapControllers();
 app.Run();
 ```
 
-The store's endpoint arrives as `Azure__AppConfiguration__Endpoint`, which is exactly the app setting
-recorded in [`BACKLOG.md`](../BACKLOG.md) Appendix A.2 — so the consumer's existing infrastructure
-needs no change.
+The store's endpoint arrives as the app setting `Azure__AppConfiguration__Endpoint`.
 
 ### Restricting which flags are pulled
 
@@ -105,7 +103,7 @@ to a fail-closed library.
 
 Same symptom, same silence, for a typo in the attribute (`"NewCheckout"` vs `"Newcheckout"`) or a
 `Label` that does not match the environment. Global configuration questions are answered by the log
-line, which tells you which flags were evaluated and how many elements were hidden:
+line, which tells you which flags were involved and how many elements were hidden:
 
 ```
 OpenApiFeatureFlags finished the document in mode Remove: 12 gated element(s) hidden, 0 published, flags involved NewCheckout.
@@ -118,8 +116,8 @@ treated as disabled or throws — check which way yours is set before assuming t
 ### 2. A partially rolled-out flag is hidden entirely
 
 Azure App Configuration flags can carry a `Targeting` filter (percentage, users, groups). This library
-asks a document-level question — "is this feature on?" — and a document is not tenant-scoped
-(decision D7). No `TargetingContext` is supplied, so targeting evaluates as not applicable and the
+asks a document-level question — "is this feature on?" — and a document is not tenant-scoped.
+No `TargetingContext` is supplied, so targeting evaluates as not applicable and the
 element stays hidden.
 
 That is deliberate: a 50 % rollout has no single correct answer for a published document. Early-access
@@ -128,13 +126,13 @@ merchants simply get no public docs for that surface until the flag is on for ev
 ### 3. A missing feature filter *does* fail loudly
 
 If a flag references a filter that is not registered, `IFeatureManager` throws rather than answering.
-The library treats that as not-enabled (fail closed, D5) and logs a warning per flag:
+The library treats that as not-enabled (fail closed) and logs a warning per flag:
 
 ```
-OpenApiFeatureFlags could not evaluate the flag {FlagName}; treating it as disabled so the document fails closed (D5).
+OpenApiFeatureFlags could not evaluate the flag {FlagName}; treating it as disabled so the document fails closed.
 ```
 
-If **every** read in a document fails, the canary from decision D6 aborts instead of publishing a
+If **every** read in a document fails, the canary aborts instead of publishing a
 document that is quietly missing released endpoints:
 
 ```
@@ -150,14 +148,12 @@ The offline export path (`swagger tofile`, or `OpenApiGenerateDocumentsOnBuild`,
 [sample](../samples/OpenApiFeatureFlags.Sample) uses) **builds the host**, so `AddAzureAppConfiguration`
 runs and the store is contacted during the build. Two consequences:
 
-- CI needs credentials for the store, or the export must fall back to a local toggle JSON. Appendix A.2
-  in [`BACKLOG.md`](../BACKLOG.md) records how a real application already does this with
-  `az appconfig --auth-mode login`.
+- CI needs credentials for the store, or the export must fall back to a local toggle JSON.
 - A flag flip changes the exported artifact, so the export belongs in a pipeline that re-runs when
   flags change — not in a one-off artifact you keep forever.
 
 If the store is unreachable at build time, every read fails and the canary fails the build. That is
-D6 doing its job: better a red pipeline than a published document missing released endpoints.
+The canary doing its job: better a red pipeline than a published document missing released endpoints.
 
 ---
 
@@ -194,4 +190,4 @@ served, that is a separate mechanism — `[FeatureGate]` from `Microsoft.Feature
 public IActionResult Checkout() => Ok();
 ```
 
-Two attributes, two jobs, and neither one silently does the other (decision D2).
+Two attributes, two jobs, and neither one silently does the other.

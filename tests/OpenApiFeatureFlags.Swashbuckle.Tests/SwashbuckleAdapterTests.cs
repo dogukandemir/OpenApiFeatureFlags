@@ -7,8 +7,8 @@ using Xunit;
 namespace OpenApiFeatureFlags.Swashbuckle.Tests;
 
 /// <summary>
-/// Phase 3 behaviours in <see cref="DocumentMode.Remove"/>: the default, and the one that fixes the
-/// original customer-facing problem.
+/// <see cref="DocumentMode.Remove"/> behaviours: the default mode, and the one that fixes the
+/// customer-facing problem this library exists for.
 /// </summary>
 public sealed class SwashbuckleAdapterTests
 {
@@ -112,7 +112,7 @@ public sealed class SwashbuckleAdapterTests
     [Fact]
     public void StripsStaleRequiredEntriesEvenWhenAnotherFilterAddedThem()
     {
-        // BACKLOG.md 4.2: a consumer schema filter written as
+        // A consumer schema filter written as
         // Required.Add(properties.FirstOrDefault(...).Key) adds a literal null once the property it
         // wanted has been removed. The adapter must not let that reach the published document.
         var document = TestSwagger.Build(
@@ -193,8 +193,8 @@ public sealed class SwashbuckleAdapterTests
     [Fact]
     public void FailsClosedWhenAFlagCannotBeRead()
     {
-        // D5: an unreadable flag hides the surface. The canary also fires here because the source is
-        // unreachable for every flag, which is the loud failure D6 wants.
+        // An unreadable flag hides the surface. The canary also fires here because the source is
+        // unreachable for every flag, which is the loud failure it exists for.
         Should.Throw<FeatureFlagSourceUnavailableException>(() => TestSwagger.Build(StubFlagSource.Unreachable()));
     }
 

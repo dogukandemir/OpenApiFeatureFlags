@@ -10,7 +10,7 @@ namespace OpenApiFeatureFlags;
 /// </summary>
 /// <remarks>
 /// Registered as a singleton because document engines construct their filters once and can only
-/// inject singletons (see BACKLOG.md 4.1). All per-document state therefore lives in
+/// inject singletons. All per-document state therefore lives in
 /// <see cref="RequestScope"/>.
 /// </remarks>
 [SuppressMessage(
@@ -85,7 +85,7 @@ public sealed class DocumentVisibilityPlanner : IDocumentVisibilityPlanner
 
         foreach (var flagName in flagNames)
         {
-            // AND semantics (D3): one disabled flag is enough to hide the element.
+            // AND semantics: one disabled flag is enough to hide the element.
             if (!IsFlagEnabled(flagName))
             {
                 return true;
@@ -122,7 +122,7 @@ public sealed class DocumentVisibilityPlanner : IDocumentVisibilityPlanner
 
         if (options.CanaryEnabled && scope.AttemptedEvaluations > 0 && scope.SuccessfulEvaluations == 0)
         {
-            // D6: failing closed is only safe while the flag source actually answers. If every read
+            // Failing closed is only safe while the flag source actually answers. If every read
             // failed, publishing would silently drop released endpoints.
             throw new FeatureFlagSourceUnavailableException(scope.AttemptedEvaluations);
         }
@@ -143,7 +143,7 @@ public sealed class DocumentVisibilityPlanner : IDocumentVisibilityPlanner
     [SuppressMessage(
         "Design",
         "CA1031:Do not catch general exception types",
-        Justification = "Fail-closed (D5) is a stated invariant: any failure to read a flag must hide the element, never leak it.")]
+        Justification = "Fail-closed is a stated invariant: any failure to read a flag must hide the element, never leak it.")]
     private bool Evaluate(string flagName, RequestScope scope)
     {
         scope.CountAttempt();

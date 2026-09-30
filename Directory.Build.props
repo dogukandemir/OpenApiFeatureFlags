@@ -2,7 +2,7 @@
 
   <!-- =====================================================================
        Common build settings for every project in the repository.
-       See BACKLOG.md Phase 0. Decisions D13/D14/D16 are enforced here.
+       The licence, the supported frameworks and the tracked public API are enforced here.
        ===================================================================== -->
 
   <PropertyGroup>
@@ -25,12 +25,11 @@
     <RollForward>LatestMajor</RollForward>
   </PropertyGroup>
 
-  <!-- Package metadata (D11, D13, D16). -->
+  <!-- Package metadata. -->
   <PropertyGroup>
-    <!-- Open question Q1: stay pre-1.0 while the Swashbuckle adapter ordering is being proven.
-         0.1.0 was the first cut; 0.2.0 adds description gating. Bumping this is also what keeps a
-         local re-pack from colliding with NuGet's version cache. The attribute name is a permanent
-         contract either way. -->
+    <!-- Pre-1.0 while the Swashbuckle integration settles. 0.1.0 was the first cut; 0.2.0 adds
+         description gating. Bumping this is also what keeps a local re-pack from colliding with
+         NuGet's version cache. -->
     <VersionPrefix>0.2.0</VersionPrefix>
     <!-- Authors is what nuget.org renders as "Authors". nuget.org's separate *Owners* list is
          derived from the account that pushed the package plus the reserved prefix, and cannot be
@@ -52,7 +51,7 @@
          default. Phase 6 adds a real one together with the first release. -->
   </PropertyGroup>
 
-  <!-- The public surface is a permanent contract, so it is tracked explicitly (D16). -->
+  <!-- The public surface is a permanent contract, so it is tracked explicitly. -->
   <ItemGroup Condition="'$(IsPackable)' == 'true'">
     <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" />

@@ -34,7 +34,7 @@ public sealed class AttributeUsageTests
             .Select(a => a.FlagName)
             .ToArray();
 
-        // Multiple attributes mean AND semantics (D3): every flag must be enabled.
+        // Multiple attributes mean AND semantics: every flag must be enabled.
         flags.ShouldBe(["feature-exists", "present-value"], ignoreOrder: true);
     }
 

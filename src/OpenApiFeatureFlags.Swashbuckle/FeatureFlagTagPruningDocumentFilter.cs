@@ -11,14 +11,13 @@ namespace OpenApiFeatureFlags.Swashbuckle;
 /// </summary>
 /// <remarks>
 /// <para>
-/// This is "document filter (B)" from the design. It must be registered <b>after</b> any consumer
-/// processor that clears and rebuilds <c>Tags</c>, otherwise that processor will re-add the tags this
-/// filter just removed (BACKLOG.md 4.2).
+/// It must be registered <b>after</b> any consumer processor that clears and rebuilds <c>Tags</c>,
+/// otherwise that processor will re-add the tags this filter just removed.
 /// </para>
 /// <para>
 /// It is also the only place that calls
 /// <see cref="IDocumentVisibilityPlanner.CompleteDocument"/>, which guarantees exactly one summary
-/// log line and one canary check per document generation (D6).
+/// log line and one canary check per document generation.
 /// </para>
 /// </remarks>
 internal sealed class FeatureFlagTagPruningDocumentFilter : IDocumentFilter
@@ -69,8 +68,8 @@ internal sealed class FeatureFlagTagPruningDocumentFilter : IDocumentFilter
     /// Publishes the document-level flag map used by portals in <see cref="DocumentMode.Annotate"/>.
     /// </summary>
     /// <remarks>
-    /// The exact shape is still open (question Q3); today it is an <c>x-feature-flag</c> array of
-    /// every flag that governs the document, mirroring the per-operation value.
+    /// An <c>x-feature-flag</c> array of every flag that governs the document, mirroring the
+    /// per-operation value.
     /// </remarks>
     private static void AnnotateDocument(OpenApiDocument document, DocumentVisibilityPlan plan)
     {

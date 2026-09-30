@@ -4,9 +4,9 @@ using Xunit;
 namespace OpenApiFeatureFlags.Tests;
 
 /// <summary>
-/// Guards decision D10 / invariant 1: the contract assembly must stay dependency-free so that
-/// contract projects can carry the attribute without being forced onto Swashbuckle or a
-/// feature-flag library. These tests exist so a future PR cannot regress it.
+/// Guards the isolation of the contract assembly: it must stay dependency-free so that contract
+/// projects can carry the attribute without being forced onto Swashbuckle or a feature-flag library.
+/// These tests exist so a future change cannot regress it.
 /// </summary>
 public sealed class AssemblyIsolationTests
 {
@@ -29,7 +29,7 @@ public sealed class AssemblyIsolationTests
             .ToArray();
 
         offenders.ShouldBeEmpty(
-            $"OpenApiFeatureFlags.Abstractions must stay dependency-free (D10) but references: {string.Join(", ", offenders)}");
+            $"OpenApiFeatureFlags.Abstractions must stay dependency-free but references: {string.Join(", ", offenders)}");
     }
 
     [Fact]

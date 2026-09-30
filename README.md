@@ -165,8 +165,8 @@ See [`docs/modes.md`](docs/modes.md) for output samples.
 
 **It never changes runtime behaviour.** Hiding an operation from the document leaves the endpoint
 routeable; hiding a property leaves it serialised. A documentation decision must not silently become
-a behaviour change, and this is the one rule the design refuses to bend — see decision D2 in
-[`BACKLOG.md`](BACKLOG.md). Runtime gating stays in your application code.
+a behaviour change, and this is the one rule the design refuses to bend. Runtime gating stays in your
+application code.
 
 **So do not use it to protect an endpoint.** Gating makes unreleased surface less discoverable; it is
 not an access control, and it cannot unpublish a document that has already been served. Authentication
@@ -207,7 +207,7 @@ method's XML docs.
 - [`docs/security.md`](docs/security.md) — what gating does and does not protect, what `Annotate`
   discloses, and the availability trade-offs.
 - [`samples/OpenApiFeatureFlags.Sample`](samples/OpenApiFeatureFlags.Sample) — a runnable API.
-- [`BACKLOG.md`](BACKLOG.md) — the design decisions (D1–D17), the measured facts and what is left.
+- [`BACKLOG.md`](BACKLOG.md) — the design decisions, the measured facts and what is left.
 
 ## Project
 
