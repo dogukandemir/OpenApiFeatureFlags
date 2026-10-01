@@ -22,7 +22,7 @@
          consumers may resolve, so it needs a reason.
          Microsoft.OpenApi 3.x is a different, binary-incompatible line: using it produces
          MissingMethodException at document generation time, not a compile error. -->
-    <PackageVersion Include="Microsoft.OpenApi" Version="2.7.5" />
+    <PackageVersion Include="Microsoft.OpenApi" Version="2.12.2" />
     <!-- Only a package some project actually references is pinned here. Swashbuckle.AspNetCore.Swagger
          and .SwaggerUI arrive transitively through the metapackage; NSwag.AspNetCore is still unused.
          A pin for a package no project builds only asks Dependabot to raise pull requests for it. -->
