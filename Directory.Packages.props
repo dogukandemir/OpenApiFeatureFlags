@@ -15,7 +15,11 @@
     <!-- Swashbuckle 10.2.3 ships net8.0/net9.0/net10.0 (verified). -->
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="10.2.3" />
     <PackageVersion Include="Swashbuckle.AspNetCore.SwaggerGen" Version="10.2.3" />
-    <!-- Must match what Swashbuckle.AspNetCore.Swagger 10.2.3 depends on (checked in its nuspec).
+    <!-- The Swashbuckle adapter references this package directly, so this pin is what
+         OpenApiFeatureFlags.Swashbuckle publishes as its dependency floor. 2.7.5 is a deliberately low
+         floor, not a match for Swashbuckle's own: its nuspec declares the version unbracketed, which
+         NuGet reads as "or later", so any 2.x above this would do as well. Raising the pin narrows what
+         consumers may resolve, so it needs a reason.
          Microsoft.OpenApi 3.x is a different, binary-incompatible line: using it produces
          MissingMethodException at document generation time, not a compile error. -->
     <PackageVersion Include="Microsoft.OpenApi" Version="2.7.5" />

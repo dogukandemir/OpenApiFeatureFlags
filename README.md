@@ -16,8 +16,8 @@ the generated document once the flag is enabled — using the same flags the run
 public IActionResult Checkout() => Ok();
 ```
 
-With `NewCheckout` off, `/api/orders/checkout` is **not** in `swagger.json`. With it on, it is. No
-restart, no rebuild, no conditional compilation.
+With `NewCheckout` off, `/api/orders/checkout` is **not** in the generated document. With it on, it
+is. No restart, no rebuild, no conditional compilation.
 
 Multi-targets `net8.0`, `net9.0` and `net10.0`. Both document engines are supported — Swashbuckle, and
 the built-in `Microsoft.AspNetCore.OpenApi` through a `net10.0`-only package — and flags can come from
@@ -48,7 +48,7 @@ leave it out if you are implementing `IFeatureFlagSource` yourself.
 |---|---|
 | `OpenApiFeatureFlags` | Core: the planner and the service registration. |
 | `OpenApiFeatureFlags.Swashbuckle` | Swashbuckle filter set. Add this if you use `AddSwaggerGen`. |
-| `OpenApiFeatureFlags.AspNetCore` | Transformer set for the built-in `Microsoft.AspNetCore.OpenApi`. Add this if you use `AddOpenApi`. **`net10.0` only**, and it cannot share an application with the Swashbuckle adapter. |
+| `OpenApiFeatureFlags.AspNetCore` | Transformer set for the built-in `Microsoft.AspNetCore.OpenApi`. Add this if you use `AddOpenApi`. **`net10.0` only**. |
 | `OpenApiFeatureFlags.FeatureManagement` | Reads flags from Microsoft's `IFeatureManager`. |
 | `OpenApiFeatureFlags.OpenFeature` | Reads flags through the CNCF [OpenFeature](https://openfeature.dev) standard. |
 | `OpenApiFeatureFlags.Abstractions` | Attribute and contracts only. Reference this from assemblies that must not take a dependency on Swashbuckle or a flag library. |

@@ -38,8 +38,12 @@ updates:
           - patch
 
     # Microsoft.OpenApi 3.x is a different, binary-incompatible API line. Bumping it does not fail the
-    # build: it fails at document generation time with MissingMethodException, because
-    # Swashbuckle.AspNetCore.Swagger depends on 2.7.5 exactly (docs/design.md 4.4).
+    # build: it fails at document generation time with MissingMethodException.
+    #
+    # For whoever weighs a 2.x proposal: Swashbuckle.AspNetCore.Swagger accepts 2.7.5 *or later*, and
+    # the central pin is not only this repo's build input - the Swashbuckle adapter references the
+    # package directly, so the pin is what that package publishes as its own dependency floor. Raising
+    # it is consumer-visible and needs a reason (docs/design.md 4.4).
     #
     # Ignoring *major* updates is the precise rule: 2.x minors and patches still arrive, which is what
     # we want to hear about, and 3.x and later never do. It also avoids spelling the range in NuGet's

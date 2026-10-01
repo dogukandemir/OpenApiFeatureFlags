@@ -70,11 +70,11 @@ not, and this is recorded here rather than left to be discovered.
 ## `net10.0` only, and why
 
 This adapter targets `net10.0` and no earlier framework. That is a cost, not an oversight, and the
-reason is a version wall rather than an API one:
+reason is the document model rather than the framework:
 
 | Engine | Its `Microsoft.OpenApi` dependency | Document model |
 |---|---|---|
-| `Swashbuckle.AspNetCore.Swagger` 10.2.3 | `2.7.5` (exact) | 2.x |
+| `Swashbuckle.AspNetCore.Swagger` 10.2.3 | `>= 2.7.5` | 2.x |
 | `Microsoft.AspNetCore.OpenApi` 10.0.x | `[2.12.0, 3.0.0)` | 2.x |
 | `Microsoft.AspNetCore.OpenApi` 9.0.x | `1.6.17` | 1.x |
 | `Microsoft.AspNetCore.OpenApi` 8.0.x | `1.4.3` | 1.x |
@@ -84,10 +84,13 @@ Two consequences, both measured rather than reasoned about:
 - The 8.x and 9.x lines sit on the **1.x** model (`Microsoft.OpenApi.Models.*`) while 10.x sits on the
   2.x model, so this is not one source file across three target frameworks — it would be three
   implementations. One of them is shipped.
-- 10.x floors `Microsoft.OpenApi` at **2.12.0** and Swashbuckle 10.2.3 requires exactly **2.7.5**, so
-  **a Swashbuckle adapter and this adapter cannot be used in the same application.** Pick one document
-  engine per application. They can coexist in one *solution*: the two engines resolve their own
-  versions in their own projects.
+- The two ranges overlap: `[2.12.0, 3.0.0)` satisfies both this engine's floor and Swashbuckle 10.2.3's
+  `>= 2.7.5`, so one 2.x `Microsoft.OpenApi` can serve both engines, and nothing in the dependency graph
+  stops an application referencing both adapters. An earlier revision of this page said the opposite,
+  having read Swashbuckle's unbracketed `2.7.5` as an exact pin; [`design.md`](design.md) 4.4 records the
+  measurement that settled it. One application registering both engines is still untested, so this page
+  now claims neither way. Pick one document engine per application because you serve one document, not
+  because the dependencies forbid it.
 
 If you are on .NET 8 or .NET 9, use `OpenApiFeatureFlags.Swashbuckle`; the 9.x engine's document model
 is a different set of types and this adapter does not build against it.

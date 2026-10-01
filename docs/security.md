@@ -29,11 +29,11 @@ gate *before* the first release rather than after.
 
 ### It does not defeat caching
 
-Swashbuckle generates the document per request and does not cache it, so a flag flip is reflected on
-the next request. Anything you put in front of it is a different story:
+Both engines build the document on the request that asks for it and do not cache it, so a flag flip
+is reflected on the next request. Anything you put in front of it is a different story:
 
-- An HTTP cache that stores `swagger.json` will keep serving the old document until it expires. If you
-  gate something, the cached copy keeps advertising it.
+- An HTTP cache that stores the document will keep serving the old one until it expires. If you gate
+  something, the cached copy keeps advertising it.
 - A CDN or reverse proxy behaves the same way, and can serve one tenant's document to another if the
   response is cached without varying on whatever identifies the tenant.
 
@@ -96,9 +96,9 @@ released surface.
 
 ### A slow flag provider slows down document generation
 
-Flags are evaluated while the document is being built, which for `swagger.json` is a request. A
-provider that blocks on network I/O adds that latency to the request, and a per-flag round trip adds
-it once per flag.
+Flags are evaluated while the document is being built, and that build happens on the request that
+fetches the document. A provider that blocks on network I/O adds that latency to the request, and a
+per-flag round trip adds it once per flag.
 
 Memoisation limits this: each flag is read at most once per request. The default adapters additionally
 lean on the caching the underlying SDK already does. If your provider is genuinely slow, the answer

@@ -49,11 +49,12 @@ jobs:
       # test application, so the target framework is passed as an MSBuild property.
       #
       # Projects are tested one at a time so that one which does not target the matrix
-      # framework can be skipped. OpenApiFeatureFlags.AspNetCore is net10.0 only by
-      # necessity - the engine's 10.x line cannot coexist with Swashbuckle's exact
-      # Microsoft.OpenApi 2.7.5 (docs/design.md 4.4) - and forcing net8.0 onto it is
-      # NETSDK1005, a configuration error rather than a test failure, which would drown
-      # out the signal this matrix exists to give.
+      # framework can be skipped. OpenApiFeatureFlags.AspNetCore is net10.0 only because
+      # the engine's 8.x and 9.x lines sit on the Microsoft.OpenApi 1.x document model, a
+      # different set of types, so multi-targeting it would mean three implementations
+      # (docs/design.md 4.4). Forcing net8.0 onto it is NETSDK1005, a configuration error
+      # rather than a test failure, which would drown out the signal this matrix exists to
+      # give.
       - name: Test (${{ matrix.tfm }})
         shell: bash
         run: |

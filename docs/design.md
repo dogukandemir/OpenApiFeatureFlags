@@ -133,7 +133,7 @@ The package version and the assembly version do not agree, and the majors are no
 
 | Consumer | Its `Microsoft.OpenApi` dependency | Model shape |
 |---|---|---|
-| `Swashbuckle.AspNetCore.Swagger` 10.2.3 | `2.7.5` (exact) | `Microsoft.OpenApi.IOpenApiSchema`, `OpenApiExtensibleDictionary<T>` |
+| `Swashbuckle.AspNetCore.Swagger` 10.2.3 | `>= 2.7.5` | `Microsoft.OpenApi.IOpenApiSchema`, `OpenApiExtensibleDictionary<T>` |
 | `Microsoft.AspNetCore.OpenApi` 10.0.x | `[2.12.0, 3.0.0)` | the same 2.x line |
 | `Microsoft.AspNetCore.OpenApi` 9.0.x | `1.6.17` | `Microsoft.OpenApi.Models.*` |
 | `Microsoft.AspNetCore.OpenApi` 8.0.x | `1.4.3` | `Microsoft.OpenApi.Models.*` |
@@ -143,13 +143,23 @@ Consequences, all observed rather than reasoned about:
 - Pinning `Microsoft.OpenApi` to the newest package (3.10.2) does **not** fail the build. It fails at
   *document generation time* with `MissingMethodException: Microsoft.OpenApi.IOpenApiRequestBody.get_Content()`.
   Alias the version to what the engine actually depends on.
-- A Swashbuckle adapter and an ASP.NET Core `Microsoft.AspNetCore.OpenApi` adapter **cannot share one
-  `Microsoft.OpenApi` version**: 10.x floors at 2.12.0 while Swashbuckle 10.2.3 needs 2.7.5. Confirmed
-  in practice by `OpenApiFeatureFlags.AspNetCore`: the two engines **cannot coexist in one application**,
-  though they coexist fine in one solution because each project resolves its own copy and
-  `CentralPackageTransitivePinningEnabled` is `false`. The adapter therefore references the engine
-  without a `Microsoft.OpenApi` reference of its own — an explicit one would take the centrally pinned
-  2.7.5 and fail restore.
+- **Corrected 2026-10-01.** This bullet previously read Swashbuckle 10.2.3's unbracketed `2.7.5` as an
+  exact pin, and concluded from it that a Swashbuckle adapter and an ASP.NET Core
+  `Microsoft.AspNetCore.OpenApi` adapter **cannot share one `Microsoft.OpenApi` version** and **cannot
+  coexist in one application**. Unbracketed means *minimum*, not pin: with the central pin raised to
+  2.12.2, NuGet resolves 2.12.2 for `Swashbuckle.AspNetCore.Swagger` as well, and the whole suite passes
+  — including the Swashbuckle adapter's byte-identical golden-document tests. `[2.12.0, 3.0.0)`
+  therefore demonstrably satisfies both engines. One application registering both engines is still
+  unmeasured, so this section now asserts neither way. The pin nonetheless stays at 2.7.5: because the
+  Swashbuckle adapter references `Microsoft.OpenApi` directly, the central pin is what
+  `OpenApiFeatureFlags.Swashbuckle` *publishes as its dependency floor*, and narrowing that for a bump
+  with no functional gain is a bad trade.
+- `OpenApiFeatureFlags.AspNetCore` references the engine without a `Microsoft.OpenApi` reference of its
+  own, which is why two engines sit in one solution without a restore conflict: each project resolves
+  its own copy and `CentralPackageTransitivePinningEnabled` is `false`, so the ASP.NET Core project
+  takes the engine's transitive `2.12.0` while Swashbuckle keeps `2.7.5`. An explicit reference here
+  would take the central pin instead and fail restore against the engine's `[2.12.0, 3.0.0)` floor;
+  `VersionOverride` is the tool if one is ever wanted.
 - net8.0 and net9.0 are on the 1.x model, so an ASP.NET Core adapter is not one source file across the
   three target frameworks; it is three implementations. Only the 10.x one ships.
 - Dependabot is configured to ignore *major* updates of `Microsoft.OpenApi` (`.github/dependabot.yml`),
@@ -237,7 +247,8 @@ what this repo uses.
 - **`OpenApiFeatureFlags.AspNetCore`** — a transformer set for the built-in
   `Microsoft.AspNetCore.OpenApi`. The prediction below held and is now measured: 10.0.12 is `net10.0`
   only and depends on `Microsoft.OpenApi` `[2.12.0, 3.0.0)`, so the **`net10.0`-only** package is what
-  was built, and it cannot share an application with the Swashbuckle adapter. Two further facts were
+  was built. The claim that it cannot share an application with the Swashbuckle adapter was wrong, and
+  4.4 records the correction. Two further facts were
   discovered while building it and are recorded in [`aspnetcore.md`](aspnetcore.md) rather than here:
   the engine's XML-comment support fails the build with CS9137 unless the project opts into
   `Microsoft.AspNetCore.OpenApi.Generated` interceptors, and a minimal API's *parameter* cannot be

@@ -11,9 +11,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
   document engine, as three transformers. Gated operations, parameters and schema properties behave
   as they do under Swashbuckle, `Annotate` and `Include` mean the same thing, and `<gate>` works in
   descriptions identically. It is **`net10.0` only**, and that is a documented cost rather than an
-  oversight: this engine's 10.x line floors `Microsoft.OpenApi` at 2.12.0, while Swashbuckle 10.2.3
-  requires exactly 2.7.5, so the two engines cannot coexist in one process and the adapter cannot be
-  multi-targeted onto the 1.x document model. See [`docs/aspnetcore.md`](docs/aspnetcore.md).
+  oversight: the engine's 8.x and 9.x lines sit on the `Microsoft.OpenApi` 1.x document model, which is
+  a different set of types, so covering them would mean a second implementation and only the 10.x one
+  ships. See [`docs/aspnetcore.md`](docs/aspnetcore.md).
 - The `<gate>` parser now lives in the core rather than in the Swashbuckle adapter, so both adapters
   share one implementation and cannot drift apart on quoting, nesting or unbalanced tags. This is an
   internal type: the public surface is unchanged.
