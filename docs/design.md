@@ -272,7 +272,7 @@ Scalar needs no adapter: it renders whatever JSON the engine produced.
 
 ### Open questions
 
-- **Q1: first version.** ✅ **Resolved 2026-09-30 → `0.1.0`.** `[OpenApiFeatureFlag]` is a permanent
+- **Q1: first version.** **Resolved 2026-09-30 → `0.1.0`.** `[OpenApiFeatureFlag]` is a permanent
   contract either way, so the question was whether to make that promise now at `1.0.0`, or stay pre-1.0
   while the Swashbuckle adapter ordering is unproven. Staying pre-1.0, and `1.0.0` once it is. `0.1.0`
   rather than the `0.2.0` the tree carried before that first release: nothing had been published then, so
@@ -281,7 +281,7 @@ Scalar needs no adapter: it renders whatever JSON the engine produced.
   2026-10-01. By then `0.1.0` was a real release, so the two situations share only a number. Bumping the
   version carries a second benefit locally: it is what keeps a re-pack from colliding with NuGet's
   version cache.
-- **Q2: attribute name.** ✅ **Resolved 2026-09-30 → D17.** The type is `OpenApiFeatureFlagAttribute`
+- **Q2: attribute name.** **Resolved 2026-09-30 → D17.** The type is `OpenApiFeatureFlagAttribute`
   (`[OpenApiFeatureFlag("flagName")]`) and the mode enum is `DocumentMode`. `DocumentedWhenEnabled` was
   rejected because it is false in `Annotate` and `Include` mode, and because the `FeatureGate`-family
   names already mean "changes runtime behaviour" in this ecosystem (see §5.1).
