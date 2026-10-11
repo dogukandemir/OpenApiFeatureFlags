@@ -27,7 +27,7 @@ dotnet test
 ```
 
 Both must be clean. The build treats warnings as errors, and the test projects run on
-[Microsoft.Testing.Platform](https://aka.ms/dotnet-test-mtp-error) — that is why `global.json`
+[Microsoft.Testing.Platform](https://aka.ms/dotnet-test-mtp-error), which is why `global.json`
 selects the runner. In MTP mode, options that `dotnet test` does not recognise are forwarded to the
 test application, so avoid `--nologo` and friends; use `-p:TargetFramework=net8.0` to run one
 framework.
@@ -71,15 +71,15 @@ Two invariants that are easy to break by accident:
 
 Bug fixes and behaviours come with a test. Two tests are load-bearing and should not be weakened:
 
-- `WithNoGatedElementsTheDocumentIsByteIdentical` — with nothing gated, the library must be
+- `WithNoGatedElementsTheDocumentIsByteIdentical`: with nothing gated, the library must be
   invisible.
-- `GatedDocumentMatchesTheGoldenSnapshot` — the snapshot lives in
+- `GatedDocumentMatchesTheGoldenSnapshot`: the snapshot lives in
   `tests/OpenApiFeatureFlags.Swashbuckle.Tests/Golden/`. If a change legitimately alters the
   document, update the file in the same commit so the diff is reviewable.
 
 ## Reporting a problem
 
-Include the mode, the attribute placement, the log line from the `OpenApiFeatureFlags` category, and
-— for "something is still visible" — the relevant part of the generated document. The
+Include the mode, the attribute placement, the log line from the `OpenApiFeatureFlags` category, and,
+for "something is still visible", the relevant part of the generated document. The
 troubleshooting guide in [`docs/troubleshooting.md`](docs/troubleshooting.md) lists the questions
 worth answering up front.

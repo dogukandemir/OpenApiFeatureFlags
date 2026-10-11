@@ -114,7 +114,7 @@ public sealed class DocumentVisibilityPlan
     /// <returns><see langword="true"/> when the operation must be removed.</returns>
     public bool IsOperationHidden(OperationKey operation) => IsHidden(operation.ToString());
 
-    /// <summary>Determines whether the given schema member — a property — must be removed from the document.</summary>
+    /// <summary>Determines whether the given schema member (a property) must be removed from the document.</summary>
     /// <param name="member">The member to test.</param>
     /// <returns><see langword="true"/> when the member must be removed.</returns>
     public bool IsMemberHidden(MemberKey member) => IsHidden(member.ToString());
@@ -124,7 +124,7 @@ public sealed class DocumentVisibilityPlan
     /// <returns><see langword="true"/> when the parameter must be removed.</returns>
     /// <remarks>
     /// Separate from <see cref="IsMemberHidden"/> because a parameter is identified by its action as
-    /// well as its name — see <see cref="ParameterKey"/> for why that is not a detail.
+    /// well as its name; see <see cref="ParameterKey"/> for why that is not a detail.
     /// </remarks>
     public bool IsParameterHidden(ParameterKey parameter) => IsHidden(parameter.ToString());
 

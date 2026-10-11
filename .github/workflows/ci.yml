@@ -6,6 +6,12 @@ on:
   pull_request:
     branches: [ main ]
 
+# A newer push or pull-request update supersedes the previous in-flight run for the same ref:
+# the answer from the newest revision is the only one that matters.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 # Least privilege. CI only reads the repository, so it says so rather than inheriting whatever the
 # repository default happens to be (which for older repositories is read/write).
 permissions:
@@ -20,6 +26,7 @@ jobs:
   build-test:
     name: Build + test (${{ matrix.tfm }})
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     strategy:
       fail-fast: false
       matrix:
@@ -74,6 +81,7 @@ jobs:
   format:
     name: Formatting check (dotnet format)
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -91,6 +99,7 @@ jobs:
   pack:
     name: Packaging check (metadata and icon)
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -119,8 +128,35 @@ jobs:
           # silently stopped packing.
           test "$(find "${{ github.workspace }}/artifacts" -name '*.nupkg' | wc -l)" -eq 6
 
+          # Every package must carry the same version, and that version must be VersionPrefix:
+          # the six packages ship in lockstep, and a drift is cheaper to catch here than after a
+          # release. A project that overrode its version would land here.
+          version="$(dotnet msbuild Directory.Build.props -getProperty:VersionPrefix)"
+          drifted="$(find "${{ github.workspace }}/artifacts" -name '*.nupkg' ! -name "*.$version.nupkg")"
+          if [ -n "$drifted" ]; then
+            echo "::error::these packages do not match VersionPrefix $version:"
+            echo "$drifted"
+            exit 1
+          fi
+
       - name: Upload packages
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: nupkg
           path: ${{ github.workspace }}/artifacts/*.*nupkg
+
+  # Reviews the dependency diff of a pull request against the GitHub Advisory Database: a newly
+  # introduced dependency with any known advisory fails the check before it can be merged. This
+  # complements NuGet audit (build time, warnings-as-errors) and CodeQL (our own code rather than
+  # our dependency graph).
+  dependency-review:
+    name: Dependency review (pull requests)
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
+        with:
+          # The default is "low" already; it is stated because this check exists to make a
+          # dependency that arrives carrying an advisory argue for itself rather than merge quietly.
+          fail-on-severity: low

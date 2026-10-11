@@ -10,6 +10,11 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- NuGet audit: a known vulnerability anywhere in the dependency graph (direct or
+         transitive) is a warning, and warnings are errors here, so a vulnerable graph fails
+         the build rather than travelling onwards. -->
+    <NuGetAudit>true</NuGetAudit>
+    <NuGetAuditMode>all</NuGetAuditMode>
     <AnalysisLevel>latest-recommended</AnalysisLevel>
     <Deterministic>true</Deterministic>
     <AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>

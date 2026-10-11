@@ -98,7 +98,7 @@ These are the reason a flag source is configured deliberately rather than by cop
 `AddAzureAppConfiguration(...)` **without `UseFeatureFlags()`** selects no feature flags. Its
 `Select` for ordinary key-values does not pick up `Microsoft.AppConfiguration/FeatureFlag` settings.
 `IFeatureManager` therefore knows nothing, every flag reads as disabled, and **every gated element
-disappears** — with no error, because "the flag is missing" and "the flag is off" are the same answer
+disappears** with no error, because "the flag is missing" and "the flag is off" are the same answer
 to a fail-closed library.
 
 Same symptom, same silence, for a typo in the attribute (`"NewCheckout"` vs `"Newcheckout"`) or a
@@ -111,12 +111,12 @@ OpenApiFeatureFlags finished the document in mode Remove: 12 gated element(s) hi
 
 Twelve hidden from one flag is the signature of a store that answered nothing useful.
 `FeatureManagementOptions.IgnoreMissingFeatures` decides whether a missing *feature* is silently
-treated as disabled or throws — check which way yours is set before assuming this is a bug.
+treated as disabled or throws; check which way yours is set before assuming this is a bug.
 
 ### 2. A partially rolled-out flag is hidden entirely
 
 Azure App Configuration flags can carry a `Targeting` filter (percentage, users, groups). This library
-asks a document-level question — "is this feature on?" — and a document is not tenant-scoped.
+asks a document-level question ("is this feature on?") and a document is not tenant-scoped.
 No `TargetingContext` is supplied, so targeting evaluates as not applicable and the
 element stays hidden.
 
@@ -150,7 +150,7 @@ runs and the store is contacted during the build. Two consequences:
 
 - CI needs credentials for the store, or the export must fall back to a local toggle JSON.
 - A flag flip changes the exported artifact, so the export belongs in a pipeline that re-runs when
-  flags change — not in a one-off artifact you keep forever.
+  flags change, not in a one-off artifact you keep forever.
 
 If the store is unreachable at build time, every read fails and the canary fails the build. That is
 The canary doing its job: better a red pipeline than a published document missing released endpoints.
@@ -180,7 +180,7 @@ From `Microsoft.Extensions.Configuration.AzureAppConfiguration` 8.6.0 and
 ## Runtime gating is still your job
 
 This library only shapes the **document**. If the same flag must also stop the endpoint from being
-served, that is a separate mechanism — `[FeatureGate]` from `Microsoft.FeatureManagement.AspNetCore`,
+served, that is a separate mechanism: `[FeatureGate]` from `Microsoft.FeatureManagement.AspNetCore`,
 `IPolicyEvaluator`, or whatever the application already uses:
 
 ```csharp

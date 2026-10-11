@@ -17,7 +17,7 @@ is gated. See [`descriptions.md`](descriptions.md).
 
 ---
 
-## `Remove` — the default
+## `Remove` (the default)
 
 The gated element is not in the document at all. This is the mode that fixes the original problem: a
 customer reading the document can no longer see surface they cannot call.
@@ -71,7 +71,7 @@ With `NewCheckout` and `LoyaltyProgram` both off:
 
 Note what else happened, because these are the parts that are easy to get wrong:
 
-- `POST /api/orders/checkout` is gone, and so is the path item — an empty path is still published
+- `POST /api/orders/checkout` is gone, and so is the path item; an empty path is still published
   surface.
 - `loyaltyPoints` is gone from `Order`, but its siblings survived.
 - If `loyaltyPoints` had been in `required`, its name would have been removed from `required` too.
@@ -119,7 +119,7 @@ Two things it does that are worth knowing:
 - Nothing is removed, so the flag source cannot leak anything either. `Annotate` is the safe mode to
   start with.
 
-> The exact shape of the extensions is still open — see [`design.md`](design.md).
+> The exact shape of the extensions is still open; see [`design.md`](design.md).
 > Today it is an array of flag names, on gated operations and at the root. A gated **schema property**
 > is left unmarked, so a client can tell that a flag governs *something* in the document but not which
 > property it gates; the root array is where that flag name still appears.

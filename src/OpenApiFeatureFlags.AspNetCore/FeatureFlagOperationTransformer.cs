@@ -19,7 +19,7 @@ namespace OpenApiFeatureFlags.AspNetCore;
 /// <para>
 /// Two ways in, because the attribute arrives differently for the two kinds of endpoint. A controller
 /// action is inspected through its <see cref="MethodInfo"/>, which also carries the controller-level
-/// attribute and the parameter attributes. Everything else — minimal APIs — carries the attribute as
+/// attribute and the parameter attributes. Everything else (minimal APIs) carries the attribute as
 /// endpoint metadata, so the metadata is scanned instead. Without the second path a minimal API could
 /// only ever be gated by its document, which is not what <c>[OpenApiFeatureFlag]</c> promises.
 /// </para>

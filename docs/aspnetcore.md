@@ -1,8 +1,8 @@
 # The ASP.NET Core adapter
 
 `OpenApiFeatureFlags.AspNetCore` gates the document produced by the built-in
-`Microsoft.AspNetCore.OpenApi` document engine — the one behind `builder.Services.AddOpenApi()` and
-`app.MapOpenApi()` — instead of Swashbuckle.
+`Microsoft.AspNetCore.OpenApi` document engine (the one behind `builder.Services.AddOpenApi()` and
+`app.MapOpenApi()`) instead of Swashbuckle.
 
 Everything the library promises is unchanged: gated operations, parameters and model properties
 disappear from the document when their flag is off, `Annotate` marks them instead of hiding them, and
@@ -82,7 +82,7 @@ reason is the document model rather than the framework:
 Two consequences, both measured rather than reasoned about:
 
 - The 8.x and 9.x lines sit on the **1.x** model (`Microsoft.OpenApi.Models.*`) while 10.x sits on the
-  2.x model, so this is not one source file across three target frameworks — it would be three
+  2.x model, so this is not one source file across three target frameworks; it would be three
   implementations. One of them is shipped.
 - The two ranges overlap: `[2.12.0, 3.0.0)` satisfies both this engine's floor and Swashbuckle 10.3.0's
   `>= 2.7.5`, so one 2.x `Microsoft.OpenApi` can serve both engines, and nothing in the dependency graph
@@ -97,8 +97,8 @@ is a different set of types and this adapter does not build against it.
 
 ## XML comments need one extra line
 
-If your project emits XML documentation — `<GenerateDocumentationFile>true</GenerateDocumentationFile>`
-plus doc comments — and references `Microsoft.AspNetCore.OpenApi`, the build fails with:
+If your project emits XML documentation (`<GenerateDocumentationFile>true</GenerateDocumentationFile>`
+plus doc comments) and references `Microsoft.AspNetCore.OpenApi`, the build fails with:
 
 ```
 error CS9137: The 'interceptors' feature is not enabled in this namespace.
@@ -132,7 +132,7 @@ gating has XML documentation enabled by definition.
   back for a property that is already gone.
 - **Component schemas are collected after the transformers run.** The engine moves schemas into
   `components.schemas` only once every transformer has finished, so this adapter walks request and
-  response bodies as well — a walk over `components.schemas` alone would miss a schema that is still
+  response bodies as well: a walk over `components.schemas` alone would miss a schema that is still
   inline.
 
 ## Testing
@@ -141,6 +141,6 @@ Unlike Swashbuckle there is no `ISwaggerProvider` to resolve, so the only public
 document is to ask the endpoint that serves it. `tests/OpenApiFeatureFlags.AspNetCore.Tests` does this
 through `Microsoft.AspNetCore.TestHost`, which is also the position the transformers really run in.
 
-One thing that host makes visible: an exception thrown while generating the document — the canary, for
-instance — surfaces to the caller as the exception itself rather than as a 500 response. A deployed
+One thing that host makes visible: an exception thrown while generating the document (the canary, for
+instance) surfaces to the caller as the exception itself rather than as a 500 response. A deployed
 server turns the same exception into a 500.

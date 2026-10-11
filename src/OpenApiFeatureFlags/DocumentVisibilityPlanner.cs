@@ -26,7 +26,7 @@ public sealed class DocumentVisibilityPlanner : IDocumentVisibilityPlanner
 
     // The fallback for the path with no HttpContext (offline export). Per-thread on purpose: this
     // planner is a singleton, so a single shared instance would be mutated by two concurrent
-    // document generations at once — a data race on its dictionaries, and a way to publish one
+    // document generations at once: a data race on its dictionaries, and a way to publish one
     // document's decisions inside another. Document generation is synchronous, so one generation
     // sees the same scope from the first filter through to the summary line.
     private readonly ThreadLocal<RequestScope> _offlineScope = new(() => new RequestScope());

@@ -7,7 +7,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 
 ### Added
 
-- A package icon: the double toggle — square brackets around two switches, one on and one off —
+- A package icon: the double toggle (square brackets around two switches, one on and one off)
   in Solarized cyan. `assets/` holds the SVG source and the exported PNGs, and every package sets
   `PackageIcon`.
 
@@ -15,7 +15,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 
 - The readme inside the package no longer claims the ASP.NET Core adapter "cannot share an
   application with the Swashbuckle adapter". That was a misreading of Swashbuckle's minimum
-  `Microsoft.OpenApi` version, corrected on `main` after `0.2.0` shipped — and a readme that is
+  `Microsoft.OpenApi` version, corrected on `main` after `0.2.0` shipped. A readme that is
   inside a published package cannot be edited on nuget.org, so the correction needs this version.
 - The same readme's opening example no longer says `swagger.json`, which implied Swashbuckle; the
   document is engine-agnostic.
@@ -43,7 +43,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 
 ### Added
 
-- **`OpenApiFeatureFlags.AspNetCore`** — an adapter for the built-in `Microsoft.AspNetCore.OpenApi`
+- **`OpenApiFeatureFlags.AspNetCore`**: an adapter for the built-in `Microsoft.AspNetCore.OpenApi`
   document engine, as three transformers. Gated operations, parameters and schema properties behave
   as they do under Swashbuckle, `Annotate` and `Include` mean the same thing, and `<gate>` works in
   descriptions identically. It is **`net10.0` only**, and that is a documented cost rather than an
@@ -60,11 +60,11 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 
 - **Breaking:** `UseFeatureManagement()` is now `AddFeatureManagementFlagSource()`, and `UseOpenFeature()`
   is now `AddOpenFeatureFlagSource()`. Both extend `IServiceCollection`, where `Add*` is the convention
-  and `Use*` means middleware on an `IApplicationBuilder` — so the old names read as the wrong kind of
+  and `Use*` means middleware on an `IApplicationBuilder`, so the old names read as the wrong kind of
   call at the exact call site the documentation recommends.
 - The once-per-document summary line reports `{n} kept` where it reported `{n} published`.
-  "Published" was carrying two meanings at once — an element kept in the document, and the document
-  being served — which made `0 published` readable as "nothing was published".
+  "Published" was carrying two meanings at once (an element kept in the document, and the document
+  being served), which made `0 published` readable as "nothing was published".
   `DocumentVisibilityPlan.ToLogSummary()` changed with it.
 
 ### Fixed
@@ -96,13 +96,13 @@ First public release. All five packages ship together at this version.
 
 ### Added
 
-- `OpenApiFeatureFlags.Abstractions` — dependency-free contracts: `[OpenApiFeatureFlag]`,
+- `OpenApiFeatureFlags.Abstractions`: dependency-free contracts: `[OpenApiFeatureFlag]`,
   `DocumentMode`, `IFeatureFlagSource`, `OperationKey`, `MemberKey`, `DocumentVisibilityDecision` and
   `DocumentVisibilityPlan`.
-- `OpenApiFeatureFlags` — the engine-agnostic planner. AND semantics across attributes, fail-closed
+- `OpenApiFeatureFlags`: the engine-agnostic planner. AND semantics across attributes, fail-closed
   resolution, per-request memoisation through `HttpContext.Items`, one structured summary line per
   document, and the canary that refuses to publish a document whose every flag read failed.
-- `OpenApiFeatureFlags.Swashbuckle` — operation, schema and document filters. Removes gated
+- `OpenApiFeatureFlags.Swashbuckle`: operation, schema and document filters. Removes gated
   operations, parameters and schema properties; drops path items left empty, prunes properties left
   orphaned from `required`, sweeps unreferenced component schemas and prunes orphan tags. Emits
   `x-feature-flag` in `Annotate` mode.
@@ -110,9 +110,9 @@ First public release. All five packages ship together at this version.
   fragment of `summary`, `description`, `remarks` or any other text that reaches the document.
   Nested gates AND; a gate with no `flag` attribute fails closed; an unclosed gate hides the rest of
   the string. The wrapper is stripped in every mode, including `Include`.
-- `OpenApiFeatureFlags.FeatureManagement` — `FeatureManagerFlagSource` over `IFeatureManager`, plus the
+- `OpenApiFeatureFlags.FeatureManagement`: `FeatureManagerFlagSource` over `IFeatureManager`, plus the
   one-call `AddOpenApiFeatureFlagsWithFeatureManagement()` wiring.
-- `OpenApiFeatureFlags.OpenFeature` — `OpenFeatureFlagSource` over the CNCF `IFeatureClient`, plus the
+- `OpenApiFeatureFlags.OpenFeature`: `OpenFeatureFlagSource` over the CNCF `IFeatureClient`, plus the
   one-call `AddOpenApiFeatureFlagsWithOpenFeature()` wiring. Passes `false` as OpenFeature's default
   value, which is what makes it fail closed for free.
 - A runnable sample that generates its document at build time.
@@ -120,11 +120,11 @@ First public release. All five packages ship together at this version.
 ### Changed
 
 - Log messages no longer carry internal decision numbers, and the once-per-document summary line says
-  `flags involved` rather than `flags evaluated`. In `Annotate` mode nothing is ever evaluated — the flag
-  source is deliberately never consulted — so the old wording claimed a provider call that had not
+  `flags involved` rather than `flags evaluated`. In `Annotate` mode nothing is ever evaluated (the flag
+  source is deliberately never consulted), so the old wording claimed a provider call that had not
   happened, which is exactly the thing someone reads that line to find out.
   `DocumentVisibilityPlan.ToLogSummary()` changed to match.
-- The offline fallback scope — the one used when there is no `HttpContext`, such as `swagger tofile` —
+- The offline fallback scope (the one used when there is no `HttpContext`, such as `swagger tofile`)
   is now per-thread. It was a single instance shared by the singleton planner, so two concurrent
   document generations on that path could share memoised flag values and each other's decisions, which
   fails quietly by producing a wrong document rather than loudly by crashing.

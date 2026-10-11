@@ -19,7 +19,7 @@ public sealed class OpenApiFeatureFlagsOptions
     /// <para>
     /// Failing closed is only safe while the flag source is actually reachable. If the source
     /// is down, every flag reads as "disabled" and a fail-closed filter would quietly <i>delete
-    /// released endpoints</i> from a published document — the opposite of the bug this library
+    /// released endpoints</i> from a published document, the opposite of the bug this library
     /// fixes, and worse, because it is silent.
     /// </para>
     /// <para>

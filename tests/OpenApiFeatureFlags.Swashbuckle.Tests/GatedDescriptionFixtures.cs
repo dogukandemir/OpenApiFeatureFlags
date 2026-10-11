@@ -5,7 +5,7 @@ namespace OpenApiFeatureFlags.Swashbuckle.Tests;
 /// <summary>
 /// Fixtures whose XML doc comments contain <c>&lt;gate&gt;</c> fragments. The comments must be
 /// well-formed XML or the compiler rejects them (CS1570), which is why the unbalanced case is
-/// exercised through a consumer filter instead — see <c>DescriptionGateTests</c>.
+/// exercised through a consumer filter instead; see <c>DescriptionGateTests</c>.
 /// </summary>
 public sealed class GatedDescriptionModel
 {

@@ -1,7 +1,7 @@
 # Gating part of a description
 
 XML doc comments become `description` fields in the published document. Sometimes only *part* of that
-prose is gated — a sentence about a flag, a code sample for an unreleased parameter — and you cannot
+prose is gated (a sentence about a flag, a code sample for an unreleased parameter) and you cannot
 attach an attribute to half a sentence.
 
 Use `<gate>` for that:
@@ -52,7 +52,7 @@ a gate behaves as follows:
 | Mode | Gate with the flag enabled | Gate with the flag disabled |
 |---|---|---|
 | `Remove` | Inner text kept. | Inner text removed. |
-| `Annotate` | Inner text kept. | Inner text kept — `Annotate` never deletes prose. |
+| `Annotate` | Inner text kept. | Inner text kept: `Annotate` never deletes prose. |
 | `Include` | Inner text kept. | Inner text kept. |
 
 `Annotate` keeps the text because that mode's contract is that the document stays complete and gains
@@ -70,7 +70,7 @@ element is *malformed*, so always close it:
 /// <gate flag="LoyaltyProgram">…           // CS1570: the comment is no longer well-formed XML
 ```
 
-Self-closing is also valid — `<gate flag="LoyaltyProgram" />` hides nothing, which makes it useful
+Self-closing is also valid: `<gate flag="LoyaltyProgram" />` hides nothing, which makes it useful
 only as a scratch marker.
 
 You must have XML comments switched on for any of this to matter:
@@ -101,7 +101,7 @@ public int LoyaltyPoints { get; set; }
 ```
 
 With the flag off you publish "See `loyaltyPoints` for the points balance" and no `loyaltyPoints`.
-Detecting that would mean parsing English. The fix is the one you would write anyway — gate the
+Detecting that would mean parsing English. The fix is the one you would write anyway: gate the
 prose with the same flag, so the two travel together:
 
 ```csharp
@@ -123,5 +123,5 @@ Gate decisions use the same logger as the rest of the library:
 | `GateUnbalanced` | 105 | A `<gate>` was never closed; the remainder was hidden. |
 | `GateTooDeep` | 106 | Gates nested deeper than 32 levels; the innermost content was hidden. |
 
-Events 104 and 105 are warnings — they always mean the author made a mistake, so you will see them in
+Events 104 and 105 are warnings: they always mean the author made a mistake, so you will see them in
 your logs rather than wondering why prose vanished.

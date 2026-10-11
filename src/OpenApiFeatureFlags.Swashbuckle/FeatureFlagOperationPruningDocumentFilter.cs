@@ -20,7 +20,7 @@ namespace OpenApiFeatureFlags.Swashbuckle;
 /// </para>
 /// <para>
 /// Every action is driven by a marker, so a document with no gated elements passes through
-/// untouched — which is what makes the byte-identical regression test possible.
+/// untouched, which is what makes the byte-identical regression test possible.
 /// </para>
 /// </remarks>
 internal sealed class FeatureFlagOperationPruningDocumentFilter : IDocumentFilter

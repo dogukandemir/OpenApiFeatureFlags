@@ -17,7 +17,7 @@ body:
     attributes:
       label: The problem
       description: |
-        What are you unable to do today? Describe the situation rather than the solution — the best
+        What are you unable to do today? Describe the situation rather than the solution: the best
         fix for a described problem is often not the one either of us started with.
     validations:
       required: true

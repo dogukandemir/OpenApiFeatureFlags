@@ -32,7 +32,7 @@ Every package moves together, at the `VersionPrefix` in `Directory.Build.props`.
 for what changed in this cut. `OpenApiFeatureFlags.AspNetCore` targets `net10.0` only, so it does not
 appear in a `net8.0` or `net9.0` output path.
 
-`local-packages/` is gitignored — it is build output, not source.
+`local-packages/` is gitignored: it is build output, not source.
 
 ## Point a project at the feed
 
@@ -139,7 +139,7 @@ public sealed class WidgetsController : ControllerBase
 }
 ```
 
-Note `using OpenApiFeatureFlags;` — the attribute lives in namespace `OpenApiFeatureFlags`, not in a
+Note `using OpenApiFeatureFlags;`: the attribute lives in namespace `OpenApiFeatureFlags`, not in a
 namespace named after the package. The `OpenApiFeatureFlags.Swashbuckle` package brings it in
 transitively through `*.Abstractions`.
 
@@ -175,7 +175,7 @@ until you clear the cache:
 dotnet nuget locals global-packages --clear     # blunt; or delete the entry under %USERPROFILE%\.nuget\packages\openapifeatureflags
 ```
 
-The consumer's own `obj/project.assets.json` caching is the more common culprit — `dotnet restore
+The consumer's own `obj/project.assets.json` caching is the more common culprit: `dotnet restore
 --force` on the consumer, or delete its `obj` and `bin` folders.
 
 ## Avoiding a clash with the published release

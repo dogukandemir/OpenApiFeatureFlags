@@ -18,7 +18,7 @@ namespace OpenApiFeatureFlags.AspNetCore;
 /// </para>
 /// <para>
 /// Every action is driven by a marker or by text, so a document with no gated elements passes through
-/// untouched — which is what keeps an unconditional API byte-identical to one built without this
+/// untouched, which is what keeps an unconditional API byte-identical to one built without this
 /// library at all.
 /// </para>
 /// </remarks>
@@ -43,7 +43,7 @@ internal sealed class FeatureFlagDocumentTransformer : IOpenApiDocumentTransform
         RemoveMarkedOperations(document);
 
         // Gating a sentence is not the same decision as annotating a document, so gates resolve in
-        // every mode — and before CompleteDocument, so a fragment's flag counts towards the canary
+        // every mode, and before CompleteDocument, so a fragment's flag counts towards the canary
         // exactly like any other read.
         var resolver = new DescriptionGateResolver(_planner, _logger);
         ResolveDescriptions(document, resolver);
@@ -188,8 +188,8 @@ internal sealed class FeatureFlagDocumentTransformer : IOpenApiDocumentTransform
     /// </summary>
     /// <remarks>
     /// <see cref="FeatureFlagSchemaTransformer"/> cleans <c>required</c> as it removes each property,
-    /// but a consumer schema transformer registered after it runs later still and can add an entry back
-    /// — including a literal <see langword="null"/>, which is what
+    /// but a consumer schema transformer registered after it runs later still and can add an entry back,
+    /// including a literal <see langword="null"/>, which is what
     /// <c>Required.Add(Properties.FirstOrDefault(...).Key)</c> produces once the property is gone.
     /// This is the last pass over the document, so nothing runs after it.
     /// </remarks>

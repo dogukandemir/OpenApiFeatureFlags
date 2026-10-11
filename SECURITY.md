@@ -11,7 +11,7 @@ Use GitHub's private vulnerability reporting instead:
 
 That keeps the report private to you and the maintainer until an advisory is published. If you cannot
 use it for some reason, open an issue that says only "I have a security report and need a private
-channel" — with no details — and a private channel will be arranged.
+channel" (with no details), and a private channel will be arranged.
 
 A useful report includes what you did, what happened, what you expected, the affected version, and
 the smallest reproducer you can manage. A proof of concept is welcome; a working exploit against
@@ -40,11 +40,11 @@ Only the latest published version is supported.
 | Version | Supported |
 |---|---|
 | Latest published | Yes |
-| Anything older | No — upgrade |
+| Anything older | No: upgrade |
 
 ## Scope
 
-In scope — the published packages:
+In scope: the published packages:
 
 - `OpenApiFeatureFlags`
 - `OpenApiFeatureFlags.Abstractions`
@@ -77,7 +77,7 @@ matters for judging a report, so the guarantees are:
   leaves it routable. This is deliberate, and it is the one rule the design refuses to bend: a
   documentation decision must not silently become a security control. **Do not use this library to
   protect an endpoint.** Use authentication and authorization for that, and treat document gating as
-  what it is — keeping unreleased surface out of sight.
+  what it is: keeping unreleased surface out of sight.
 
 The one guarantee this library deliberately does **not** make is confidentiality of the document
 itself. If a document is reachable without authentication, everything the library chose to keep in it

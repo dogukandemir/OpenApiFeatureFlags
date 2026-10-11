@@ -12,7 +12,7 @@ Hiding a property leaves it serialised in responses. That is deliberate, and no 
 it: a documentation decision must not be able to silently become a security control.
 
 So: **do not use document gating to protect an endpoint.** If an endpoint must not be callable, do not
-call it — gate it at runtime with your own feature-flag check, and add authentication and
+call it. Gate it at runtime with your own feature-flag check, and add authentication and
 authorization on top. Treat what this library does as making unreleased surface *less discoverable*,
 which is a marketing and support problem, not a security boundary.
 
@@ -20,8 +20,8 @@ which is a marketing and support problem, not a security boundary.
 
 ### It does not unpublish anything that was already published
 
-Once a document has been served — to a customer, a partner, a CDN, a search engine, or a copy someone
-saved — gating an element later does not recall it. Google does not un-index a page because the
+Once a document has been served (to a customer, a partner, a CDN, a search engine, or a copy someone
+saved), gating an element later does not recall it. Google does not un-index a page because the
 document changed, and a customer who read the endpoint list last week still has it.
 
 If your document is public, treat everything that has ever appeared in it as public permanently, and
@@ -37,7 +37,7 @@ is reflected on the next request. Anything you put in front of it is a different
 - A CDN or reverse proxy behaves the same way, and can serve one tenant's document to another if the
   response is cached without varying on whatever identifies the tenant.
 
-If you serve the document to different audiences, set `Cache-Control` deliberately — typically
+If you serve the document to different audiences, set `Cache-Control` deliberately: typically
 `no-store` for authenticated audiences, or a short `max-age` if you accept staleness.
 
 ## What gating can reveal
@@ -58,7 +58,7 @@ Anyone who can read the document can read your flag names and see which endpoint
 to. If your flag names encode unreleased product plans (`NewCheckout`, `EnterpriseSsoTier`), that is a
 roadmap disclosure to whoever can reach the document.
 
-Use `Annotate` only where the audience is already allowed to know that much — an internal portal, or
+Use `Annotate` only where the audience is already allowed to know that much: an internal portal, or
 an authenticated document. Use `Remove` when the audience is not.
 
 `Include` mode publishes the entire document and evaluates nothing; it is the "off switch" and has the
@@ -75,7 +75,7 @@ OpenApiFeatureFlags finished the document in mode Remove: 3 gated element(s) hid
 
 Flag names are configuration, not secrets, but they travel wherever your logs travel. If logs are
 shipped to a third party, that is the same disclosure as `Annotate` mode. Raise the log level for the
-`OpenApiFeatureFlags` category if that matters to you — the summary line is the useful one during
+`OpenApiFeatureFlags` category if that matters to you. The summary line is the useful one during
 incident response, so consider keeping it and dropping `Debug`.
 
 ## Availability trade-offs
@@ -91,7 +91,7 @@ missing released endpoints.
 
 That is a deliberate trade: a broken document endpoint is loud and gets fixed, whereas a silently
 truncated document is quiet and gets shipped. If you would rather serve a possibly-truncated document
-than a 500, set `CanaryEnabled = false` — and accept that a provider outage then silently hides
+than a 500, set `CanaryEnabled = false`, and accept that a provider outage then silently hides
 released surface.
 
 ### A slow flag provider slows down document generation
@@ -102,7 +102,7 @@ per-flag round trip adds it once per flag.
 
 Memoisation limits this: each flag is read at most once per request. The default adapters additionally
 lean on the caching the underlying SDK already does. If your provider is genuinely slow, the answer
-is an async resolution path, as recorded in [`design.md`](design.md) — rather than something to
+is an async resolution path, as recorded in [`design.md`](design.md), rather than something to
 solve with a longer timeout.
 
 ### Blocking on asynchronous providers
@@ -110,7 +110,7 @@ solve with a longer timeout.
 `IFeatureFlagSource` is synchronous, and the document engine's pipeline is synchronous, so the
 `FeatureManagement` and `OpenFeature` adapters block on `Task` results. Under ASP.NET Core there is no
 `SynchronizationContext`, so this does not deadlock. If you host document generation somewhere that
-*does* have one — a desktop UI thread, or legacy ASP.NET — blocking there can deadlock, and that is a
+*does* have one (a desktop UI thread, or legacy ASP.NET), blocking there can deadlock, and that is a
 reason to implement `IFeatureFlagSource` yourself against a synchronous store rather than to use those
 adapters.
 
@@ -127,7 +127,7 @@ Useful when you are filling in a security questionnaire:
   anything, and does not persist anything. Per-request state lives in `HttpContext.Items` and dies
   with the request.
 - **It does not log request or response data.** The `<gate>` warnings log what you wrote: the
-  offending tag, and — for an unbalanced gate — the text from that tag to the end of the description.
+  offending tag, and, for an unbalanced gate, the text from that tag to the end of the description.
   That is markup from your own XML doc comments, not end-user data.
 - **It does not add middleware**, so it changes no request pipeline behaviour.
 
@@ -135,7 +135,7 @@ Useful when you are filling in a security questionnaire:
 
 | Situation | What to do |
 |---|---|
-| Public, unauthenticated document | `Remove` mode. Never `Annotate` — it discloses flag names. |
+| Public, unauthenticated document | `Remove` mode. Never `Annotate`: it discloses flag names. |
 | Authenticated document, internal audience | `Annotate` is reasonable. |
 | Endpoint must not be callable | Do not rely on this library. Gate at runtime and authorize properly. |
 | Document was public once | Assume the content is public forever. |

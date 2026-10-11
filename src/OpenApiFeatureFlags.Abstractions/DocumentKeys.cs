@@ -52,7 +52,7 @@ public readonly record struct OperationKey
 }
 
 /// <summary>
-/// Identifies a schema member — a property — by its CLR origin.
+/// Identifies a schema member (a property) by its CLR origin.
 /// </summary>
 /// <remarks>
 /// Keying on the CLR type and member name rather than on the emitted JSON name is what makes
@@ -95,7 +95,7 @@ public sealed record MemberKey
 /// <para>
 /// A parameter is <b>not</b> a member of its declaring type: it belongs to a method. Keying one by type
 /// and name alone collides as soon as two actions on one controller declare a parameter of the same
-/// name — <c>id</c>, <c>scope</c>, <c>request</c> — and a collision here is not cosmetic.
+/// name (<c>id</c>, <c>scope</c>, <c>request</c>), and a collision here is not cosmetic.
 /// <see cref="DocumentVisibilityPlan"/> aggregates its decisions by key, so the two elements merge into
 /// one: the plan under-counts, and a query about either of them answers for the other.
 /// </para>

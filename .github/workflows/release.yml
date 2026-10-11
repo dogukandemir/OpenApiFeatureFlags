@@ -22,14 +22,19 @@ name: Release
 # A manual workflow_dispatch run skips that check, which is the fallback if a tag-triggered run is
 # rejected by the policy.
 #
-# After a successful publish, the `badge` job regenerates assets/badge-nuget.svg from the tag
-# and commits it to main, so the README badge keeps reading the live version without depending
-# on a third-party image host.
+# After a successful publish, the `finalize` job creates the GitHub release (its notes are the
+# version's section of CHANGELOG.md) and refreshes assets/badge-nuget.svg on main, so the README
+# badge reads the live version without depending on a third-party image host.
 
 on:
   push:
     tags: [ 'v*' ]
   workflow_dispatch:
+
+# One release at a time, and a release is never cancelled: a half-finished publish cannot be
+# rolled back, so a second run waits instead of overlapping.
+concurrency:
+  group: release
 
 env:
   DOTNET_NOLOGO: true
@@ -47,7 +52,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          # SourceLink needs history; the publish job never pushes to git (only the badge job below).
+          # SourceLink needs history; the publish job never pushes to git (only the finalize job below).
           fetch-depth: 0
           persist-credentials: false
 
@@ -113,11 +118,12 @@ jobs:
           name: nupkg
           path: ${{ github.workspace }}/artifacts/*.*nupkg
 
-  # The README serves the NuGet badge from this repository (assets/badge-nuget.svg) instead of a
-  # third-party image host, so the badge is regenerated from the released tag and pushed to main.
-  # The push is best-effort: a stale badge must never fail an otherwise successful release.
-  badge:
-    name: Refresh the NuGet badge
+  # Closes out a release: the GitHub release is created from the tag, with notes taken from the
+  # version's CHANGELOG.md section, and the README's NuGet badge is refreshed on main. Release
+  # creation is safe to re-run (an existing release for the tag is left alone); the badge push is
+  # best-effort, because a stale badge must never fail an otherwise successful release.
+  finalize:
+    name: Finalize the release
     needs: publish
     if: github.ref_type == 'tag'
     runs-on: ubuntu-latest
@@ -126,8 +132,36 @@ jobs:
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
 
-      - name: Regenerate the badge and push it to main
+      - name: Create the GitHub release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          version="${GITHUB_REF_NAME#v}"
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            echo "a release for $GITHUB_REF_NAME already exists; leaving it as it is"
+            exit 0
+          fi
+
+          notes="$RUNNER_TEMP/release-notes.md"
+          awk -v prefix="## [${version}]" '
+            index($0, prefix) == 1 { found = 1; next }
+            found && index($0, "## [") == 1 { exit }
+            found { print }
+          ' CHANGELOG.md > "$notes"
+
+          if [ ! -s "$notes" ]; then
+            echo "no CHANGELOG section for ${version}; falling back to generated notes"
+            gh release create "$GITHUB_REF_NAME" --verify-tag --title "$GITHUB_REF_NAME" --generate-notes
+          else
+            gh release create "$GITHUB_REF_NAME" --verify-tag --title "$GITHUB_REF_NAME" --notes-file "$notes"
+          fi
+
+      - name: Refresh the NuGet badge and push it to main
         shell: bash
         run: |
           set -euo pipefail

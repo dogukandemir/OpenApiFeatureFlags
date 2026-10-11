@@ -24,7 +24,7 @@ public static class OpenApiFeatureFlagsOpenApiExtensions
     /// <para>
     /// The three are registered together and the order between them does not matter: the engine runs
     /// schema transformers first, then operation transformers, then document transformers, whatever
-    /// order they were added in. Ordering <i>is</i> significant relative to your own transformers —
+    /// order they were added in. Ordering <i>is</i> significant relative to your own transformers:
     /// call this <b>after</b> any document transformer that rebuilds <c>paths</c> or <c>tags</c>, or it
     /// will put back what this library removed.
     /// </para>

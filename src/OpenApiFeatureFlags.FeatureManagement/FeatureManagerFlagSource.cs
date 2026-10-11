@@ -9,7 +9,7 @@ namespace OpenApiFeatureFlags.FeatureManagement;
 /// <para>
 /// Deliberately does not catch anything. The core already treats a failed read as "not enabled"
 /// and letting the exception through is what allows the canary to notice that the flag
-/// store is unreachable — a caught-and-swallowed failure would look exactly like "every flag is off",
+/// store is unreachable: a caught-and-swallowed failure would look exactly like "every flag is off",
 /// which is the dangerous case.
 /// </para>
 /// <para>

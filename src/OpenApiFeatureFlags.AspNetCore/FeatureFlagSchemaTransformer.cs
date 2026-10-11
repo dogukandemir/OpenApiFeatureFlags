@@ -15,7 +15,7 @@ namespace OpenApiFeatureFlags.AspNetCore;
 /// the JSON type information for the schema being built, so <see cref="JsonPropertyInfo.Name"/> gives
 /// the document's property name directly and <see cref="JsonPropertyInfo.AttributeProvider"/> gives the
 /// member the attribute was written on. The property can therefore be removed here and now, instead of
-/// being tagged and resolved later by object identity — no reproduction of camel-casing or
+/// being tagged and resolved later by object identity: no reproduction of camel-casing or
 /// <c>[JsonPropertyName]</c> rules, because both sides of the match come from the same source.
 /// </para>
 /// <para>

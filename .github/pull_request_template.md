@@ -20,7 +20,7 @@ dotnet test
 
 ## Checklist
 
-- [ ] `dotnet build --configuration Release` is clean — it treats warnings as errors.
+- [ ] `dotnet build --configuration Release` is clean (it treats warnings as errors).
 - [ ] `dotnet test` passes on all three target frameworks.
 - [ ] Public API changes are recorded in `PublicAPI.Unshipped.txt` (the build tells you the exact
       lines; `./scripts/update-public-api.ps1 -ProjectDir <project>` applies them).
@@ -34,7 +34,7 @@ dotnet test
 Delete this section when nothing user-visible changed.
 
 Two invariants are easy to break by accident, and a reviewer will look for them:
-  * Fail closed — an element whose flags cannot be evaluated is hidden, never published.
+  * Fail closed: an element whose flags cannot be evaluated is hidden, never published.
   * The library changes what a document says, never what an endpoint does.
 -->
 

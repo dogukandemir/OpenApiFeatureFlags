@@ -35,7 +35,7 @@ representing the project. It also applies to behaviour that makes people afraid 
 ## Reporting and enforcement
 
 If you experience or witness unacceptable behaviour, contact the maintainer
-[@dogukandemir](https://github.com/dogukandemir) privately — for example by using GitHub's private
+[@dogukandemir](https://github.com/dogukandemir) privately, for example by using GitHub's private
 reporting or a direct message. Please do not open a public issue about it.
 
 Reports are read by the maintainer alone and kept confidential. What happens next depends on the
@@ -43,7 +43,7 @@ severity and the pattern: a private word, a request to edit or delete a comment,
 from the repository, or a permanent ban. The maintainer will say what they are doing and why, unless
 doing so would expose the reporter.
 
-If the report concerns the maintainer, there is no neutral party here — that limitation is worth
+If the report concerns the maintainer, there is no neutral party here. That limitation is worth
 stating plainly rather than pretending otherwise. In that case, use GitHub's
 [report abuse](https://github.com/contact/report-abuse) channel.
 

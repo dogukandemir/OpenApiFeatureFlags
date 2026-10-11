@@ -10,11 +10,11 @@ namespace OpenApiFeatureFlags;
 /// <remarks>
 /// <para>
 /// The syntax is deliberately an XML element rather than something invented, because an XML comment
-/// that reaches the document as text carries unknown tags through <b>verbatim</b> — measured for
-/// Swashbuckle in <c>tests/OpenApiFeatureFlags.Swashbuckle.Tests/XmlCommentsHumanizerTests.cs</c>.
+/// that reaches the document as text carries unknown tags through <b>verbatim</b> (measured for
+/// Swashbuckle in <c>tests/OpenApiFeatureFlags.Swashbuckle.Tests/XmlCommentsHumanizerTests.cs</c>).
 /// That means an author can write the gate in a normal XML doc comment and it arrives in
-/// <c>OpenApiOperation.Description</c> / <c>OpenApiSchema.Description</c> intact, ready to resolve —
-/// no need to reimplement XML comment reading, and no fragile name matching against prose.
+/// <c>OpenApiOperation.Description</c> / <c>OpenApiSchema.Description</c> intact and ready to resolve.
+/// No need to reimplement XML comment reading, and no fragile name matching against prose.
 /// </para>
 /// <para>
 /// It lives in the core rather than in one adapter because it is pure text plus
@@ -31,7 +31,7 @@ namespace OpenApiFeatureFlags;
 ///   nothing, so they keep the text and only strip the wrapper. Gating a sentence is a different
 ///   decision from annotating a document.</description></item>
 ///   <item><description>A gate with a <b>missing or empty</b> <c>flag</c> attribute cannot be evaluated,
-///   so it hides its content and warns — fail closed.</description></item>
+///   so it hides its content and warns; fail closed.</description></item>
 ///   <item><description>An <b>unbalanced</b> opening gate hides the rest of the string and warns. A typo
 ///   must not become a leak.</description></item>
 /// </list>

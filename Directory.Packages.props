@@ -51,7 +51,7 @@
   <ItemGroup Label="Testing">
     <!-- A real in-memory host. Unlike Swashbuckle, the ASP.NET Core engine exposes no public document
          provider, so the only way to obtain a generated document is to ask the endpoint that serves
-         it — which also means the transformers are tested in the position they really run in. -->
+         it, which also means the transformers are tested in the position they really run in. -->
     <PackageVersion Include="Microsoft.AspNetCore.TestHost" Version="10.0.12" />
     <!-- Test projects run on xunit.v3 + Microsoft.Testing.Platform, which the
          .NET 10 SDK requires: VSTest is no longer supported for MTP projects, so

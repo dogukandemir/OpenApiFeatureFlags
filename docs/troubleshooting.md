@@ -43,14 +43,14 @@ Look for this warning:
 OpenApiFeatureFlags could not evaluate the flag {FlagName}; treating it as disabled so the document fails closed.
 ```
 
-If it is there, the element *was* hidden — the flag source threw. Note that fail-closed means the
+If it is there, the element *was* hidden: the flag source threw. Note that fail-closed means the
 element stayed hidden, which is the intended behaviour.
 
 **5. Is the attribute on the thing you think it is?**
 
 - On a **controller**: gates every action on it.
 - On an **action**: gates that operation.
-- On a **parameter**: gates that parameter only — it does not hide the operation.
+- On a **parameter**: gates that parameter only; it does not hide the operation.
 - On a **property**: gates that schema property.
 
 The attribute is **not inherited**. Putting it on a base controller does not gate the derived
@@ -65,7 +65,7 @@ name, or replaced by a custom converter, the attribute still has to be on the CL
 **7. Is the flag store actually answering?**
 
 With Azure App Configuration this is the usual cause: `AddAzureAppConfiguration(...)` without
-`UseFeatureFlags()`, or a `Label` that does not match the environment, selects no flags at all — and
+`UseFeatureFlags()`, or a `Label` that does not match the environment, selects no flags at all, and
 "the flag is missing" is indistinguishable from "the flag is off" to a fail-closed library. See
 [`azure-app-configuration.md`](azure-app-configuration.md).
 
@@ -98,12 +98,12 @@ So check for a controller-level attribute you forgot about:
 public sealed class ExperimentalController : ControllerBase
 ```
 
-If you want an operation documented when *any* flag is on, the current release does not support it —
-give the operation a single canonical flag and express the OR in your flag store.
+If you want an operation documented when *any* flag is on, the current release does not support it.
+Give the operation a single canonical flag and express the OR in your flag store.
 
 If only **part of a description** vanished, that is a `<gate>` fragment and not an attribute. The
-library logs a warning when a gate is unusable — `GateWithoutFlag` (104) when it has no `flag`
-attribute, `GateUnbalanced` (105) when it was never closed — so search the log for those before
+library logs a warning when a gate is unusable: `GateWithoutFlag` (104) when it has no `flag`
+attribute, `GateUnbalanced` (105) when it was never closed. Search the log for those before
 looking anywhere else.
 
 ---
@@ -112,10 +112,10 @@ looking anywhere else.
 
 Two leftovers are possible and both are handled, so if you see this, it is worth reporting:
 
-- **`required`** — the library removes a name from `required` when the property it referred to is
+- **`required`**: the library removes a name from `required` when the property it referred to is
   gone, including the literal `null` some consumer schema filters add when they do
   `Required.Add(properties.FirstOrDefault(...).Key)`.
-- **Prose** — XML doc cross-references, hand-written tag descriptions and intra-document anchors
+- **Prose**: XML doc cross-references, hand-written tag descriptions and intra-document anchors
   (`#v1-x-y-post`) that pointed at a removed operation are *not* rewritten. The library removes
   structure; it cannot rewrite a sentence. If a sibling property's `<summary>` mentions the hidden
   property by name, that text stays unless you gate it too:
@@ -126,7 +126,7 @@ Two leftovers are possible and both are handled, so if you see this, it is worth
   ```
 
   Gating a sentence with the same flag that gates the property keeps the two together. Anchors
-  (`#v1-x-y-post`) are still yours to maintain — see [`descriptions.md`](descriptions.md).
+  (`#v1-x-y-post`) are still yours to maintain; see [`descriptions.md`](descriptions.md).
 
 ---
 
