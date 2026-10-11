@@ -1,17 +1,13 @@
-<p align="center">
-  <img src="https://raw.githubusercontent.com/dogukandemir/OpenApiFeatureFlags/main/assets/icon-256.png" width="128" alt="The OpenApiFeatureFlags mark: two toggles between square brackets, in Solarized cyan" />
-</p>
+![The OpenApiFeatureFlags mark: two toggles between square brackets, in Solarized cyan](https://raw.githubusercontent.com/dogukandemir/OpenApiFeatureFlags/main/assets/icon-128.png)
 
-<h1 align="center">OpenApiFeatureFlags</h1>
+# OpenApiFeatureFlags
 
-<p align="center">Feature flags for OpenAPI documents.</p>
+Feature flags for OpenAPI documents.
 
-<p align="center">
-  <a href="https://github.com/dogukandemir/OpenApiFeatureFlags/actions/workflows/ci.yml"><img src="https://github.com/dogukandemir/OpenApiFeatureFlags/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
-  <a href="https://github.com/dogukandemir/OpenApiFeatureFlags/actions/workflows/codeql.yml"><img src="https://github.com/dogukandemir/OpenApiFeatureFlags/actions/workflows/codeql.yml/badge.svg" alt="CodeQL" /></a>
-  <a href="https://www.nuget.org/packages/OpenApiFeatureFlags"><img src="https://raw.githubusercontent.com/dogukandemir/OpenApiFeatureFlags/main/assets/badge-nuget.svg" alt="NuGet" /></a>
-  <a href="https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/LICENSE"><img src="https://raw.githubusercontent.com/dogukandemir/OpenApiFeatureFlags/main/assets/badge-license.svg" alt="License: MIT" /></a>
-</p>
+[![CI](https://github.com/dogukandemir/OpenApiFeatureFlags/actions/workflows/ci.yml/badge.svg)](https://github.com/dogukandemir/OpenApiFeatureFlags/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/dogukandemir/OpenApiFeatureFlags/actions/workflows/codeql.yml/badge.svg)](https://github.com/dogukandemir/OpenApiFeatureFlags/actions/workflows/codeql.yml)
+[![NuGet](https://raw.githubusercontent.com/dogukandemir/OpenApiFeatureFlags/main/assets/badge-nuget.svg)](https://www.nuget.org/packages/OpenApiFeatureFlags)
+[![License: MIT](https://raw.githubusercontent.com/dogukandemir/OpenApiFeatureFlags/main/assets/badge-license.svg)](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/LICENSE)
 
 Mark the endpoint, action, property or parameter with `[OpenApiFeatureFlag]` and it only appears in
 the generated document once the flag is enabled by the same flags the runtime already reads.

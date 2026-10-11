@@ -3,6 +3,20 @@
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.3] - 2026-10-11
+
+### Fixed
+
+- The readme header now uses plain Markdown: the logo as a Markdown image, the name as a heading,
+  and the badges as Markdown image links, same content as before. nuget.org renders readmes with a
+  restricted Markdown subset and does not allow raw HTML, so the previous header (centered layout
+  built from HTML tags) showed as literal tag text on the package page. The new header renders on
+  nuget.org and GitHub alike.
+
+### Notes
+
+- No source changes and no dependency differences from `0.2.2`.
+
 ## [0.2.2] - 2026-10-11
 
 ### Changed
@@ -167,6 +181,7 @@ First public release. All five packages ship together at this version.
 - Test projects run on xunit.v3 and Microsoft.Testing.Platform, which the .NET 10 SDK selects through
   `global.json`.
 
+[0.2.3]: https://github.com/dogukandemir/OpenApiFeatureFlags/releases/tag/v0.2.3
 [0.2.2]: https://github.com/dogukandemir/OpenApiFeatureFlags/releases/tag/v0.2.2
 [0.2.1]: https://github.com/dogukandemir/OpenApiFeatureFlags/releases/tag/v0.2.1
 [0.2.0]: https://github.com/dogukandemir/OpenApiFeatureFlags/releases/tag/v0.2.0
