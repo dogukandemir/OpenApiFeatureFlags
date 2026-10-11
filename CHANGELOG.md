@@ -23,10 +23,17 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 - `docs/trying-locally.md` says "six packages" where it said "five", and its example paths are no
   longer specific to one machine. `docs/descriptions.md` documents the `GateTooDeep` (106) event.
 
+### Changed
+
+- `OpenApiFeatureFlags.Swashbuckle` now requires `Swashbuckle.AspNetCore.SwaggerGen` 10.3.0 or
+  later, up from 10.2.3. The `Microsoft.OpenApi` floor is unchanged at 2.7.5: it is also what the
+  package publishes as its dependency floor, and raising it narrows what consumers may resolve
+  (`docs/design.md` 4.4).
+
 ### Notes
 
-- Metadata and documentation only: no code, no assembly and no dependency differences from
-  `0.2.0`.
+- No source changes. Besides the Swashbuckle floor above, no dependency differences from `0.2.0`;
+  test tooling moves to xunit.v3 4.0.2, which is development-only.
 - `nswag` is gone from the package tags: no NSwag adapter exists yet, and the tag promised an
   integration that is not there.
 - `.editorconfig` pins `end_of_line = lf` explicitly, so the `dotnet format` gate answers the same

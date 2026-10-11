@@ -74,7 +74,7 @@ reason is the document model rather than the framework:
 
 | Engine | Its `Microsoft.OpenApi` dependency | Document model |
 |---|---|---|
-| `Swashbuckle.AspNetCore.Swagger` 10.2.3 | `>= 2.7.5` | 2.x |
+| `Swashbuckle.AspNetCore.Swagger` 10.3.0 | `>= 2.7.5` | 2.x |
 | `Microsoft.AspNetCore.OpenApi` 10.0.x | `[2.12.0, 3.0.0)` | 2.x |
 | `Microsoft.AspNetCore.OpenApi` 9.0.x | `1.6.17` | 1.x |
 | `Microsoft.AspNetCore.OpenApi` 8.0.x | `1.4.3` | 1.x |
@@ -84,7 +84,7 @@ Two consequences, both measured rather than reasoned about:
 - The 8.x and 9.x lines sit on the **1.x** model (`Microsoft.OpenApi.Models.*`) while 10.x sits on the
   2.x model, so this is not one source file across three target frameworks — it would be three
   implementations. One of them is shipped.
-- The two ranges overlap: `[2.12.0, 3.0.0)` satisfies both this engine's floor and Swashbuckle 10.2.3's
+- The two ranges overlap: `[2.12.0, 3.0.0)` satisfies both this engine's floor and Swashbuckle 10.3.0's
   `>= 2.7.5`, so one 2.x `Microsoft.OpenApi` can serve both engines, and nothing in the dependency graph
   stops an application referencing both adapters. An earlier revision of this page said the opposite,
   having read Swashbuckle's unbracketed `2.7.5` as an exact pin; [`design.md`](design.md) 4.4 records the

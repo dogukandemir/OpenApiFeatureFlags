@@ -73,7 +73,7 @@ also need their own dependencies to resolve, which they do through the upstream 
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.3.0" />
     <PackageReference Include="OpenApiFeatureFlags.Swashbuckle" Version="0.2.1" />
     <PackageReference Include="OpenApiFeatureFlags.FeatureManagement" Version="0.2.1" />
   </ItemGroup>

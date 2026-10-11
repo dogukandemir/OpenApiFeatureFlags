@@ -3,7 +3,7 @@
   <!-- =====================================================================
        Central package versions. Every version is pinned here; project files
        carry PackageReference without a Version attribute.
-       Versions verified against nuget.org on 2026-09-30.
+       Versions verified against nuget.org on 2026-10-11.
        ===================================================================== -->
 
   <PropertyGroup>
@@ -12,9 +12,9 @@
   </PropertyGroup>
 
   <ItemGroup Label="Document engines">
-    <!-- Swashbuckle 10.2.3 ships net8.0/net9.0/net10.0 (verified). -->
-    <PackageVersion Include="Swashbuckle.AspNetCore" Version="10.2.3" />
-    <PackageVersion Include="Swashbuckle.AspNetCore.SwaggerGen" Version="10.2.3" />
+    <!-- Swashbuckle 10.3.0 ships net8.0/net9.0/net10.0 (verified 2026-10-11). -->
+    <PackageVersion Include="Swashbuckle.AspNetCore" Version="10.3.0" />
+    <PackageVersion Include="Swashbuckle.AspNetCore.SwaggerGen" Version="10.3.0" />
     <!-- The Swashbuckle adapter references this package directly, so this pin is what
          OpenApiFeatureFlags.Swashbuckle publishes as its dependency floor. 2.7.5 is a deliberately low
          floor, not a match for Swashbuckle's own: its nuspec declares the version unbracketed, which
@@ -56,8 +56,8 @@
     <!-- Test projects run on xunit.v3 + Microsoft.Testing.Platform, which the
          .NET 10 SDK requires: VSTest is no longer supported for MTP projects, so
          Microsoft.NET.Test.Sdk is deliberately absent. -->
-    <PackageVersion Include="xunit.v3" Version="4.0.1" />
-    <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.0" />
+    <PackageVersion Include="xunit.v3" Version="4.0.2" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.1" />
     <!-- Shouldly, not FluentAssertions: v8 of the latter is no longer free for
          commercial use, and this library is MIT. -->
     <PackageVersion Include="Shouldly" Version="4.3.0" />

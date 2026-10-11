@@ -51,7 +51,7 @@ This is generalisable and not specific to that team, which is why it is a standa
 | D11 | Name: **`OpenApiFeatureFlags`** | "OpenApi" first as requested; "FeatureFlags" is vendor-neutral and implies no dependency. Chosen over `OpenApiFeatureManagement` because that phrase is Microsoft's brand for *their* library and would be wrong the moment an NSwag adapter ships | `OpenApiFeatureManagement`, `ToggleDocs`, any `Swashbuckle.*` name |
 | D12 | Brand segment is **dot-free**; reserve `OpenApiFeatureFlags.*` | `OpenApi.FeatureManagement` would leave only the generic `OpenApi` as the reservable prefix — likely refused, and an OpenAPI Initiative trademark. Reservation covers dotted suffixes | Dotted brand |
 | D13 | Licence: **MIT** | Maximum adoption, three lines, no CLA/NOTICE ceremony. The only Apache-2.0 advantage is a patent grant, and a doc filter is not patentable subject matter. Neighbours (Swashbuckle, NSwag, Scalar, Microsoft.OpenApi) are MIT | Apache-2.0, MPL, any non-OSI licence |
-| D14 | Multi-target `net8.0;net9.0;net10.0` | Swashbuckle 10.2.3 ships all three; .NET 8 is the widest reach | Single TFM |
+| D14 | Multi-target `net8.0;net9.0;net10.0` | Swashbuckle 10.3.0 ships all three; .NET 8 is the widest reach | Single TFM |
 | D15 | v1 ships `Abstractions` + core + Swashbuckle + Microsoft.FeatureManagement only | Smallest thing that unblocks the motivating problem; every extra adapter is a compatibility floor to maintain | Shipping all adapters at once |
 | D16 | Public API tracked with `PublicAPI.Shipped.txt` / `Unshipped.txt` from day one | Retrofitting semver discipline is painful, and the attribute name is permanent | Adding it later |
 | D17 | Attribute is **`[OpenApiFeatureFlag("flagName")]`**; the mode enum is **`DocumentMode`** | "OpenApi" is the only prefix that cannot be misread as runtime gating (D2), and it matches the package brand, so IntelliSense search finds both. `Document*` stays for plan/pipeline types because they describe literal document mutations; `IFeatureFlagSource` stays unbranded because it is the document-agnostic flag axis (D8) | `DocumentedWhenEnabled` (false in `Annotate` and `Include` mode; "enabled" has no subject), `DocumentWhenEnabled`, `FeatureFlagged`, any `*Gate` / `Requires*` name |
@@ -73,7 +73,7 @@ This is generalisable and not specific to that team, which is why it is a standa
 
 ## 4. Verified technical facts
 
-### 4.1 Swashbuckle 10.2.3 (measured, not assumed)
+### 4.1 Swashbuckle 10.3.0 (measured, not assumed)
 
 - Filters receive **constructor DI**: Swashbuckle instantiates them with
   `ActivatorUtilities.CreateInstance(_serviceProvider, d.Type, d.Arguments)` from
@@ -133,7 +133,7 @@ The package version and the assembly version do not agree, and the majors are no
 
 | Consumer | Its `Microsoft.OpenApi` dependency | Model shape |
 |---|---|---|
-| `Swashbuckle.AspNetCore.Swagger` 10.2.3 | `>= 2.7.5` | `Microsoft.OpenApi.IOpenApiSchema`, `OpenApiExtensibleDictionary<T>` |
+| `Swashbuckle.AspNetCore.Swagger` 10.3.0 | `>= 2.7.5` | `Microsoft.OpenApi.IOpenApiSchema`, `OpenApiExtensibleDictionary<T>` |
 | `Microsoft.AspNetCore.OpenApi` 10.0.x | `[2.12.0, 3.0.0)` | the same 2.x line |
 | `Microsoft.AspNetCore.OpenApi` 9.0.x | `1.6.17` | `Microsoft.OpenApi.Models.*` |
 | `Microsoft.AspNetCore.OpenApi` 8.0.x | `1.4.3` | `Microsoft.OpenApi.Models.*` |
