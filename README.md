@@ -4,8 +4,8 @@ Feature flags for OpenAPI documents.
 
 [![CI](https://github.com/dogukandemir/OpenApiFeatureFlags/actions/workflows/ci.yml/badge.svg)](https://github.com/dogukandemir/OpenApiFeatureFlags/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/dogukandemir/OpenApiFeatureFlags/actions/workflows/codeql.yml/badge.svg)](https://github.com/dogukandemir/OpenApiFeatureFlags/actions/workflows/codeql.yml)
-[![NuGet](https://img.shields.io/nuget/v/OpenApiFeatureFlags.svg)](https://www.nuget.org/packages/OpenApiFeatureFlags)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/LICENSE)
+[![NuGet](https://raw.githubusercontent.com/dogukandemir/OpenApiFeatureFlags/main/assets/badge-nuget.svg)](https://www.nuget.org/packages/OpenApiFeatureFlags)
+[![License: MIT](https://raw.githubusercontent.com/dogukandemir/OpenApiFeatureFlags/main/assets/badge-license.svg)](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/LICENSE)
 
 Mark the endpoint, action, property or parameter with `[OpenApiFeatureFlag]` and it only appears in
 the generated document once the flag is enabled — using the same flags the runtime already reads.

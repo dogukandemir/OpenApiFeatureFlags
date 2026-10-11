@@ -21,6 +21,10 @@ name: Release
 # The tag must match VersionPrefix in Directory.Build.props, or the run stops before publishing.
 # A manual workflow_dispatch run skips that check, which is the fallback if a tag-triggered run is
 # rejected by the policy.
+#
+# After a successful publish, the `badge` job regenerates assets/badge-nuget.svg from the tag
+# and commits it to main, so the README badge keeps reading the live version without depending
+# on a third-party image host.
 
 on:
   push:
@@ -43,7 +47,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          # SourceLink needs history; the workflow never pushes to git.
+          # SourceLink needs history; the publish job never pushes to git (only the badge job below).
           fetch-depth: 0
           persist-credentials: false
 
@@ -108,3 +112,34 @@ jobs:
         with:
           name: nupkg
           path: ${{ github.workspace }}/artifacts/*.*nupkg
+
+  # The README serves the NuGet badge from this repository (assets/badge-nuget.svg) instead of a
+  # third-party image host, so the badge is regenerated from the released tag and pushed to main.
+  # The push is best-effort: a stale badge must never fail an otherwise successful release.
+  badge:
+    name: Refresh the NuGet badge
+    needs: publish
+    if: github.ref_type == 'tag'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Regenerate the badge and push it to main
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="${GITHUB_REF_NAME#v}"
+          python3 scripts/make-nuget-badge.py "$version" > assets/badge-nuget.svg
+          if git diff --quiet -- assets/badge-nuget.svg; then
+            echo "the badge already shows v${version}; nothing to push"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/badge-nuget.svg
+          git commit -m "Update the NuGet badge to v${version}"
+          git push origin "HEAD:main" || \
+            echo "::warning::main moved since the tag was cut; the badge refreshes on the next release"
