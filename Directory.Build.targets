@@ -2,9 +2,10 @@
 
   <!-- Imported after the project body, so IsPackable/IsTestProject are settled. -->
 
-  <!-- Every package ships the README. -->
+  <!-- Every package ships the README and the icon. -->
   <ItemGroup Condition="'$(IsPackable)' == 'true'">
     <None Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath="/" Visible="false" />
+    <None Include="$(MSBuildThisFileDirectory)assets/icon-128.png" Pack="true" PackagePath="/" Visible="false" />
   </ItemGroup>
 
 </Project>

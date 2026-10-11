@@ -3,6 +3,35 @@
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.1] - 2026-10-11
+
+### Added
+
+- A package icon: the double toggle — square brackets around two switches, one on and one off —
+  in Solarized cyan. `assets/` holds the SVG source and the exported PNGs, and every package sets
+  `PackageIcon`.
+
+### Fixed
+
+- The readme inside the package no longer claims the ASP.NET Core adapter "cannot share an
+  application with the Swashbuckle adapter". That was a misreading of Swashbuckle's minimum
+  `Microsoft.OpenApi` version, corrected on `main` after `0.2.0` shipped — and a readme that is
+  inside a published package cannot be edited on nuget.org, so the correction needs this version.
+- The same readme's opening example no longer says `swagger.json`, which implied Swashbuckle; the
+  document is engine-agnostic.
+- `SECURITY.md` now lists `OpenApiFeatureFlags.AspNetCore` among the in-scope packages.
+- `docs/trying-locally.md` says "six packages" where it said "five", and its example paths are no
+  longer specific to one machine. `docs/descriptions.md` documents the `GateTooDeep` (106) event.
+
+### Notes
+
+- Metadata and documentation only: no code, no assembly and no dependency differences from
+  `0.2.0`.
+- `nswag` is gone from the package tags: no NSwag adapter exists yet, and the tag promised an
+  integration that is not there.
+- `.editorconfig` pins `end_of_line = lf` explicitly, so the `dotnet format` gate answers the same
+  on Windows as on the CI runner.
+
 ## [0.2.0] - 2026-10-01
 
 ### Added
@@ -115,6 +144,7 @@ First public release. All five packages ship together at this version.
 - Test projects run on xunit.v3 and Microsoft.Testing.Platform, which the .NET 10 SDK selects through
   `global.json`.
 
+[0.2.1]: https://github.com/dogukandemir/OpenApiFeatureFlags/releases/tag/v0.2.1
 [0.2.0]: https://github.com/dogukandemir/OpenApiFeatureFlags/releases/tag/v0.2.0
 [0.1.1]: https://github.com/dogukandemir/OpenApiFeatureFlags/releases/tag/v0.1.1
 [0.1.0]: https://github.com/dogukandemir/OpenApiFeatureFlags/releases/tag/v0.1.0

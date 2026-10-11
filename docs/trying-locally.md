@@ -21,12 +21,12 @@ for project in src/*/*.csproj; do dotnet pack "$project" -c Release -o local-pac
 
 | Package | Version |
 |---|---|
-| `OpenApiFeatureFlags` | 0.2.0 |
-| `OpenApiFeatureFlags.Abstractions` | 0.2.0 |
-| `OpenApiFeatureFlags.Swashbuckle` | 0.2.0 |
-| `OpenApiFeatureFlags.AspNetCore` | 0.2.0 |
-| `OpenApiFeatureFlags.FeatureManagement` | 0.2.0 |
-| `OpenApiFeatureFlags.OpenFeature` | 0.2.0 |
+| `OpenApiFeatureFlags` | 0.2.1 |
+| `OpenApiFeatureFlags.Abstractions` | 0.2.1 |
+| `OpenApiFeatureFlags.Swashbuckle` | 0.2.1 |
+| `OpenApiFeatureFlags.AspNetCore` | 0.2.1 |
+| `OpenApiFeatureFlags.FeatureManagement` | 0.2.1 |
+| `OpenApiFeatureFlags.OpenFeature` | 0.2.1 |
 
 Every package moves together, at the `VersionPrefix` in `Directory.Build.props`. See [`CHANGELOG.md`](../CHANGELOG.md)
 for what changed in this cut. `OpenApiFeatureFlags.AspNetCore` targets `net10.0` only, so it does not
@@ -43,7 +43,7 @@ Create `nuget.config` next to the consuming solution:
 <configuration>
   <packageSources>
     <clear />
-    <add key="local" value="C:\Projects\github\dogukandemir\OpenApiFeatureFlags\local-packages" />
+    <add key="local" value="C:\repos\OpenApiFeatureFlags\local-packages" />
     <!-- Keep nuget.org: the packages' own dependencies live there. -->
     <add key="nuget.org" value="https://api.nuget.org/v3/index.json" />
   </packageSources>
@@ -53,10 +53,10 @@ Create `nuget.config` next to the consuming solution:
 Or add it to your user-level config, which affects every project on the machine:
 
 ```shell
-dotnet nuget add source "C:\Projects\github\dogukandemir\OpenApiFeatureFlags\local-packages" --name oaff-local
+dotnet nuget add source "C:\repos\OpenApiFeatureFlags\local-packages" --name oaff-local
 ```
 
-**Keep nuget.org enabled.** The `local` feed only carries these five packages; `Swashbuckle.AspNetCore`,
+**Keep nuget.org enabled.** The `local` feed only carries these six packages; `Swashbuckle.AspNetCore`,
 `Microsoft.OpenApi`, `Microsoft.FeatureManagement` and `OpenFeature` are restored from nuget.org. A feed
 list containing only `local` will fail to restore.
 
@@ -74,8 +74,8 @@ also need their own dependencies to resolve, which they do through the upstream 
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.3" />
-    <PackageReference Include="OpenApiFeatureFlags.Swashbuckle" Version="0.2.0" />
-    <PackageReference Include="OpenApiFeatureFlags.FeatureManagement" Version="0.2.0" />
+    <PackageReference Include="OpenApiFeatureFlags.Swashbuckle" Version="0.2.1" />
+    <PackageReference Include="OpenApiFeatureFlags.FeatureManagement" Version="0.2.1" />
   </ItemGroup>
 </Project>
 ```
@@ -188,5 +188,5 @@ distinctly-versioned set instead:
 ./scripts/pack-local.ps1 -VersionSuffix local
 ```
 
-That produces `0.2.0-local`, which cannot be confused with a published release. Bumping
+That produces `0.2.1-local`, which cannot be confused with a published release. Bumping
 `VersionPrefix` is the other way out, and is what a new feature would do anyway.

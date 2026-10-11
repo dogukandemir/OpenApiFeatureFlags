@@ -121,6 +121,7 @@ Gate decisions use the same logger as the rest of the library:
 | `DescriptionFragmentHidden` | 103 | A gated fragment was removed, and which flag did it. |
 | `GateWithoutFlag` | 104 | A `<gate>` had no usable `flag` attribute; the content was hidden. |
 | `GateUnbalanced` | 105 | A `<gate>` was never closed; the remainder was hidden. |
+| `GateTooDeep` | 106 | Gates nested deeper than 32 levels; the innermost content was hidden. |
 
 Events 104 and 105 are warnings — they always mean the author made a mistake, so you will see them in
 your logs rather than wondering why prose vanished.

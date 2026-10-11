@@ -49,6 +49,7 @@ In scope — the published packages:
 - `OpenApiFeatureFlags`
 - `OpenApiFeatureFlags.Abstractions`
 - `OpenApiFeatureFlags.Swashbuckle`
+- `OpenApiFeatureFlags.AspNetCore`
 - `OpenApiFeatureFlags.FeatureManagement`
 - `OpenApiFeatureFlags.OpenFeature`
 

@@ -19,5 +19,3 @@
 *.jpg binary
 *.svg text eol=lf
 
-# Generated documentation output from the sample's build-time document generation.
-samples/**/openapi/*.json text eol=lf
