@@ -3,6 +3,22 @@
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.2] - 2026-10-11
+
+### Changed
+
+- The readme inside the package now matches the repository: the icon in the header, the
+  repository-hosted badges, and prose without em dashes. A packaged readme cannot be edited on
+  nuget.org, so shipping the updated one needs this version.
+- Package descriptions now say what the library is for in the words people search with ("hide
+  endpoints from Swagger while a feature flag is off"), and the common tags gain `hide`, `exclude`
+  and `conditional`.
+
+### Notes
+
+- No source changes and no dependency differences from `0.2.1`. Everything that changed is read
+  from inside the package: the readme and the metadata.
+
 ## [0.2.1] - 2026-10-11
 
 ### Added
@@ -151,6 +167,7 @@ First public release. All five packages ship together at this version.
 - Test projects run on xunit.v3 and Microsoft.Testing.Platform, which the .NET 10 SDK selects through
   `global.json`.
 
+[0.2.2]: https://github.com/dogukandemir/OpenApiFeatureFlags/releases/tag/v0.2.2
 [0.2.1]: https://github.com/dogukandemir/OpenApiFeatureFlags/releases/tag/v0.2.1
 [0.2.0]: https://github.com/dogukandemir/OpenApiFeatureFlags/releases/tag/v0.2.0
 [0.1.1]: https://github.com/dogukandemir/OpenApiFeatureFlags/releases/tag/v0.1.1

@@ -6,7 +6,7 @@
     <AssemblyName>OpenApiFeatureFlags</AssemblyName>
     <RootNamespace>OpenApiFeatureFlags</RootNamespace>
     <Title>OpenApiFeatureFlags</Title>
-    <Description>Makes an OpenAPI document respect the feature flags the runtime already respects. The core builds an engine-agnostic visibility plan; document-engine adapters apply it.</Description>
+    <Description>Hides endpoints, parameters and schema properties from Swagger/OpenAPI documents while their feature flag is off, using the same flags the runtime already reads. The core builds an engine-agnostic visibility plan; document-engine adapters apply it.</Description>
   </PropertyGroup>
 
   <ItemGroup>

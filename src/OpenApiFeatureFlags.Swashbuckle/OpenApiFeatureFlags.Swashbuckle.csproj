@@ -6,7 +6,7 @@
     <AssemblyName>OpenApiFeatureFlags.Swashbuckle</AssemblyName>
     <RootNamespace>OpenApiFeatureFlags.Swashbuckle</RootNamespace>
     <Title>OpenApiFeatureFlags.Swashbuckle</Title>
-    <Description>Swashbuckle adapter for OpenApiFeatureFlags: hides gated operations, parameters and schema properties from the generated OpenAPI document.</Description>
+    <Description>Swashbuckle adapter for OpenApiFeatureFlags: hides gated operations, parameters and schema properties from the generated Swagger/OpenAPI document while their feature flag is off.</Description>
   </PropertyGroup>
 
   <ItemGroup>
