@@ -6,6 +6,7 @@
   </Folder>
   <Folder Name="/src/">
     <Project Path="src/OpenApiFeatureFlags.Abstractions/OpenApiFeatureFlags.Abstractions.csproj" />
+    <Project Path="src/OpenApiFeatureFlags.Analyzers/OpenApiFeatureFlags.Analyzers.csproj" />
     <Project Path="src/OpenApiFeatureFlags.AspNetCore/OpenApiFeatureFlags.AspNetCore.csproj" />
     <Project Path="src/OpenApiFeatureFlags.FeatureManagement/OpenApiFeatureFlags.FeatureManagement.csproj" />
     <Project Path="src/OpenApiFeatureFlags.NSwag/OpenApiFeatureFlags.NSwag.csproj" />
@@ -14,6 +15,7 @@
     <Project Path="src/OpenApiFeatureFlags/OpenApiFeatureFlags.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/OpenApiFeatureFlags.Analyzers.Tests/OpenApiFeatureFlags.Analyzers.Tests.csproj" />
     <Project Path="tests/OpenApiFeatureFlags.AspNetCore.Tests/OpenApiFeatureFlags.AspNetCore.Tests.csproj" />
     <Project Path="tests/OpenApiFeatureFlags.FastEndpoints.Tests/OpenApiFeatureFlags.FastEndpoints.Tests.csproj" />
     <Project Path="tests/OpenApiFeatureFlags.FeatureManagement.Tests/OpenApiFeatureFlags.FeatureManagement.Tests.csproj" />

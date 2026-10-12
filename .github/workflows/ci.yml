@@ -126,10 +126,10 @@ jobs:
           ls -1 "${{ github.workspace }}/artifacts"
           # Exactly one package per project under src/: a lower bound would not notice a project that
           # silently stopped packing.
-          test "$(find "${{ github.workspace }}/artifacts" -name '*.nupkg' | wc -l)" -eq 7
+          test "$(find "${{ github.workspace }}/artifacts" -name '*.nupkg' | wc -l)" -eq 8
 
           # Every package must carry the same version, and that version must be VersionPrefix:
-          # the seven packages ship in lockstep, and a drift is cheaper to catch here than after a
+          # the eight packages ship in lockstep, and a drift is cheaper to catch here than after the
           # release. A project that overrode its version would land here.
           version="$(dotnet msbuild Directory.Build.props -getProperty:VersionPrefix)"
           drifted="$(find "${{ github.workspace }}/artifacts" -name '*.nupkg' ! -name "*.$version.nupkg")"

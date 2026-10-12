@@ -62,6 +62,24 @@ public sealed class CreateResponse
     public string? Note { get; set; }
 }
 
+/// <summary>
+/// Carries a method-level attribute on Configure on purpose. The measured behaviour (locked by a
+/// test) is the same as for the class-level one: it does NOT gate the endpoint, because
+/// FastEndpoints does not copy attributes on the endpoint's members into endpoint metadata either.
+/// </summary>
+public sealed class MethodAttributeEndpoint : EndpointWithoutRequest<string>
+{
+    [OpenApiFeatureFlag("MethodFlag")]
+    public override void Configure()
+    {
+        Get("/api/method-attr");
+        AllowAnonymous();
+    }
+
+    public override async Task HandleAsync(CancellationToken ct) =>
+        await Send.OkAsync("method", ct);
+}
+
 /// <summary>Exercises DTO (schema) property gating.</summary>
 public sealed class CreateEndpoint : Endpoint<CreateRequest, CreateResponse>
 {

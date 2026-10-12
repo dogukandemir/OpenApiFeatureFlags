@@ -1,0 +1,17 @@
+#nullable enable
+OpenApiFeatureFlags.Analyzers.FastEndpointsAttributeAnalyzer
+OpenApiFeatureFlags.Analyzers.FastEndpointsAttributeAnalyzer.FastEndpointsAttributeAnalyzer() -> void
+OpenApiFeatureFlags.Analyzers.GateWithoutFlagAnalyzer
+OpenApiFeatureFlags.Analyzers.GateWithoutFlagAnalyzer.GateWithoutFlagAnalyzer() -> void
+OpenApiFeatureFlags.Analyzers.MinimalApiParameterAnalyzer
+OpenApiFeatureFlags.Analyzers.MinimalApiParameterAnalyzer.MinimalApiParameterAnalyzer() -> void
+OpenApiFeatureFlags.Analyzers.NSwagEscapeGateAnalyzer
+OpenApiFeatureFlags.Analyzers.NSwagEscapeGateAnalyzer.NSwagEscapeGateAnalyzer() -> void
+override OpenApiFeatureFlags.Analyzers.FastEndpointsAttributeAnalyzer.Initialize(Microsoft.CodeAnalysis.Diagnostics.AnalysisContext! context) -> void
+override OpenApiFeatureFlags.Analyzers.GateWithoutFlagAnalyzer.Initialize(Microsoft.CodeAnalysis.Diagnostics.AnalysisContext! context) -> void
+override OpenApiFeatureFlags.Analyzers.MinimalApiParameterAnalyzer.Initialize(Microsoft.CodeAnalysis.Diagnostics.AnalysisContext! context) -> void
+override OpenApiFeatureFlags.Analyzers.NSwagEscapeGateAnalyzer.Initialize(Microsoft.CodeAnalysis.Diagnostics.AnalysisContext! context) -> void
+override OpenApiFeatureFlags.Analyzers.FastEndpointsAttributeAnalyzer.SupportedDiagnostics.get -> System.Collections.Immutable.ImmutableArray<Microsoft.CodeAnalysis.DiagnosticDescriptor!>
+override OpenApiFeatureFlags.Analyzers.GateWithoutFlagAnalyzer.SupportedDiagnostics.get -> System.Collections.Immutable.ImmutableArray<Microsoft.CodeAnalysis.DiagnosticDescriptor!>
+override OpenApiFeatureFlags.Analyzers.MinimalApiParameterAnalyzer.SupportedDiagnostics.get -> System.Collections.Immutable.ImmutableArray<Microsoft.CodeAnalysis.DiagnosticDescriptor!>
+override OpenApiFeatureFlags.Analyzers.NSwagEscapeGateAnalyzer.SupportedDiagnostics.get -> System.Collections.Immutable.ImmutableArray<Microsoft.CodeAnalysis.DiagnosticDescriptor!>

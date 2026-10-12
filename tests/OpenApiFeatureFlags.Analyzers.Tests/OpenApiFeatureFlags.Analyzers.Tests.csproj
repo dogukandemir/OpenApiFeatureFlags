@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <RootNamespace>OpenApiFeatureFlags.Analyzers.Tests</RootNamespace>
+    <OutputType>Exe</OutputType>
+    <!-- net10.0 only: a scenario references the AspNetCore adapter, which is net10.0-only. -->
+    <TargetFrameworks>net10.0</TargetFrameworks>
+    <NoWarn>$(NoWarn);CA1031;CA1034;CA1052;CA1062;CA1303;CA1305;CA1515;CA1707;CA1812;CA1819;CA1822;CA1859;CA1860;CA1861;CA2007;CA2201</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- The toolbox the runner compiles with, at the pin the analyzers build against. -->
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
+    <PackageReference Include="xunit.v3" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="Shouldly" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\OpenApiFeatureFlags.Analyzers\OpenApiFeatureFlags.Analyzers.csproj" />
+    <ProjectReference Include="..\..\src\OpenApiFeatureFlags\OpenApiFeatureFlags.csproj" />
+    <ProjectReference Include="..\..\src\OpenApiFeatureFlags.AspNetCore\OpenApiFeatureFlags.AspNetCore.csproj" />
+    <ProjectReference Include="..\..\src\OpenApiFeatureFlags.NSwag\OpenApiFeatureFlags.NSwag.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,49 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+    <PackageId>OpenApiFeatureFlags.Analyzers</PackageId>
+    <AssemblyName>OpenApiFeatureFlags.Analyzers</AssemblyName>
+    <RootNamespace>OpenApiFeatureFlags.Analyzers</RootNamespace>
+    <Title>OpenApiFeatureFlags.Analyzers</Title>
+    <Description>Roslyn analyzers for OpenApiFeatureFlags. Catches at build time the cases that used to fail silently at document time: a gate fragment without a flag attribute, a literal &lt;gate&gt; in an XML comment under NSwag (the reader drops it, so the fragment leaks in every flag state), a gated minimal API parameter under the built-in engine, and [OpenApiFeatureFlag] on a FastEndpoints endpoint. Install alongside the adapter package you use.</Description>
+    <!-- netstandard2.0: the Roslyn analyzer contract. The plural property is cleared because the
+         repository props set it for the other projects; with a single framework the SDK must treat
+         this project as single-target, which is what keeps $(OutputPath) framework-qualified and
+         the analyzer asset path below resolvable at pack time. -->
+    <TargetFrameworks></TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+    <!-- The package ships no library; the only assembly goes to analyzers/dotnet/cs below. -->
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <!-- And no dependency groups: a package whose only payload is an analyzer has nothing a
+         netstandard2.0 dependency group could describe, and an empty group without a lib folder
+         is exactly the mismatch NU5128 refuses. -->
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    <!-- No symbol package either. A snupkg is assembled from the pdbs of the library files under
+         lib/, and this package deliberately has none, so NuGet refuses the empty result (NU5017).
+         The analyzer dll's pdb travels with the sourcelink'd build instead. -->
+    <IncludeSymbols>false</IncludeSymbols>
+    <!-- This package's own tags; the shared metadata in Directory.Build.props does not fit a
+         build-time package as well as they fit the runtime ones. -->
+    <PackageTags>openapi;swagger;feature-flags;analyzers;roslyn;roslyn-analyzer;build</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- The analyzer toolbox, private: it must never become a dependency of the package.
+         The version is the oldest Roslyn a supported SDK ships (the net8.0 floor of the
+         family), so the analyzers load without CS9057 across the whole toolchain range;
+         nothing here uses a newer API. -->
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="AnalyzerReleases.Shipped.md" />
+    <AdditionalFiles Include="AnalyzerReleases.Unshipped.md" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+  </ItemGroup>
+
+</Project>

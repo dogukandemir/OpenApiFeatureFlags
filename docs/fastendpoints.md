@@ -93,11 +93,13 @@ Summary(s =>
 Two boundaries were measured against FastEndpoints 8.3.0 and recorded here so they are not
 rediscovered:
 
-- **A class-level `[OpenApiFeatureFlag]` on the endpoint does not gate anything.** FastEndpoints does
-  not copy the endpoint class's attributes into the ASP.NET Core endpoint metadata, and the adapter
-  reads gating for non-controller endpoints from that metadata. Use
-  `Options(x => x.WithMetadata(new OpenApiFeatureFlagAttribute("X")))` in `Configure()` instead;
-  the adapter's test suite locks the boundary so a FastEndpoints change that alters it will be seen.
+- **An `[OpenApiFeatureFlag]` on the endpoint class or on one of its methods does not gate
+  anything.** FastEndpoints does not copy attributes on the endpoint type or its members into the
+  ASP.NET Core endpoint metadata, and the adapter reads gating for non-controller endpoints from
+  that metadata. Use `Options(x => x.WithMetadata(new OpenApiFeatureFlagAttribute("X")))` in
+  `Configure()` instead; the adapter's test suite locks both boundaries so a FastEndpoints change
+  that alters them will be seen. The `OpenApiFeatureFlags.Analyzers` package reports this one at
+  build time (OAFF5001).
 - **A GET request DTO property cannot be gated.** FastEndpoints flattens GET DTO properties into
   query parameters, and a parameter can only be removed through the controller path (its
   `ParameterInfo`), which a FastEndpoints endpoint does not have. This is the same class of

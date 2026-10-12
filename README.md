@@ -53,11 +53,16 @@ CNCF OpenFeature standard, or leave it out if you are implementing `IFeatureFlag
 | `OpenApiFeatureFlags.Swashbuckle` | Swashbuckle filter set. Add this if you use `AddSwaggerGen`. |
 | `OpenApiFeatureFlags.AspNetCore` | Transformer set for the built-in `Microsoft.AspNetCore.OpenApi`. Add this if you use `AddOpenApi`. **`net10.0` only**. |
 | `OpenApiFeatureFlags.NSwag` | Processor set for NSwag's generator. Add this if you use `AddOpenApiDocument`. |
+| `OpenApiFeatureFlags.Analyzers` | Roslyn analyzers that report the family's silent traps at build time. Optional; install it next to the adapter you use. |
 | `OpenApiFeatureFlags.FeatureManagement` | Reads flags from Microsoft's `IFeatureManager`. |
 | `OpenApiFeatureFlags.OpenFeature` | Reads flags through the CNCF [OpenFeature](https://openfeature.dev) standard. |
 | `OpenApiFeatureFlags.Abstractions` | Attribute and contracts only. Reference this from assemblies that must not take a dependency on Swashbuckle or a flag library. |
 
-All seven packages ship in lockstep: one version for all of them, set once in `Directory.Build.props` and checked by CI on every change.
+All eight packages ship in lockstep: one version for all of them, set once in `Directory.Build.props` and checked by CI on every change.
+
+Build-time safety is optional and separate: `OpenApiFeatureFlags.Analyzers` reports the mistakes
+that would otherwise fail silently, from an unescaped `<gate>` under NSwag to an attribute on a
+FastEndpoints endpoint. See [`docs/analyzers.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/analyzers.md).
 
 ## Quickstart
 
@@ -219,6 +224,8 @@ method's XML docs.
   here that it cannot there, and the measured processor model behind it.
 - [`docs/fastendpoints.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/fastendpoints.md): using the built-in-engine adapter with
   FastEndpoints v8.2 or later, and the two boundaries that were measured.
+- [`docs/analyzers.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/analyzers.md): the build-time analyzer package: the ID scheme, every rule,
+  and how to set severities.
 - [`docs/descriptions.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/descriptions.md): gating part of a description with `<gate>`, and the
   one thing it cannot do.
 - [`docs/azure-app-configuration.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/azure-app-configuration.md): reading flags from Azure App

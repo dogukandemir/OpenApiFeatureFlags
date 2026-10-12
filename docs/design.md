@@ -265,6 +265,16 @@ what this repo uses.
   `(settings, services)` overload, and a minimal API's delegate is present as a `MethodInfo`, so its
   parameter can be gated, the one thing the built-in engine adapter cannot do. Details in
   [`nswag.md`](nswag.md).
+- **`OpenApiFeatureFlags.Analyzers`**, and the FastEndpoints verification behind its first rules.
+  FastEndpoints v8.2 and later generate through `Microsoft.AspNetCore.OpenApi`, so the integration
+  is the built-in engine's adapter, wired with one line inside the framework's own `ConfigureOpenApi`
+  hook; two boundaries are measured and locked by tests (an attribute on the endpoint class or on
+  its members does not gate, and a GET DTO property becomes a query parameter that cannot be gated
+  individually). The analyzer package turns the measured silent traps into build-time findings. Its
+  IDs read `OAFF` plus a four-digit area block (1xxx core, 2xxx built-in engine, 3xxx NSwag, 4xxx
+  Swashbuckle reserved, 5xxx FastEndpoints, 6xxx flag sources reserved), and it is built against the
+  oldest Roslyn a supported SDK ships so it loads across the whole toolchain range without CS9057.
+  Details in [`analyzers.md`](analyzers.md) and [`fastendpoints.md`](fastendpoints.md).
 - Two API revisions came out of the same review, and are recorded because both were corrected before
   anyone depended on them. `UseFeatureManagement`/`UseOpenFeature` became
   `AddFeatureManagementFlagSource`/`AddOpenFeatureFlagSource`: they extend `IServiceCollection`, where

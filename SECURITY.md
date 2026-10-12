@@ -53,6 +53,7 @@ In scope: the published packages:
 - `OpenApiFeatureFlags.NSwag`
 - `OpenApiFeatureFlags.FeatureManagement`
 - `OpenApiFeatureFlags.OpenFeature`
+- `OpenApiFeatureFlags.Analyzers`
 
 Out of scope:
 

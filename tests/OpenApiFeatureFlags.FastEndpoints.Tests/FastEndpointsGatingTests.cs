@@ -109,6 +109,16 @@ public sealed class FastEndpointsGatingTests
     }
 
     [Fact]
+    public async Task AMethodLevelAttributeDoesNotGateTheEndpoint()
+    {
+        // Measured on the probe as well: neither the endpoint class nor its members carry their
+        // attributes into endpoint metadata, so only the metadata route gates.
+        using var document = await TestDocument.BuildAsync(new FakeFlagSource());
+
+        document.RootElement.GetProperty("paths").TryGetProperty("/api/method-attr", out _).ShouldBeTrue();
+    }
+
+    [Fact]
     public async Task AGatedGetDtoPropertyLeavesTheQueryParameterInPlace()
     {
         // The other measured boundary: a GET DTO property is flattened into a query parameter, and a

@@ -3,6 +3,34 @@
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2026-10-12
+
+### Added
+
+- **`OpenApiFeatureFlags.Analyzers`**, a build-time companion package that reports the family's
+  silent traps while the project compiles: a gate fragment without a flag attribute (OAFF1001), a
+  gated minimal API parameter under the built-in engine (OAFF2001), a literal `<gate>` in an XML
+  comment under NSwag, where the reader drops it and the fragment leaks (OAFF3001), and
+  `[OpenApiFeatureFlag]` on a FastEndpoints endpoint, where it never reaches the document
+  (OAFF5001). IDs read `OAFF` plus a four-digit area block per part of the family
+  ([the scheme](docs/analyzers.md)). The package ships no runtime code and no dependencies.
+- [`docs/analyzers.md`](docs/analyzers.md): the ID scheme, every rule, and the `.editorconfig`
+  severity configuration.
+- A FastEndpoints measurement recorded and locked by tests: an attribute on the members of an
+  endpoint, like one on its class, does not gate. The guide and the test suite now state and prove
+  both.
+
+### Changed
+
+- The eighth package joins the lockstep rule: all eight ship on one version, enforced by CI.
+- The packaged readme picks up the refreshed documentation (the engine matrix, the samples, and
+  the FastEndpoints guide among them).
+
+### Notes
+
+- `0.4.0` rather than `0.3.1`: a new package is additive surface, which is what a pre-1.0 minor
+  version is for.
+
 ## [0.3.0] - 2026-10-12
 
 ### Added
