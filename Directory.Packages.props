@@ -39,6 +39,11 @@
          measured against these assemblies, not taken from documentation; see docs/design.md. -->
     <PackageVersion Include="NSwag.Generation.AspNetCore" Version="14.7.1" />
     <PackageVersion Include="NSwag.AspNetCore" Version="14.7.1" />
+    <!-- Used only by the FastEndpoints test project: since v8.2 the framework generates its document
+         through Microsoft.AspNetCore.OpenApi, so the adapter under test there is the AspNetCore one
+         (docs/fastendpoints.md). -->
+    <PackageVersion Include="FastEndpoints" Version="8.3.0" />
+    <PackageVersion Include="FastEndpoints.OpenApi" Version="8.3.0" />
   </ItemGroup>
 
   <ItemGroup Label="Flag sources">

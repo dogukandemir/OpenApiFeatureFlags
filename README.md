@@ -217,6 +217,8 @@ method's XML docs.
   minimal API can and cannot gate, and why the package is `net10.0` only.
 - [`docs/nswag.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/nswag.md): the NSwag adapter: wiring, what a minimal API can gate
   here that it cannot there, and the measured processor model behind it.
+- [`docs/fastendpoints.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/fastendpoints.md): using the built-in-engine adapter with
+  FastEndpoints v8.2 or later, and the two boundaries that were measured.
 - [`docs/descriptions.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/descriptions.md): gating part of a description with `<gate>`, and the
   one thing it cannot do.
 - [`docs/azure-app-configuration.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/azure-app-configuration.md): reading flags from Azure App

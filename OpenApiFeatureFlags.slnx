@@ -15,6 +15,7 @@
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/OpenApiFeatureFlags.AspNetCore.Tests/OpenApiFeatureFlags.AspNetCore.Tests.csproj" />
+    <Project Path="tests/OpenApiFeatureFlags.FastEndpoints.Tests/OpenApiFeatureFlags.FastEndpoints.Tests.csproj" />
     <Project Path="tests/OpenApiFeatureFlags.FeatureManagement.Tests/OpenApiFeatureFlags.FeatureManagement.Tests.csproj" />
     <Project Path="tests/OpenApiFeatureFlags.NSwag.Tests/OpenApiFeatureFlags.NSwag.Tests.csproj" />
     <Project Path="tests/OpenApiFeatureFlags.OpenFeature.Tests/OpenApiFeatureFlags.OpenFeature.Tests.csproj" />

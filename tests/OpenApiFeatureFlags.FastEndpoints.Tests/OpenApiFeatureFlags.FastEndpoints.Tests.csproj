@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <RootNamespace>OpenApiFeatureFlags.FastEndpoints.Tests</RootNamespace>
+    <OutputType>Exe</OutputType>
+    <!-- net10.0 only, matching the adapter under test: FastEndpoints generates through
+         Microsoft.AspNetCore.OpenApi, whose 10.x line is the only one the adapter builds against
+         (docs/aspnetcore.md). -->
+    <TargetFrameworks>net10.0</TargetFrameworks>
+    <!-- The engine's XML-comment support emits interceptors; the fixture DTOs carry XML comments,
+         so the namespace is opted into here as docs/aspnetcore.md describes. -->
+    <InterceptorsNamespaces>$(InterceptorsNamespaces);Microsoft.AspNetCore.OpenApi.Generated</InterceptorsNamespaces>
+    <NoWarn>$(NoWarn);CA1031;CA1034;CA1052;CA1062;CA1303;CA1305;CA1515;CA1707;CA1812;CA1819;CA1822;CA1859;CA1860;CA1861;CA2007;CA2201;CA5394</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- The framework generates its document through Microsoft.AspNetCore.OpenApi; these two
+         packages are what a consumer installs, and the test app registers exactly what
+         docs/fastendpoints.md tells a consumer to register. -->
+    <PackageReference Include="FastEndpoints" />
+    <PackageReference Include="FastEndpoints.OpenApi" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" />
+    <PackageReference Include="xunit.v3" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="Shouldly" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\OpenApiFeatureFlags.AspNetCore\OpenApiFeatureFlags.AspNetCore.csproj" />
+    <ProjectReference Include="..\..\src\OpenApiFeatureFlags\OpenApiFeatureFlags.csproj" />
+    <ProjectReference Include="..\..\src\OpenApiFeatureFlags.Abstractions\OpenApiFeatureFlags.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

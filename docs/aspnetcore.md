@@ -2,7 +2,8 @@
 
 `OpenApiFeatureFlags.AspNetCore` gates the document produced by the built-in
 `Microsoft.AspNetCore.OpenApi` document engine (the one behind `builder.Services.AddOpenApi()` and
-`app.MapOpenApi()`) instead of Swashbuckle.
+`app.MapOpenApi()`) instead of Swashbuckle. FastEndpoints v8.2 and later generates through this same
+engine; [`fastendpoints.md`](fastendpoints.md) is the guide for that stack.
 
 Everything the library promises is unchanged: gated operations, parameters and model properties
 disappear from the document when their flag is off, `Annotate` marks them instead of hiding them, and
