@@ -1,4 +1,4 @@
-![The OpenApiFeatureFlags mark: two toggles between square brackets, in Solarized cyan](https://raw.githubusercontent.com/dogukandemir/OpenApiFeatureFlags/main/assets/icon-128.png)
+![The OpenApiFeatureFlags mark: two toggles between square brackets, in Solarized cyan](https://raw.githubusercontent.com/dogukandemir/OpenApiFeatureFlags/main/assets/logo-centered.png)
 
 # OpenApiFeatureFlags
 
