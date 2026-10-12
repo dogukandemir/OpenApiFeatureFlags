@@ -19,16 +19,19 @@ It is equivalent to packing each package project:
 for project in src/*/*.csproj; do dotnet pack "$project" -c Release -o local-packages; done
 ```
 
-| Package | Version |
-|---|---|
-| `OpenApiFeatureFlags` | 0.2.3 |
-| `OpenApiFeatureFlags.Abstractions` | 0.2.3 |
-| `OpenApiFeatureFlags.Swashbuckle` | 0.2.3 |
-| `OpenApiFeatureFlags.AspNetCore` | 0.2.3 |
-| `OpenApiFeatureFlags.FeatureManagement` | 0.2.3 |
-| `OpenApiFeatureFlags.OpenFeature` | 0.2.3 |
+The feed carries eight packages, all at the one version in `Directory.Build.props` (`VersionPrefix`,
+currently `0.4.0`):
 
-Every package moves together, at the `VersionPrefix` in `Directory.Build.props`. See [`CHANGELOG.md`](../CHANGELOG.md)
+- `OpenApiFeatureFlags`
+- `OpenApiFeatureFlags.Abstractions`
+- `OpenApiFeatureFlags.Swashbuckle`
+- `OpenApiFeatureFlags.AspNetCore` (`net10.0` only)
+- `OpenApiFeatureFlags.NSwag`
+- `OpenApiFeatureFlags.FeatureManagement`
+- `OpenApiFeatureFlags.OpenFeature`
+- `OpenApiFeatureFlags.Analyzers`
+
+Every package moves together, at that one number. See [`CHANGELOG.md`](../CHANGELOG.md)
 for what changed in this cut. `OpenApiFeatureFlags.AspNetCore` targets `net10.0` only, so it does not
 appear in a `net8.0` or `net9.0` output path.
 
@@ -56,7 +59,7 @@ Or add it to your user-level config, which affects every project on the machine:
 dotnet nuget add source "C:\repos\OpenApiFeatureFlags\local-packages" --name oaff-local
 ```
 
-**Keep nuget.org enabled.** The `local` feed only carries these seven packages; `Swashbuckle.AspNetCore`,
+**Keep nuget.org enabled.** The `local` feed only carries these eight packages; `Swashbuckle.AspNetCore`,
 `Microsoft.OpenApi`, `Microsoft.FeatureManagement` and `OpenFeature` are restored from nuget.org. A feed
 list containing only `local` will fail to restore.
 
@@ -74,8 +77,8 @@ also need their own dependencies to resolve, which they do through the upstream 
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.3.0" />
-    <PackageReference Include="OpenApiFeatureFlags.Swashbuckle" Version="0.2.3" />
-    <PackageReference Include="OpenApiFeatureFlags.FeatureManagement" Version="0.2.3" />
+    <PackageReference Include="OpenApiFeatureFlags.Swashbuckle" Version="0.4.0" />
+    <PackageReference Include="OpenApiFeatureFlags.FeatureManagement" Version="0.4.0" />
   </ItemGroup>
 </Project>
 ```
@@ -188,5 +191,5 @@ distinctly-versioned set instead:
 ./scripts/pack-local.ps1 -VersionSuffix local
 ```
 
-That produces `0.2.3-local`, which cannot be confused with a published release. Bumping
+That produces `0.4.0-local`, which cannot be confused with a published release. Bumping
 `VersionPrefix` is the other way out, and is what a new feature would do anyway.

@@ -86,10 +86,10 @@ Two consequences, both measured rather than reasoned about:
   2.x model, so this is not one source file across three target frameworks; it would be three
   implementations. One of them is shipped.
 - The two ranges overlap: `[2.12.0, 3.0.0)` satisfies both this engine's floor and Swashbuckle 10.3.0's
-  `>= 2.7.5`, so one 2.x `Microsoft.OpenApi` can serve both engines, and nothing in the dependency graph
+  `>= 2.7.5`, so one 2.x `Microsoft.OpenApi` can serve both of those engines, and nothing in the dependency graph
   stops an application referencing both adapters. An earlier revision of this page said the opposite,
   having read Swashbuckle's unbracketed `2.7.5` as an exact pin; [`design.md`](design.md) 4.4 records the
-  measurement that settled it. One application registering both engines is still untested, so this page
+  measurement that settled it. One application registering both of those engines is still untested, so this page
   now claims neither way. Pick one document engine per application because you serve one document, not
   because the dependencies forbid it.
 

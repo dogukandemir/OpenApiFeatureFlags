@@ -49,7 +49,7 @@
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <PackageTags>openapi;swagger;openapi-document;feature-flags;feature-management;swashbuckle;nswag;openfeature;aspnetcore;hide;exclude;conditional</PackageTags>
+    <PackageTags>openapi;swagger;swagger-ui;openapi-document;feature-flags;feature-toggle;feature-management;swashbuckle;nswag;openfeature;aspnetcore;hide;exclude;conditional</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <!-- The package icon: the 'double toggle' mark in Solarized cyan. The source of truth is
          assets/icon.svg; assets/icon-128.png is what packs (nuget.org's recommended size). -->

@@ -150,7 +150,7 @@ Consequences, all observed rather than reasoned about:
   coexist in one application**. Unbracketed means *minimum*, not pin: with the central pin raised to
   2.12.2, NuGet resolves 2.12.2 for `Swashbuckle.AspNetCore.Swagger` as well, and the whole suite passes,
   including the Swashbuckle adapter's byte-identical golden-document tests. `[2.12.0, 3.0.0)`
-  therefore demonstrably satisfies both engines. One application registering both engines is still
+  therefore demonstrably satisfies both of those engines. One application registering both of those engines is still
   unmeasured, so this section now asserts neither way. The pin nonetheless stays at 2.7.5: because the
   Swashbuckle adapter references `Microsoft.OpenApi` directly, the central pin is what
   `OpenApiFeatureFlags.Swashbuckle` *publishes as its dependency floor*, and narrowing that for a bump

@@ -24,13 +24,15 @@ them and the test runner are pinned in `global.json` (`rollForward: latestFeatur
 ```shell
 dotnet build --configuration Release
 dotnet test
+dotnet format --verify-no-changes
 ```
 
-Both must be clean. The build treats warnings as errors, and the test projects run on
+All three must be clean. The build treats warnings as errors, and the test projects run on
 [Microsoft.Testing.Platform](https://aka.ms/dotnet-test-mtp-error), which is why `global.json`
 selects the runner. In MTP mode, options that `dotnet test` does not recognise are forwarded to the
 test application, so avoid `--nologo` and friends; use `-p:TargetFramework=net8.0` to run one
-framework.
+framework. The `dotnet format --verify-no-changes` gate also runs in CI; it reads the repository's
+`.editorconfig` (which pins `end_of_line = lf`).
 
 ## The two rules that will get a pull request sent back
 

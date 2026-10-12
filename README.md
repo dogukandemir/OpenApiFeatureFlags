@@ -2,7 +2,7 @@
 
 # OpenApiFeatureFlags
 
-Feature flags for OpenAPI documents.
+Feature flags for Swagger and OpenAPI documents.
 
 [![CI](https://github.com/dogukandemir/OpenApiFeatureFlags/actions/workflows/ci.yml/badge.svg)](https://github.com/dogukandemir/OpenApiFeatureFlags/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/dogukandemir/OpenApiFeatureFlags/actions/workflows/codeql.yml/badge.svg)](https://github.com/dogukandemir/OpenApiFeatureFlags/actions/workflows/codeql.yml)
@@ -21,9 +21,23 @@ public IActionResult Checkout() => Ok();
 With `NewCheckout` off, `/api/orders/checkout` is **not** in the generated document. With it on, it
 is. No restart, no rebuild, no conditional compilation.
 
-Multi-targets `net8.0`, `net9.0` and `net10.0`. Both document engines are supported: Swashbuckle, and
-the built-in `Microsoft.AspNetCore.OpenApi` through a `net10.0`-only package. Flags can come from
-Microsoft.FeatureManagement, the CNCF OpenFeature standard, or your own `IFeatureFlagSource`.
+![The running sample with the flags off and on: the checkout operation appears without a restart](https://raw.githubusercontent.com/dogukandemir/OpenApiFeatureFlags/main/assets/demo-toggle.gif)
+
+*The running sample with the flags off and on: the checkout operation appears without a restart.*
+
+Multi-targets `net8.0`, `net9.0` and `net10.0`. All three document engines are supported: Swashbuckle,
+the built-in `Microsoft.AspNetCore.OpenApi` (through a `net10.0`-only package) and NSwag. FastEndpoints
+endpoints are covered by the built-in-engine adapter. Flags can come from Microsoft.FeatureManagement,
+the CNCF OpenFeature standard, or your own `IFeatureFlagSource`.
+
+**At a glance**
+
+- **Engines:** Swashbuckle, the built-in `Microsoft.AspNetCore.OpenApi` (`net10.0` only) and NSwag; FastEndpoints v8.2 or later through the built-in engine.
+- **Flag sources:** Microsoft.FeatureManagement, the CNCF OpenFeature standard, or any `IFeatureFlagSource`.
+- **Modes:** `Remove` (default), `Annotate`, `Include`.
+- **Guarantees:** fail closed, and fail loudly: rather than publish a document that silently lost every gated endpoint, the library throws.
+- **Build-time safety:** a companion analyzer package reports the silent authoring traps ([`docs/analyzers.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/analyzers.md)).
+- **Eight packages, one version, MIT.**
 
 ---
 
@@ -213,6 +227,47 @@ Swashbuckle applies filters in registration order, and this matters:
 The registration order inside `AddOpenApiFeatureFlagFilters` is deliberate and documented in the
 method's XML docs.
 
+## FAQ
+
+**How do I hide an endpoint from Swagger when a feature flag is off?**
+Put `[OpenApiFeatureFlag("FlagName")]` on the controller or the action, register the library next to
+your document engine, and the operation leaves the generated document while the flag is off and
+returns when it is on. The Quickstart above is the whole setup.
+
+**How do I exclude just one property or parameter?**
+The same attribute goes on the model property or the action parameter. One boundary: under the
+built-in engine a minimal API's parameter cannot be gated (the engine offers no removal path for it);
+under NSwag it can, because the delegate is present as a `MethodInfo`.
+
+**Does this change runtime behaviour?**
+No, and that is a design rule. Hiding an operation from the document leaves the endpoint routeable;
+hiding a property leaves it serialised. Runtime gating stays in your application code.
+
+**How do I gate part of a description sentence?**
+Doc comments become descriptions, and an attribute cannot sit on half a sentence, so wrap the prose
+in `<gate flag="X">...</gate>`. Under NSwag write it escaped (`&lt;gate flag="X"&gt;...`) because the
+reader flattens element markup; the analyzers catch a missed escape at build time.
+
+**What happens if the flag store cannot be read?**
+The library fails closed (a flag that cannot be evaluated hides the element), and it fails loudly: if
+a document contains gated elements and no flag could be read, it throws
+`FeatureFlagSourceUnavailableException` instead of silently dropping released endpoints. Turn the
+exception off with `CanaryEnabled = false` if you accept that risk.
+
+**Can it protect an endpoint from being called?**
+No. Document gating is not access control; see
+[What this library does not do](#what-this-library-does-not-do).
+
+**Which .NET versions work?**
+The library targets `net8.0`, `net9.0` and `net10.0`. The built-in-engine adapter (and with it
+FastEndpoints support) is `net10.0` only.
+
+**How is this different from writing my own `IOperationFilter`?**
+For one static rule, write the filter. This library is for the whole problem: one attribute with the
+same semantics across three engines, three modes, gating for operations, parameters, schema
+properties and prose, fail-closed evaluation, a planning layer with logging, and analyzers that
+catch the silent authoring mistakes.
+
 ## Documentation
 
 - [`docs/trying-locally.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/trying-locally.md): build the packages from source into a local
@@ -246,6 +301,7 @@ method's XML docs.
   issue for one.
 - [`CODE_OF_CONDUCT.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/CODE_OF_CONDUCT.md): how people are expected to treat each other here.
 - [`CHANGELOG.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/CHANGELOG.md): what changed, and when.
+- [`llms.txt`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/llms.txt): a compact machine-readable summary for AI assistants and answer engines.
 
 ## Author
 
