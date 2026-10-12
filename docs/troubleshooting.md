@@ -85,6 +85,39 @@ builder.Services.AddOpenApiFeatureFlags(options => options.CanaryEnabled = false
 
 ---
 
+## NSwag: minimal endpoints never appear in the document
+
+NSwag discovers endpoints through ApiExplorer. `AddControllers()` registers the discovery that
+controller endpoints need; a minimal API has none of its own, and without the line below it is
+silently absent from the document whatever its flags say:
+
+```csharp
+builder.Services.AddEndpointsApiExplorer();
+```
+
+Controllers are unaffected. [`nswag.md`](nswag.md) has the full wiring.
+
+## NSwag: a `<gate>` in an XML documentation comment does nothing
+
+NSwag's documentation reader flattens element markup, so a literal `<gate>` tag inside a comment is
+dropped before the gate can resolve, and its content stays visible in every flag state (fail open,
+and silent). Write the fragment escaped:
+
+```csharp
+/// <summary>Points. &lt;gate flag="LoyaltyProgram"&gt;Shown in loyaltyPoints.&lt;/gate&gt;</summary>
+```
+
+A `[Description]` attribute on a model member carries its text verbatim and needs no escape.
+Swashbuckle and the built-in engine read comments as written; only NSwag needs this.
+
+## NSwag: `.WithSummary()` / `.WithDescription()` gates never appear
+
+NSwag does not lift minimal-API summary and description metadata into the document at all, so a gate
+written there has nothing to resolve in. Put the prose in an escaped documentation comment (with
+`GenerateDocumentationFile` enabled) instead.
+
+---
+
 ## Too much is hidden
 
 The library hides a whole operation as soon as **any** flag governing it is disabled, because

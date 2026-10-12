@@ -75,6 +75,18 @@ builder.Services.AddSwaggerGen(options =>
 });
 ```
 
+That is the Swashbuckle flavour. Only the engine line changes with the document engine:
+
+| Engine | The line that changes |
+|---|---|
+| Swashbuckle | `options.AddOpenApiFeatureFlagFilters()` inside `AddSwaggerGen` |
+| Built-in `Microsoft.AspNetCore.OpenApi` | `options.AddOpenApiFeatureFlagTransformers()` inside `AddOpenApi` |
+| NSwag | `settings.AddOpenApiFeatureFlagProcessors(services)` inside the two-argument `AddOpenApiDocument` |
+
+Each engine has a runnable sample and a guide: see the [samples](https://github.com/dogukandemir/OpenApiFeatureFlags/tree/main/samples),
+[`docs/aspnetcore.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/aspnetcore.md)
+and [`docs/nswag.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/nswag.md).
+
 `AddOpenApiFeatureFlagsWithFeatureManagement()` is one call that registers your existing
 `Microsoft.FeatureManagement` setup *and* points OpenApiFeatureFlags at it. Already using feature
 management? Chain instead:
