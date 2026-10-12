@@ -56,7 +56,7 @@ Or add it to your user-level config, which affects every project on the machine:
 dotnet nuget add source "C:\repos\OpenApiFeatureFlags\local-packages" --name oaff-local
 ```
 
-**Keep nuget.org enabled.** The `local` feed only carries these six packages; `Swashbuckle.AspNetCore`,
+**Keep nuget.org enabled.** The `local` feed only carries these seven packages; `Swashbuckle.AspNetCore`,
 `Microsoft.OpenApi`, `Microsoft.FeatureManagement` and `OpenFeature` are restored from nuget.org. A feed
 list containing only `local` will fail to restore.
 

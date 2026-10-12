@@ -3,6 +3,31 @@
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-10-12
+
+### Added
+
+- **`OpenApiFeatureFlags.NSwag`**, an adapter for NSwag's ASP.NET Core generator
+  (`AddOpenApiDocument` / `UseOpenApi`), built against the current NSwag 14.7.1 / NJsonSchema 11.6.1
+  line after measuring its processor model first. Operations are gated in a single pass (an
+  operation processor returning `false` keeps the operation out of the document), parameters through
+  the `ParameterInfo` map, and schema properties through the generator's own property-name
+  resolution, so naming policies match by construction. It is also the first of the adapters that
+  can gate a minimal API's parameter. Targets `net8.0`, `net9.0` and `net10.0`, with a full test
+  suite per framework that requests the document from the middleware that serves it.
+- [`docs/nswag.md`](docs/nswag.md): the wiring, what is gated where, and the differences from the
+  other two engines.
+
+### Changed
+
+- The package tags carry `nswag` again: the adapter that earns the tag now exists.
+- The seventh package joins the lockstep rule: all seven ship on one version, enforced by CI.
+
+### Notes
+
+- `0.3.0` rather than `0.2.4`: a new package is additive surface, which is what a pre-1.0 minor
+  version is for.
+
 ## [0.2.3] - 2026-10-11
 
 ### Fixed

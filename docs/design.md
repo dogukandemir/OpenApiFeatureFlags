@@ -12,7 +12,8 @@ flowchart LR
     Source["IFeatureFlagSource<br/>FeatureManagement, OpenFeature, or your own"] --> Planner
     Planner["IDocumentVisibilityPlanner<br/>core, singleton, one decision per element"] --> Plan
     Plan["DocumentVisibilityPlan<br/>engine-agnostic"] --> Adapter["OpenApiFeatureFlags.Swashbuckle<br/>operation, schema and document filters"]
-    Plan -.-> Future["a future adapter applies<br/>the same plan"]
+    Plan --> AspNetCore["OpenApiFeatureFlags.AspNetCore<br/>schema, operation and document transformers"]
+    Plan --> NSwag["OpenApiFeatureFlags.NSwag<br/>operation, schema and document processors"]
 ```
 
 Everything under "Decisions", "Design invariants" and "Verified technical facts" was settled or
@@ -253,6 +254,17 @@ what this repo uses.
   the engine's XML-comment support fails the build with CS9137 unless the project opts into
   `Microsoft.AspNetCore.OpenApi.Generated` interceptors, and a minimal API's *parameter* cannot be
   gated because its endpoint metadata carries no `ParameterInfo` to match on.
+- **`OpenApiFeatureFlags.NSwag`**, the item that used to sit in "Not built yet". The measure-first rule
+  held: the processor model was read from the shipped 14.7.1 assemblies before a line was written,
+  and three facts shaped the adapter. An operation processor that returns `false` keeps the operation
+  out of the document, so no marker and no second pass are needed. A schema processor returns nothing
+  and mutates the schema in place. And the document's property name comes from the generator's own
+  reflection service (`GetPropertyName`), so every naming policy matches by construction. Two further
+  facts were measured rather than assumed: NSwag builds its settings inside a singleton factory that
+  hands the factory the application's `IServiceProvider`, which the extension method takes through the
+  `(settings, services)` overload, and a minimal API's delegate is present as a `MethodInfo`, so its
+  parameter can be gated, the one thing the built-in engine adapter cannot do. Details in
+  [`nswag.md`](nswag.md).
 - Two API revisions came out of the same review, and are recorded because both were corrected before
   anyone depended on them. `UseFeatureManagement`/`UseOpenFeature` became
   `AddFeatureManagementFlagSource`/`AddOpenFeatureFlagSource`: they extend `IServiceCollection`, where
@@ -262,13 +274,8 @@ what this repo uses.
 
 ### Not built yet
 
-One adapter is still deliberately absent, and the reason is recorded so it is not rediscovered:
-
-- **`OpenApiFeatureFlags.NSwag`.** NSwag's processor model and its `NJsonSchema` document model have not
-  been measured yet, and guessing at a document model is how the `Microsoft.OpenApi` trap in 4.4
-  happened. Measure first, then write it.
-
-Scalar needs no adapter: it renders whatever JSON the engine produced.
+Nothing remains on the original list. Scalar still needs no adapter: it renders whatever JSON the
+engine produced.
 
 ### Open questions
 

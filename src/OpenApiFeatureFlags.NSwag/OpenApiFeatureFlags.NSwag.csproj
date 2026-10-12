@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+    <PackageId>OpenApiFeatureFlags.NSwag</PackageId>
+    <AssemblyName>OpenApiFeatureFlags.NSwag</AssemblyName>
+    <RootNamespace>OpenApiFeatureFlags.NSwag</RootNamespace>
+    <Title>OpenApiFeatureFlags.NSwag</Title>
+    <Description>NSwag adapter for OpenApiFeatureFlags: hides gated operations, parameters and schema properties from the generated Swagger/OpenAPI document while their feature flag is off.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Only the generation package: NSwag.AspNetCore would drag in the middlewares and the UIs. A
+         consumer of NSwag.AspNetCore already has this package transitively, at the same version.
+         NJsonSchema, Newtonsoft.Json and Namotion.Reflection compile assets flow through it. -->
+    <PackageReference Include="NSwag.Generation.AspNetCore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OpenApiFeatureFlags\OpenApiFeatureFlags.csproj" />
+    <ProjectReference Include="..\OpenApiFeatureFlags.Abstractions\OpenApiFeatureFlags.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="OpenApiFeatureFlags.NSwag.Tests" />
+  </ItemGroup>
+
+</Project>

@@ -32,9 +32,9 @@
 
   <!-- Package metadata. -->
   <PropertyGroup>
-    <!-- Pre-1.0 while the Swashbuckle integration settles; see Q1 in docs/design.md. Bumping this is
+    <!-- Pre-1.0 while the adapter surface settles; see Q1 in docs/design.md. Bumping this is
          also what keeps a local re-pack from colliding with NuGet's version cache. -->
-    <VersionPrefix>0.2.3</VersionPrefix>
+    <VersionPrefix>0.3.0</VersionPrefix>
     <!-- Authors is what nuget.org renders as "Authors". nuget.org's separate *Owners* list is
          derived from the account that pushed the package plus the reserved prefix, and cannot be
          set from here; PackageOwners is ignored by nuget.org, so it is deliberately absent. -->
@@ -49,7 +49,7 @@
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <PackageTags>openapi;swagger;openapi-document;feature-flags;feature-management;swashbuckle;openfeature;aspnetcore;hide;exclude;conditional</PackageTags>
+    <PackageTags>openapi;swagger;openapi-document;feature-flags;feature-management;swashbuckle;nswag;openfeature;aspnetcore;hide;exclude;conditional</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <!-- The package icon: the 'double toggle' mark in Solarized cyan. The source of truth is
          assets/icon.svg; assets/icon-128.png is what packs (nuget.org's recommended size). -->

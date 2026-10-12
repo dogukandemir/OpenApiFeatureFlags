@@ -29,6 +29,8 @@
     <InternalsVisibleTo Include="OpenApiFeatureFlags.Swashbuckle.Tests" />
     <InternalsVisibleTo Include="OpenApiFeatureFlags.AspNetCore" />
     <InternalsVisibleTo Include="OpenApiFeatureFlags.AspNetCore.Tests" />
+    <InternalsVisibleTo Include="OpenApiFeatureFlags.NSwag" />
+    <InternalsVisibleTo Include="OpenApiFeatureFlags.NSwag.Tests" />
   </ItemGroup>
 
 </Project>

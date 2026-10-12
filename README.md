@@ -42,20 +42,22 @@ dotnet add package OpenApiFeatureFlags.FeatureManagement
 ```
 
 That is the whole install for a Swashbuckle API reading flags through Microsoft's feature management:
-`OpenApiFeatureFlags` and `OpenApiFeatureFlags.Abstractions` arrive as dependencies. Swap the second
-line for `OpenApiFeatureFlags.OpenFeature` to read flags through the CNCF OpenFeature standard, or
-leave it out if you are implementing `IFeatureFlagSource` yourself.
+`OpenApiFeatureFlags` and `OpenApiFeatureFlags.Abstractions` arrive as dependencies. Swap the first
+line for `OpenApiFeatureFlags.AspNetCore` or `OpenApiFeatureFlags.NSwag` if that is the document
+engine you use, swap the second line for `OpenApiFeatureFlags.OpenFeature` to read flags through the
+CNCF OpenFeature standard, or leave it out if you are implementing `IFeatureFlagSource` yourself.
 
 | Package | What it is for |
 |---|---|
 | `OpenApiFeatureFlags` | Core: the planner and the service registration. |
 | `OpenApiFeatureFlags.Swashbuckle` | Swashbuckle filter set. Add this if you use `AddSwaggerGen`. |
 | `OpenApiFeatureFlags.AspNetCore` | Transformer set for the built-in `Microsoft.AspNetCore.OpenApi`. Add this if you use `AddOpenApi`. **`net10.0` only**. |
+| `OpenApiFeatureFlags.NSwag` | Processor set for NSwag's generator. Add this if you use `AddOpenApiDocument`. |
 | `OpenApiFeatureFlags.FeatureManagement` | Reads flags from Microsoft's `IFeatureManager`. |
 | `OpenApiFeatureFlags.OpenFeature` | Reads flags through the CNCF [OpenFeature](https://openfeature.dev) standard. |
 | `OpenApiFeatureFlags.Abstractions` | Attribute and contracts only. Reference this from assemblies that must not take a dependency on Swashbuckle or a flag library. |
 
-All six packages ship in lockstep: one version for all of them, set once in `Directory.Build.props` and checked by CI on every change.
+All seven packages ship in lockstep: one version for all of them, set once in `Directory.Build.props` and checked by CI on every change.
 
 ## Quickstart
 
@@ -201,6 +203,8 @@ method's XML docs.
 - [`docs/modes.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/modes.md): what each mode produces.
 - [`docs/aspnetcore.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/aspnetcore.md): the `Microsoft.AspNetCore.OpenApi` adapter: wiring, what a
   minimal API can and cannot gate, and why the package is `net10.0` only.
+- [`docs/nswag.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/nswag.md): the NSwag adapter: wiring, what a minimal API can gate
+  here that it cannot there, and the measured processor model behind it.
 - [`docs/descriptions.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/descriptions.md): gating part of a description with `<gate>`, and the
   one thing it cannot do.
 - [`docs/azure-app-configuration.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/azure-app-configuration.md): reading flags from Azure App

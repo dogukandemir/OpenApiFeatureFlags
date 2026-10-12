@@ -24,13 +24,21 @@
          MissingMethodException at document generation time, not a compile error. -->
     <PackageVersion Include="Microsoft.OpenApi" Version="2.7.5" />
     <!-- Only a package some project actually references is pinned here. Swashbuckle.AspNetCore.Swagger
-         and .SwaggerUI arrive transitively through the metapackage; NSwag.AspNetCore is still unused.
-         A pin for a package no project builds only asks Dependabot to raise pull requests for it. -->
+         and .SwaggerUI arrive transitively through the metapackage. NSwag is pinned below because an
+         adapter now builds against it. A pin for a package no project builds only asks Dependabot to
+         raise pull requests for it. -->
     <!-- The built-in ASP.NET Core document engine, used by OpenApiFeatureFlags.AspNetCore, which is net10.0
          only. That project references this WITHOUT a Microsoft.OpenApi pin on purpose: the engine
          brings its own [2.12.0, 3.0.0) floor, which the 2.7.5 above would violate. Transitive pinning
          is off, so the two engines resolve independently inside one solution. -->
     <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="10.0.12" />
+    <!-- NSwag 14.7.1 ships net8.0/net9.0/net10.0 on the NJsonSchema 11.x line (verified 2026-10-11).
+         The adapter references the generation package only; the full NSwag.AspNetCore is referenced
+         by the test project alone, because the only way to obtain a document the way a consumer does
+         is to ask the middleware that serves it. The processor model this adapter is built on was
+         measured against these assemblies, not taken from documentation; see docs/design.md. -->
+    <PackageVersion Include="NSwag.Generation.AspNetCore" Version="14.7.1" />
+    <PackageVersion Include="NSwag.AspNetCore" Version="14.7.1" />
   </ItemGroup>
 
   <ItemGroup Label="Flag sources">
