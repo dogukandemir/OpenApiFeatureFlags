@@ -19,6 +19,11 @@ var builder = WebApplication.CreateBuilder(args);
 // The core services, plus a flag source. The one-call helper is the shortest path.
 builder.Services.AddOpenApiFeatureFlagsWithFeatureManagement();
 
+// AddControllers() registers the discovery controller endpoints need; a minimal API has none of
+// its own. Without AddEndpointsApiExplorer() a minimal endpoint is silently absent from the
+// document, whatever its flags say (measured; the sample carries the line for both reasons).
+builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddOpenApiDocument((settings, services) =>
     settings.AddOpenApiFeatureFlagProcessors(services));
 
@@ -35,6 +40,12 @@ of dependency-aware configuration.
 
 Call `AddOpenApiFeatureFlagProcessors()` **after** any of your own configuration that rebuilds
 `paths`, `tags` or `components.schemas`. This mirrors the ordering guidance of the other adapters.
+
+For controller endpoints, `AddControllers()` is enough. For minimal APIs, `AddEndpointsApiExplorer()`
+is required as well: controllers register their own discovery, a minimal endpoint does not, and
+without the line it never reaches the document at all, whatever its flags say. This was measured on a
+running application, and [`samples/OpenApiFeatureFlags.NSwag.Sample`](../samples/OpenApiFeatureFlags.NSwag.Sample)
+carries the line.
 
 Both `AddOpenApiDocument` (OpenAPI 3) and `AddSwaggerDocument` (Swagger 2) work: the orphan sweep
 reads the serialised document and recognises both reference shapes.

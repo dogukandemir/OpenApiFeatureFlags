@@ -34,7 +34,8 @@ With it disabled:
 `remarks`, parameter descriptions, request and response descriptions, schema and property
 descriptions, the document-level description, and tag descriptions. Nested gates **AND**, exactly
 like stacked attributes. Under NSwag, fragments inside XML documentation comments must be written
-escaped; [`nswag.md`](nswag.md) records the measurement and the authoring shape.
+escaped, because its reader flattens element markup; Swashbuckle and the built-in engine read the
+comment as written and need no escape. [`nswag.md`](nswag.md) records the measurement.
 
 ## The rules
 

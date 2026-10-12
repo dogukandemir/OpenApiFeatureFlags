@@ -134,6 +134,10 @@ gating has XML documentation enabled by definition.
   `components.schemas` only once every transformer has finished, so this adapter walks request and
   response bodies as well: a walk over `components.schemas` alone would miss a schema that is still
   inline.
+- **XML documentation comments are read as written.** A `<gate>` tag inside a comment survives into
+  the document and resolves normally; no escaping is needed, unlike NSwag, whose reader flattens
+  element markup ([`nswag.md`](nswag.md) records that measurement, and the two samples show both
+  forms).
 
 ## Testing
 

@@ -212,7 +212,9 @@ method's XML docs.
 - [`docs/troubleshooting.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/troubleshooting.md): nothing is hidden, or too much is.
 - [`docs/security.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/security.md): what gating does and does not protect, what `Annotate`
   discloses, and the availability trade-offs.
-- [`samples/OpenApiFeatureFlags.Sample`](https://github.com/dogukandemir/OpenApiFeatureFlags/tree/main/samples/OpenApiFeatureFlags.Sample): a runnable API.
+- [`samples/OpenApiFeatureFlags.Sample`](https://github.com/dogukandemir/OpenApiFeatureFlags/tree/main/samples/OpenApiFeatureFlags.Sample): a runnable API, its document served by Swashbuckle.
+- [`samples/OpenApiFeatureFlags.AspNetCore.Sample`](https://github.com/dogukandemir/OpenApiFeatureFlags/tree/main/samples/OpenApiFeatureFlags.AspNetCore.Sample): the same API through the built-in `Microsoft.AspNetCore.OpenApi` engine.
+- [`samples/OpenApiFeatureFlags.NSwag.Sample`](https://github.com/dogukandemir/OpenApiFeatureFlags/tree/main/samples/OpenApiFeatureFlags.NSwag.Sample): the same API through NSwag, including a gated minimal-API parameter.
 - [`docs/design.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/design.md): why it is built this way, the decisions behind it, and the measurements those decisions rest on.
 
 ## Project
