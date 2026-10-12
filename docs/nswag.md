@@ -118,8 +118,8 @@ for a property that is already gone), and applies the plan:
   `<gate>` tag is dropped from the text and its content stays visible in every flag state. Writing the
   fragment as `&lt;gate flag="X"&gt;...&lt;/gate&gt;` makes it arrive as plain text, where it resolves
   like anywhere else; the suite holds both the off and the on direction. NSwag also does not lift a
-  minimal API's `WithSummary`/`WithDescription` metadata into the document at all, so author gated
-  operation prose through an escaped documentation comment rather than through those helpers.
+  minimal API's `WithSummary`/`WithDescription` metadata into the document at all, so write gated
+  operation prose as an escaped documentation comment rather than through those helpers.
 - **`required` is cleaned twice**, once as each property is removed and once in the final sweep over
   the document. Same reasoning as in [`aspnetcore.md`](aspnetcore.md).
 
