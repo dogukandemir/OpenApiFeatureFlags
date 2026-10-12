@@ -5,8 +5,9 @@ behind `builder.Services.AddOpenApiDocument()` and `app.UseOpenApi()`) instead o
 
 Everything the library promises is unchanged: gated operations, parameters and model properties
 disappear from the document when their flag is off, `Annotate` marks them instead of hiding them, and
-`<gate>` works inside descriptions exactly as it does under Swashbuckle. What differs is how the
-adapter attaches, and two capabilities this engine makes possible that the built-in one does not.
+`<gate>` works inside descriptions, with one authoring nuance this engine adds (recorded under
+"Differences you may notice"). What differs is how the adapter attaches, and two capabilities this
+engine makes possible that the built-in one does not.
 
 ## Wiring
 
