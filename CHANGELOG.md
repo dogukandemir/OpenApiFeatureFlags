@@ -3,6 +3,32 @@
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.1] - 2026-10-12
+
+### Added
+
+- [`llms.txt`](llms.txt): a compact machine-readable summary of the family, for AI assistants and
+  answer engines.
+
+### Changed
+
+- The packaged readme carries the launch-ready documentation: a three-engine introduction, an
+  "At a glance" facts block, an FAQ (hiding a single property, flag-store failures, the
+  IOperationFilter comparison), and a short animation from the running sample that shows the
+  checkout operation appear when its flag is enabled. The header logo now renders optically
+  centered on both GitHub and nuget.org.
+- Package tags gain `feature-toggle` and `swagger-ui`; the repository description, topics and
+  homepage were refreshed alongside.
+- [`docs/trying-locally.md`](docs/trying-locally.md) is back in lockstep with the package set; it
+  had been frozen at the `0.2.3` release and listed six packages.
+- [`CONTRIBUTING.md`](CONTRIBUTING.md) documents the `dotnet format --verify-no-changes` gate.
+- [`docs/aspnetcore.md`](docs/aspnetcore.md) and [`docs/design.md`](docs/design.md): "both engines"
+  became "both of those engines" now that three exist.
+
+### Notes
+
+- Documentation and metadata refresh; no code changes.
+
 ## [0.4.0] - 2026-10-12
 
 ### Added
