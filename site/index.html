@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OpenApiFeatureFlags: feature flags for Swagger and OpenAPI documents</title>
+<meta name="description" content="Hide feature-flagged endpoints, actions, parameters and schema properties from your Swagger and OpenAPI documents on .NET until the flag is enabled. Works with Swashbuckle, the built-in Microsoft.AspNetCore.OpenApi and NSwag.">
+<meta name="author" content="Dogukan Demir">
+<link rel="canonical" href="https://dogukandemir.github.io/OpenApiFeatureFlags/">
+<meta name="theme-color" content="#002b36">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="OpenApiFeatureFlags">
+<meta property="og:title" content="OpenApiFeatureFlags: feature flags for Swagger and OpenAPI documents">
+<meta property="og:description" content="Hide feature-flagged endpoints, actions, parameters and schema properties from your Swagger and OpenAPI documents on .NET until the flag is enabled.">
+<meta property="og:url" content="https://dogukandemir.github.io/OpenApiFeatureFlags/">
+<meta property="og:image" content="https://dogukandemir.github.io/OpenApiFeatureFlags/assets/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="assets/icon.svg">
+<link rel="alternate icon" type="image/png" href="assets/icon-128.png">
+<link rel="stylesheet" href="style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "OpenApiFeatureFlags",
+  "alternateName": "OpenAPI feature flags for .NET",
+  "description": "Feature flags for Swagger and OpenAPI documents on .NET. Hide flagged endpoints, actions, parameters and schema properties from the generated document until the flag is enabled.",
+  "url": "https://dogukandemir.github.io/OpenApiFeatureFlags/",
+  "codeRepository": "https://github.com/dogukandemir/OpenApiFeatureFlags",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": ".NET 8, .NET 9, .NET 10",
+  "programmingLanguage": "C#",
+  "license": "https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/LICENSE",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "author": { "@type": "Person", "name": "Dogukan Demir", "url": "https://github.com/dogukandemir" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do I hide an endpoint from Swagger when a feature flag is off?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Put [OpenApiFeatureFlag(\"FlagName\")] on the controller or the action, register the library next to your document engine, and the operation leaves the generated document while the flag is off. It returns the moment the flag is on, without a restart." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I exclude just one property or parameter from the document?",
+      "acceptedAnswer": { "@type": "Answer", "text": "The same attribute goes on the model property or the action parameter. One boundary: under the built-in engine a minimal API's parameter cannot be gated; under NSwag it can, because the delegate is present as a MethodInfo." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does document gating change runtime behaviour?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No, and that is a design rule. Hiding an operation from the document leaves the endpoint routeable; hiding a property leaves it serialised. Runtime gating stays in your application code." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I gate part of a description sentence?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Wrap the prose in a gate element inside the XML doc comment. Under NSwag write it escaped, because the reader flattens element markup; the analyzers catch a missed escape at build time." }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens if the flag store cannot be read?",
+      "acceptedAnswer": { "@type": "Answer", "text": "The library fails closed, and it fails loudly: if a document contains gated elements and no flag could be read, it throws FeatureFlagSourceUnavailableException instead of publishing a document that silently lost endpoints. CanaryEnabled = false turns the exception off." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can it protect an endpoint from being called?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. Document gating is not access control: hiding an operation leaves the endpoint routeable. Pair it with real authorization." }
+    },
+    {
+      "@type": "Question",
+      "name": "Which .NET versions and document engines are supported?",
+      "acceptedAnswer": { "@type": "Answer", "text": "The library targets net8.0, net9.0 and net10.0, and supports Swashbuckle, the built-in Microsoft.AspNetCore.OpenApi (net10.0 only) and NSwag. FastEndpoints v8.2 or later is covered by the built-in-engine adapter." }
+    },
+    {
+      "@type": "Question",
+      "name": "How is this different from writing my own IOperationFilter?",
+      "acceptedAnswer": { "@type": "Answer", "text": "For one static rule, write the filter. This library is for the whole problem: one attribute with the same semantics across three engines, three modes, gating for operations, parameters, schema properties and prose, fail-closed evaluation, a planning layer with logging, and analyzers for the silent authoring mistakes." }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="./">
+      <img src="assets/icon-128.png" alt="OpenApiFeatureFlags mark" width="28" height="28">
+      OpenApiFeatureFlags
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#quickstart">Quickstart</a>
+      <a href="#features">Features</a>
+      <a href="#faq">FAQ</a>
+      <a class="nav-docs" href="#docs">Docs</a>
+      <a class="nav-github" href="https://github.com/dogukandemir/OpenApiFeatureFlags">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="container">
+      <img class="mark" src="assets/icon-256.png" alt="The OpenApiFeatureFlags mark: two toggle pills between square brackets, in Solarized cyan" width="88" height="88">
+      <h1>OpenApiFeatureFlags</h1>
+      <p class="tagline">Feature flags for Swagger and OpenAPI documents.</p>
+      <p class="lede">Mark an endpoint, action, property or parameter with <code>[OpenApiFeatureFlag]</code> and it appears in your generated document only while the flag is enabled. Documentation-only by design: runtime behaviour never changes.</p>
+      <div class="install">
+        <code id="install-cmd"><span class="prompt">$</span> dotnet add package OpenApiFeatureFlags.Swashbuckle</code>
+        <button data-copy="#install-cmd" aria-label="Copy the install command">Copy</button>
+      </div>
+      <div class="actions">
+        <a class="btn btn-primary" href="#quickstart">Get started</a>
+        <a class="btn btn-secondary" href="https://github.com/dogukandemir/OpenApiFeatureFlags">GitHub</a>
+        <a class="btn btn-secondary" href="https://www.nuget.org/packages/OpenApiFeatureFlags">NuGet</a>
+      </div>
+      <div class="stats">
+        <span>MIT licensed</span>
+        <span>.NET 8 &middot; 9 &middot; 10</span>
+        <span>3 document engines</span>
+        <span>8 packages, one version</span>
+        <span>647 tests passing</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head center">
+        <h2>The document follows the flag, not the code</h2>
+        <p>With <code>NewCheckout</code> off, <code>/api/orders/checkout</code> is not in the document. With it on, it is. No restart, no rebuild, no conditional compilation.</p>
+      </div>
+      <div class="demo-frame">
+        <img src="assets/demo-toggle.gif" alt="The sample application's Swagger UI with the NewCheckout flag off, then on; the checkout operation appears without a restart" width="1080" height="450" loading="lazy">
+      </div>
+      <p class="demo-caption">The running sample with the flags off and on.</p>
+    </div>
+  </section>
+
+  <section class="section" id="quickstart">
+    <div class="container">
+      <div class="section-head">
+        <h2>Get started in one call</h2>
+        <p>Register the library next to your document engine. Only one line changes between engines.</p>
+      </div>
+      <div class="tabs" role="tablist" aria-label="Document engine">
+        <button role="tab" id="tab-swashbuckle" aria-controls="panel-swashbuckle" aria-selected="true">Swashbuckle</button>
+        <button role="tab" id="tab-builtin" aria-controls="panel-builtin" aria-selected="false" tabindex="-1">Built-in ASP.NET Core</button>
+        <button role="tab" id="tab-nswag" aria-controls="panel-nswag" aria-selected="false" tabindex="-1">NSwag</button>
+      </div>
+
+      <div role="tabpanel" id="panel-swashbuckle" aria-labelledby="tab-swashbuckle" class="tabpanel">
+        <pre><code>builder.Services.<span class="n">AddOpenApiFeatureFlagsWithFeatureManagement</span>();
+
+builder.Services.<span class="n">AddSwaggerGen</span>(options =&gt;
+{
+    options.<span class="n">SwaggerDoc</span>(<span class="s">"v1"</span>, new <span class="n">OpenApiInfo</span> { Title = <span class="s">"My API"</span>, Version = <span class="s">"1.0"</span> });
+
+    <span class="c">// Register this LAST: it rewrites what the previous filters touched.</span>
+    options.<span class="hl">AddOpenApiFeatureFlagFilters</span>();
+});</code></pre>
+        <p class="engine-note">Package: <code class="inline">OpenApiFeatureFlags.Swashbuckle</code>. Works on every supported .NET version. Also install <code class="inline">OpenApiFeatureFlags.FeatureManagement</code> or <code class="inline">OpenApiFeatureFlags.OpenFeature</code>, or bring your own flag source.</p>
+      </div>
+
+      <div role="tabpanel" id="panel-builtin" aria-labelledby="tab-builtin" class="tabpanel" hidden>
+        <pre><code>builder.Services.<span class="n">AddOpenApiFeatureFlagsWithFeatureManagement</span>();
+
+builder.Services.<span class="n">AddOpenApi</span>(options =&gt;
+{
+    options.<span class="hl">AddOpenApiFeatureFlagTransformers</span>();
+});</code></pre>
+        <p class="engine-note">Package: <code class="inline">OpenApiFeatureFlags.AspNetCore</code>. <strong>.NET 10 only.</strong> FastEndpoints v8.2 or later runs through this engine.</p>
+      </div>
+
+      <div role="tabpanel" id="panel-nswag" aria-labelledby="tab-nswag" class="tabpanel" hidden>
+        <pre><code>builder.Services.<span class="n">AddOpenApiFeatureFlagsWithFeatureManagement</span>();
+
+builder.Services.<span class="n">AddOpenApiDocument</span>((settings, services) =&gt;
+{
+    settings.<span class="hl">AddOpenApiFeatureFlagProcessors</span>(services);
+});</code></pre>
+        <p class="engine-note">Package: <code class="inline">OpenApiFeatureFlags.NSwag</code>. The two-argument overload is required: it hands over the real service provider.</p>
+      </div>
+
+      <h3 class="qs-sub">Mark what is gated</h3>
+      <p class="qs-note">The attribute works on a controller, an action, a model property or a parameter. Two attributes on one target are ANDed.</p>
+      <pre><code>[<span class="n">OpenApiFeatureFlag</span>(<span class="s">"NewCheckout"</span>)]                  <span class="c">// gates this operation</span>
+[<span class="n">HttpPost</span>(<span class="s">"checkout"</span>)]
+public IActionResult <span class="n">Checkout</span>() =&gt; Ok();
+
+public sealed class Order
+{
+    [<span class="n">OpenApiFeatureFlag</span>(<span class="s">"LoyaltyProgram"</span>)]           <span class="c">// gates one schema property</span>
+    public int <span class="n">LoyaltyPoints</span> { get; set; }
+}</code></pre>
+      <p class="qs-note">Descriptions too: wrap gated prose in <code class="inline">&lt;gate flag="X"&gt;...&lt;/gate&gt;</code> inside the XML comment (escaped form under NSwag). <a href="https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/descriptions.md">Read the guide</a>.</p>
+    </div>
+  </section>
+
+  <section class="section" id="features">
+    <div class="container">
+      <div class="section-head center">
+        <h2>What you get</h2>
+        <p>The small surface of one attribute, and the guarantees that make it safe to publish.</p>
+      </div>
+      <div class="cards">
+        <div class="card">
+          <h3>Three engines, one attribute</h3>
+          <p>Swashbuckle, the built-in <code>Microsoft.AspNetCore.OpenApi</code> and NSwag, with the same semantics everywhere. FastEndpoints runs through the built-in engine.</p>
+        </div>
+        <div class="card">
+          <h3>Three modes</h3>
+          <p><code>Remove</code> (default), <code>Annotate</code> (adds <code>x-feature-flag</code> to the operation) and <code>Include</code>. One option switches the behaviour.</p>
+        </div>
+        <div class="card">
+          <h3>Flags from where you already keep them</h3>
+          <p>Microsoft.FeatureManagement, the CNCF OpenFeature standard, or your own <code>IFeatureFlagSource</code>. Azure App Configuration works through FeatureManagement.</p>
+        </div>
+        <div class="card">
+          <h3>Fail closed, fail loudly</h3>
+          <p>An unreadable flag hides the element instead of leaking it, and a canary exception fires before a document silently loses released endpoints.</p>
+        </div>
+        <div class="card">
+          <h3>Build-time safety</h3>
+          <p>A companion analyzer package reports the silent traps while you compile: OAFF1001, OAFF2001, OAFF3001, OAFF5001. <a href="https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/analyzers.md">How they work</a>.</p>
+        </div>
+        <div class="card">
+          <h3>Invisible when unused</h3>
+          <p>With no attribute in the project, the document is byte-identical. Eight packages ship in lockstep at one version, MIT licensed.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="faq">
+    <div class="container">
+      <div class="section-head center">
+        <h2>Questions the README keeps answering</h2>
+        <p>Short answers to the things people ask before adopting the library.</p>
+      </div>
+      <div class="faq">
+        <div class="faq-item">
+          <h3>How do I hide an endpoint from Swagger when a feature flag is off?</h3>
+          <p>Put <code>[OpenApiFeatureFlag("FlagName")]</code> on the controller or the action, register the library next to your document engine, and the operation leaves the generated document while the flag is off. It returns the moment the flag is on, without a restart.</p>
+        </div>
+        <div class="faq-item">
+          <h3>How do I exclude just one property or parameter?</h3>
+          <p>The same attribute goes on the model property or the action parameter. One boundary: under the built-in engine a minimal API's parameter cannot be gated; under NSwag it can, because the delegate is present as a <code>MethodInfo</code>.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Does this change runtime behaviour?</h3>
+          <p>No, and that is a design rule. Hiding an operation from the document leaves the endpoint routeable; hiding a property leaves it serialised. Runtime gating stays in your application code.</p>
+        </div>
+        <div class="faq-item">
+          <h3>How do I gate part of a description sentence?</h3>
+          <p>Wrap the prose in <code>&lt;gate flag="X"&gt;...&lt;/gate&gt;</code> inside the XML doc comment. Under NSwag write it escaped, because the reader flattens element markup; the analyzers catch a missed escape at build time.</p>
+        </div>
+        <div class="faq-item">
+          <h3>What happens if the flag store cannot be read?</h3>
+          <p>The library fails closed, and it fails loudly: if a document contains gated elements and no flag could be read, it throws <code>FeatureFlagSourceUnavailableException</code> instead of publishing a document that silently lost endpoints. <code>CanaryEnabled = false</code> turns the exception off.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Can it protect an endpoint from being called?</h3>
+          <p>No. Document gating is not access control: hiding an operation leaves the endpoint routeable. Pair it with real authorization.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Which .NET versions and document engines are supported?</h3>
+          <p>The library targets <code>net8.0</code>, <code>net9.0</code> and <code>net10.0</code>, and supports Swashbuckle, the built-in <code>Microsoft.AspNetCore.OpenApi</code> (net10.0 only) and NSwag. FastEndpoints v8.2 or later is covered by the built-in-engine adapter.</p>
+        </div>
+        <div class="faq-item">
+          <h3>How is this different from writing my own IOperationFilter?</h3>
+          <p>For one static rule, write the filter. This library is for the whole problem: one attribute with the same semantics across three engines, three modes, gating for operations, parameters, schema properties and prose, fail-closed evaluation, a planning layer with logging, and analyzers for the silent authoring mistakes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="docs">
+    <div class="container">
+      <div class="section-head">
+        <h2>Documentation</h2>
+        <p>Guides, references and the reasoning behind the design, all in the repository.</p>
+      </div>
+      <div class="docs-grid">
+        <div class="docs-item">
+          <a class="doc-link" href="https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/README.md">README</a>
+          <span class="desc">Full quickstart, modes, guarantees and the FAQ.</span>
+        </div>
+        <div class="docs-item">
+          <a class="doc-link" href="https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/aspnetcore.md">Built-in engine guide</a>
+          <span class="desc">The net10.0 engine and the minimal-API parameter boundary.</span>
+        </div>
+        <div class="docs-item">
+          <a class="doc-link" href="https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/nswag.md">NSwag guide</a>
+          <span class="desc">Native processors and the escaped-gate rule in XML comments.</span>
+        </div>
+        <div class="docs-item">
+          <a class="doc-link" href="https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/fastendpoints.md">FastEndpoints guide</a>
+          <span class="desc">Wiring and its two measured boundaries.</span>
+        </div>
+        <div class="docs-item">
+          <a class="doc-link" href="https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/analyzers.md">Analyzers</a>
+          <span class="desc">The OAFF rules and how to set severities.</span>
+        </div>
+        <div class="docs-item">
+          <a class="doc-link" href="https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/descriptions.md">Descriptions</a>
+          <span class="desc">Gating prose inside descriptions.</span>
+        </div>
+        <div class="docs-item">
+          <a class="doc-link" href="https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/modes.md">Modes</a>
+          <span class="desc">What Remove, Annotate and Include produce.</span>
+        </div>
+        <div class="docs-item">
+          <a class="doc-link" href="https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/security.md">Security</a>
+          <span class="desc">Posture and availability trade-offs.</span>
+        </div>
+        <div class="docs-item">
+          <a class="doc-link" href="https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/troubleshooting.md">Troubleshooting</a>
+          <span class="desc">Nothing is hidden, or too much is.</span>
+        </div>
+        <div class="docs-item">
+          <a class="doc-link" href="https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/design.md">Design notes</a>
+          <span class="desc">Locked decisions and the measurements behind them.</span>
+        </div>
+        <div class="docs-item">
+          <a class="doc-link" href="https://github.com/dogukandemir/OpenApiFeatureFlags/tree/main/samples">Samples</a>
+          <span class="desc">Three runnable sample applications.</span>
+        </div>
+        <div class="docs-item">
+          <a class="doc-link" href="https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/CHANGELOG.md">Changelog</a>
+          <span class="desc">What changed, and when.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="foot-brand">
+      <img src="assets/icon-128.png" alt="" width="22" height="22">
+      <span>OpenApiFeatureFlags &middot; MIT licensed</span>
+    </div>
+    <nav aria-label="Footer">
+      <a href="https://github.com/dogukandemir/OpenApiFeatureFlags">GitHub</a>
+      <a href="https://www.nuget.org/packages/OpenApiFeatureFlags">NuGet</a>
+      <a href="https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/SECURITY.md">Security</a>
+      <a href="https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/CHANGELOG.md">Changelog</a>
+      <a href="llms.txt">llms.txt</a>
+    </nav>
+    <p class="colophon">Built and maintained by Dogukan Demir.</p>
+  </div>
+</footer>
+
+<script src="script.js" defer></script>
+</body>
+</html>

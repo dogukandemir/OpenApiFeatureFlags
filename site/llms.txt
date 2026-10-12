@@ -1,0 +1,66 @@
+# OpenApiFeatureFlags
+
+> Feature flags for Swagger and OpenAPI documents on .NET. Mark an endpoint, action, parameter or
+> schema property with [OpenApiFeatureFlag] and it only appears in the generated document while the
+> flag is enabled. Gating is documentation-only: it never changes runtime behaviour.
+
+## Packages
+
+Eight packages, shipped in lockstep at one version:
+
+- [OpenApiFeatureFlags](https://www.nuget.org/packages/OpenApiFeatureFlags): core planner and service registration.
+- [OpenApiFeatureFlags.Abstractions](https://www.nuget.org/packages/OpenApiFeatureFlags.Abstractions): the attribute and contracts, dependency-free.
+- [OpenApiFeatureFlags.Swashbuckle](https://www.nuget.org/packages/OpenApiFeatureFlags.Swashbuckle): adapter for Swashbuckle (AddSwaggerGen).
+- [OpenApiFeatureFlags.AspNetCore](https://www.nuget.org/packages/OpenApiFeatureFlags.AspNetCore): adapter for the built-in Microsoft.AspNetCore.OpenApi (net10.0 only).
+- [OpenApiFeatureFlags.NSwag](https://www.nuget.org/packages/OpenApiFeatureFlags.NSwag): adapter for NSwag (AddOpenApiDocument).
+- [OpenApiFeatureFlags.Analyzers](https://www.nuget.org/packages/OpenApiFeatureFlags.Analyzers): four Roslyn rules (OAFF1001, OAFF2001, OAFF3001, OAFF5001) that catch the silent authoring traps at build time.
+- [OpenApiFeatureFlags.FeatureManagement](https://www.nuget.org/packages/OpenApiFeatureFlags.FeatureManagement): flag source for Microsoft.FeatureManagement.
+- [OpenApiFeatureFlags.OpenFeature](https://www.nuget.org/packages/OpenApiFeatureFlags.OpenFeature): flag source for the CNCF OpenFeature standard.
+
+## Quickstart
+
+```csharp
+builder.Services.AddOpenApiFeatureFlagsWithFeatureManagement();
+
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "1.0" });
+    options.AddOpenApiFeatureFlagFilters();   // the Swashbuckle engine line
+});
+```
+
+The engine line differs per engine: `options.AddOpenApiFeatureFlagFilters()` (Swashbuckle),
+`options.AddOpenApiFeatureFlagTransformers()` (built-in), or
+`settings.AddOpenApiFeatureFlagProcessors(services)` (NSwag). Mark gated elements with
+`[OpenApiFeatureFlag("FlagName")]`; gate part of a description with `<gate flag="FlagName">...</gate>`
+(escaped under NSwag: `&lt;gate flag="FlagName"&gt;...&lt;/gate&gt;`).
+
+## Facts
+
+- Engines: Swashbuckle; the built-in Microsoft.AspNetCore.OpenApi (net10.0 only); NSwag. FastEndpoints v8.2 or later runs through the built-in engine.
+- Flag providers: Microsoft.FeatureManagement, OpenFeature, or a custom IFeatureFlagSource. Azure App Configuration works through FeatureManagement.
+- Modes: Remove (default), Annotate (adds x-feature-flag), Include.
+- Guarantees: fail closed; throws FeatureFlagSourceUnavailableException rather than publish a document that silently lost gated endpoints (CanaryEnabled = false turns that off); byte-identical document when no attribute is used.
+- Targets: net8.0, net9.0, net10.0. License: MIT. Tests: 647 runs across eight test projects.
+- Not a security control: hiding an operation from the document leaves the endpoint routeable.
+
+## Docs
+
+- [README](https://github.com/dogukandemir/OpenApiFeatureFlags): full quickstart, modes, guarantees, FAQ.
+- [docs/aspnetcore.md](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/aspnetcore.md): the built-in-engine adapter, its net10.0 restriction, and the minimal-API parameter boundary.
+- [docs/nswag.md](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/nswag.md): the NSwag adapter, including the escaped-gate rule in XML comments.
+- [docs/fastendpoints.md](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/fastendpoints.md): FastEndpoints wiring and its two measured boundaries.
+- [docs/analyzers.md](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/analyzers.md): the analyzer package, rule IDs, and how to set severities.
+- [docs/descriptions.md](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/descriptions.md): gating prose inside descriptions.
+- [docs/modes.md](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/modes.md): what each mode produces.
+- [docs/security.md](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/security.md): security posture and availability trade-offs.
+- [docs/troubleshooting.md](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/troubleshooting.md): nothing is hidden, or too much is.
+- [docs/design.md](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/design.md): the locked decisions and the measurements they rest on.
+- [CHANGELOG.md](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/CHANGELOG.md): what changed, and when.
+
+## Optional
+
+- [docs/azure-app-configuration.md](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/azure-app-configuration.md): reading flags from Azure App Configuration.
+- [docs/trying-locally.md](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/trying-locally.md): build the packages from source into a local feed.
+- [samples](https://github.com/dogukandemir/OpenApiFeatureFlags/tree/main/samples): three runnable sample applications (Swashbuckle, built-in, NSwag).
+- [CONTRIBUTING.md](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/CONTRIBUTING.md), [SECURITY.md](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/SECURITY.md), [CODE_OF_CONDUCT.md](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/CODE_OF_CONDUCT.md) in the repository root.
