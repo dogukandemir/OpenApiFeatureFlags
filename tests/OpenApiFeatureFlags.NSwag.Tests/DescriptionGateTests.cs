@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Shouldly;
 
 namespace OpenApiFeatureFlags.NSwag.Tests;
@@ -79,5 +81,42 @@ public sealed class DescriptionGateTests
 
         description.ShouldNotBeNull();
         description.ShouldContain("Beta pricing formula in use.");
+    }
+
+    [Fact]
+    public async Task AGatedOperationSummaryFragmentIsRemovedWhenItsFlagIsOff()
+    {
+        using var document = await TestDocument.BuildAsync(new FakeFlagSource(), mapControllers: true);
+
+        var operation = document.RootElement
+            .GetProperty("paths")
+            .GetProperty("/api/widgets/documented")
+            .GetProperty("get");
+
+        operation.TryGetProperty("summary", out var summaryElement).ShouldBeTrue();
+
+        var summary = summaryElement.GetString();
+        summary.ShouldNotBeNull();
+        summary.ShouldNotContain("Beta widget notes.");
+        summary.ShouldContain("Widget docs.");
+    }
+
+    [Fact]
+    public async Task AGatedOperationSummaryFragmentIsKeptWhenItsFlagIsOn()
+    {
+        using var document = await TestDocument.BuildAsync(
+            new FakeFlagSource("BetaDocs"),
+            mapControllers: true);
+
+        var operation = document.RootElement
+            .GetProperty("paths")
+            .GetProperty("/api/widgets/documented")
+            .GetProperty("get");
+
+        operation.TryGetProperty("summary", out var summaryElement).ShouldBeTrue();
+
+        var summary = summaryElement.GetString();
+        summary.ShouldNotBeNull();
+        summary.ShouldContain("Beta widget notes.");
     }
 }

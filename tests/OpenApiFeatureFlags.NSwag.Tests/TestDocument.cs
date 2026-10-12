@@ -1,5 +1,6 @@
 using System.Net;
 using System.Text.Json;
+using global::NSwag.Generation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
@@ -47,6 +48,10 @@ internal static class TestDocument
     /// Sets the document's info description. Only the description-gate tests pass one, so a gate in a
     /// description cannot influence the byte-identical regression comparison.
     /// </param>
+    /// <param name="useSwagger2">
+    /// Registers the document through <c>AddSwaggerDocument</c> (Swagger 2) instead of
+    /// <c>AddOpenApiDocument</c> (OpenAPI 3), so both registration styles are exercised.
+    /// </param>
     /// <returns>The parsed document. The caller owns it.</returns>
     public static Task<JsonDocument> BuildAsync(
         IFeatureFlagSource flagSource,
@@ -56,7 +61,8 @@ internal static class TestDocument
         Action<WebApplication>? mapEndpoints = null,
         bool mapControllers = false,
         ICollection<string>? logSink = null,
-        string? description = null) =>
+        string? description = null,
+        bool useSwagger2 = false) =>
         RunAsync(
             flagSource,
             mode,
@@ -66,6 +72,7 @@ internal static class TestDocument
             mapControllers,
             logSink,
             description,
+            useSwagger2,
             async client =>
             {
                 var json = await client.GetStringAsync(Route).ConfigureAwait(false);
@@ -89,6 +96,7 @@ internal static class TestDocument
             mapControllers: false,
             logSink: null,
             description: null,
+            useSwagger2: false,
             async client =>
             {
                 using var response = await client.GetAsync(Route).ConfigureAwait(false);
@@ -109,6 +117,7 @@ internal static class TestDocument
         bool mapControllers,
         ICollection<string>? logSink,
         string? description,
+        bool useSwagger2,
         Func<HttpClient, Task<T>> read)
     {
         var builder = WebApplication.CreateBuilder();
@@ -129,21 +138,16 @@ internal static class TestDocument
 
         builder.Services.AddEndpointsApiExplorer();
 
-        builder.Services.AddOpenApiDocument((settings, services) =>
+        if (useSwagger2)
         {
-            settings.Title = "Test document";
-            settings.Version = "1.0.0";
-
-            if (description is not null)
-            {
-                settings.Description = description;
-            }
-
-            if (useProcessors)
-            {
-                settings.AddOpenApiFeatureFlagProcessors(services);
-            }
-        });
+            builder.Services.AddSwaggerDocument((settings, services) =>
+                ConfigureDocument(settings, services, useProcessors, description));
+        }
+        else
+        {
+            builder.Services.AddOpenApiDocument((settings, services) =>
+                ConfigureDocument(settings, services, useProcessors, description));
+        }
 
         if (mapControllers)
         {
@@ -175,6 +179,26 @@ internal static class TestDocument
         {
             await app.StopAsync().ConfigureAwait(false);
             await app.DisposeAsync().ConfigureAwait(false);
+        }
+    }
+
+    private static void ConfigureDocument(
+        AspNetCoreOpenApiDocumentGeneratorSettings settings,
+        IServiceProvider services,
+        bool useProcessors,
+        string? description)
+    {
+        settings.Title = "Test document";
+        settings.Version = "1.0.0";
+
+        if (description is not null)
+        {
+            settings.Description = description;
+        }
+
+        if (useProcessors)
+        {
+            settings.AddOpenApiFeatureFlagProcessors(services);
         }
     }
 }

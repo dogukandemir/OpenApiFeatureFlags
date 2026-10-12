@@ -33,7 +33,8 @@ With it disabled:
 `<gate>` works anywhere a string reaches the document: operation `summary` and `description`,
 `remarks`, parameter descriptions, request and response descriptions, schema and property
 descriptions, the document-level description, and tag descriptions. Nested gates **AND**, exactly
-like stacked attributes.
+like stacked attributes. Under NSwag, fragments inside XML documentation comments must be written
+escaped; [`nswag.md`](nswag.md) records the measurement and the authoring shape.
 
 ## The rules
 
@@ -68,6 +69,15 @@ element is *malformed*, so always close it:
 ```csharp
 /// <gate flag="LoyaltyProgram">…</gate>    // fine
 /// <gate flag="LoyaltyProgram">…           // CS1570: the comment is no longer well-formed XML
+```
+
+Under NSwag, the tag must additionally be **escaped**, because its documentation reader keeps the
+text of an element but drops the element itself: a literal `<gate>` tag is dropped silently and its
+content is then visible in every flag state. The escaped form survives as plain text and resolves
+normally:
+
+```csharp
+/// <summary>Points. &lt;gate flag="LoyaltyProgram"&gt;Shown in loyaltyPoints.&lt;/gate&gt;</summary>
 ```
 
 Self-closing is also valid: `<gate flag="LoyaltyProgram" />` hides nothing, which makes it useful

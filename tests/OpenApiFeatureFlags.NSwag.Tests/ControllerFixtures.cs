@@ -45,6 +45,13 @@ public sealed class WidgetController : ControllerBase
     [HttpGet("search")]
     public string Search([OpenApiFeatureFlag("SearchEnabled")] string? term = null) => "results";
 
+    // The gate fragment is written escaped on purpose: NSwag's documentation reader extracts element
+    // text and drops markup, so a literal <gate> tag never survives into the document. The escaped
+    // form arrives as plain text, which is the authoring shape docs/nswag.md records.
+    /// <summary>Widget docs. &lt;gate flag="BetaDocs"&gt;Beta widget notes.&lt;/gate&gt;</summary>
+    [HttpGet("documented")]
+    public string Documented() => "documented";
+
     [HttpPost]
     public Widget Create([FromBody] Widget widget) => widget;
 

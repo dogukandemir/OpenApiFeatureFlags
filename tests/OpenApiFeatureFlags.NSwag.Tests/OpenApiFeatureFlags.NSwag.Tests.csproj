@@ -6,6 +6,10 @@
     <RootNamespace>OpenApiFeatureFlags.NSwag.Tests</RootNamespace>
     <OutputType>Exe</OutputType>
     <NoWarn>$(NoWarn);CA1031;CA1034;CA1052;CA1062;CA1303;CA1305;CA1515;CA1707;CA1812;CA1819;CA1822;CA1859;CA1860;CA1861;CA2007;CA2201;CA5394</NoWarn>
+    <!-- The description-gate tests write <gate> fragments inside XML documentation comments, which is
+         the route NSwag actually reads operation prose from, so the test assembly has to emit its XML
+         file. CS1591 (missing comment) is suppressed globally in Directory.Build.props. -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
