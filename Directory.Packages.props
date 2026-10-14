@@ -63,7 +63,7 @@
          not be built against the newest line: consumers on older SDKs would see CS9057, which
          their build may treat as an error. This pin is a compatibility floor, not an update
          target; the analyzer code uses no API newer than this line. -->
-    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.9.0" />
   </ItemGroup>
 
   <ItemGroup Label="Testing">
