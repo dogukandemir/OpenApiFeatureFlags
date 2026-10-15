@@ -3,6 +3,25 @@
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **OAFF1002**, a fifth analyzer rule: an `[OpenApiFeatureFlag]` in a project that references a
+  document engine but no adapter package is reported at build time, because the attribute is inert
+  there ([the rule](docs/analyzers.md)).
+- [`docs/flag-sources.md`](docs/flag-sources.md): where flags come from, and the three supported
+  patterns for a store that is async-only.
+- [`samples/OpenApiFeatureFlags.FastEndpoints.Sample`](samples/OpenApiFeatureFlags.FastEndpoints.Sample):
+  FastEndpoints gated through endpoint metadata, the setup [`docs/fastendpoints.md`](docs/fastendpoints.md)
+  describes.
+
+### Changed
+
+- The README, the site and `llms.txt` link the project website,
+  <https://dogukandemir.github.io/OpenApiFeatureFlags/>, and `PackageProjectUrl` points there too.
+- The repository now carries a Sponsor button (`.github/FUNDING.yml`).
+
 ## [0.4.1] - 2026-10-12
 
 ### Added

@@ -42,7 +42,7 @@
     <Company>Dogukan Demir</Company>
     <Copyright>Copyright (c) 2026 Dogukan Demir</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/dogukandemir/OpenApiFeatureFlags</PackageProjectUrl>
+    <PackageProjectUrl>https://dogukandemir.github.io/OpenApiFeatureFlags/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/dogukandemir/OpenApiFeatureFlags</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>

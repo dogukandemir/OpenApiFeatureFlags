@@ -5,6 +5,9 @@ FastEndpoints v8.2 and later generate their OpenAPI documents through
 this guide a short one: the [`OpenApiFeatureFlags.AspNetCore`](aspnetcore.md) adapter plugs into
 FastEndpoints' own pipeline with a single line, its documented `ConfigureOpenApi` hook.
 
+A runnable version of this page lives at
+[`samples/OpenApiFeatureFlags.FastEndpoints.Sample`](../samples/OpenApiFeatureFlags.FastEndpoints.Sample).
+
 ## Wiring
 
 ```csharp

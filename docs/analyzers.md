@@ -43,6 +43,25 @@ public decimal Total { get; set; }   // OAFF1001: add flag="...", or remove the 
 
 Under NSwag the same fragment is dropped instead of hidden, so OAFF3001 speaks there.
 
+### OAFF1002, gated elements with no adapter package referenced
+
+Applies to every engine. The attribute carries no behaviour by itself: a project that references a
+document engine but no adapter package compiles cleanly and every gated element stays in the
+document. A project that references no engine at all is left alone, because declaring the attribute
+in a contracts library is legitimate and the adapter belongs to the host.
+
+```csharp
+public sealed class OrdersController
+{
+    [OpenApiFeatureFlag("NewCheckout")]        // OAFF1002: add OpenApiFeatureFlags.Swashbuckle,
+    public IActionResult Checkout() => Ok();   // .AspNetCore or .NSwag, and register it
+}
+```
+
+One boundary: if an adapter for a *different* engine is referenced (the built-in engine in use, the
+NSwag adapter installed), the rule stays quiet. A mixed or migrating setup is legitimate, and a
+build-time check cannot see a registration call that lives in another project.
+
 ### OAFF2001, minimal API parameters cannot be gated by the built-in engine
 
 Applies when the built-in engine's adapter (`OpenApiFeatureFlags.AspNetCore`) is referenced and the

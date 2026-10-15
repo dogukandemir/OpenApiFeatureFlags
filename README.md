@@ -8,6 +8,7 @@ Feature flags for Swagger and OpenAPI documents.
 [![CodeQL](https://github.com/dogukandemir/OpenApiFeatureFlags/actions/workflows/codeql.yml/badge.svg)](https://github.com/dogukandemir/OpenApiFeatureFlags/actions/workflows/codeql.yml)
 [![NuGet](https://raw.githubusercontent.com/dogukandemir/OpenApiFeatureFlags/main/assets/badge-nuget.svg)](https://www.nuget.org/packages/OpenApiFeatureFlags)
 [![License: MIT](https://raw.githubusercontent.com/dogukandemir/OpenApiFeatureFlags/main/assets/badge-license.svg)](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/LICENSE)
+[![Website](https://raw.githubusercontent.com/dogukandemir/OpenApiFeatureFlags/main/assets/badge-website.svg)](https://dogukandemir.github.io/OpenApiFeatureFlags/)
 
 Mark the endpoint, action, property or parameter with `[OpenApiFeatureFlag]` and it only appears in
 the generated document once the flag is enabled by the same flags the runtime already reads.
@@ -285,16 +286,20 @@ catch the silent authoring mistakes.
   one thing it cannot do.
 - [`docs/azure-app-configuration.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/azure-app-configuration.md): reading flags from Azure App
   Configuration, and the four ways that can go quietly wrong.
+- [`docs/flag-sources.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/flag-sources.md): where flags come from, and how to bridge a
+  flag store that is async-only.
 - [`docs/troubleshooting.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/troubleshooting.md): nothing is hidden, or too much is.
 - [`docs/security.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/security.md): what gating does and does not protect, what `Annotate`
   discloses, and the availability trade-offs.
 - [`samples/OpenApiFeatureFlags.Sample`](https://github.com/dogukandemir/OpenApiFeatureFlags/tree/main/samples/OpenApiFeatureFlags.Sample): a runnable API, its document served by Swashbuckle.
 - [`samples/OpenApiFeatureFlags.AspNetCore.Sample`](https://github.com/dogukandemir/OpenApiFeatureFlags/tree/main/samples/OpenApiFeatureFlags.AspNetCore.Sample): the same API through the built-in `Microsoft.AspNetCore.OpenApi` engine.
 - [`samples/OpenApiFeatureFlags.NSwag.Sample`](https://github.com/dogukandemir/OpenApiFeatureFlags/tree/main/samples/OpenApiFeatureFlags.NSwag.Sample): the same API through NSwag, including a gated minimal-API parameter.
+- `samples/OpenApiFeatureFlags.FastEndpoints.Sample`: the same API through FastEndpoints, gated with endpoint metadata.
 - [`docs/design.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/design.md): why it is built this way, the decisions behind it, and the measurements those decisions rest on.
 
 ## Project
 
+- [Website](https://dogukandemir.github.io/OpenApiFeatureFlags/): the landing page, with the quickstart, the FAQ and a documentation index.
 - [`CONTRIBUTING.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/CONTRIBUTING.md): build and test commands, and the two rules a pull request is
   most likely to trip over.
 - [`SECURITY.md`](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/SECURITY.md): how to report a vulnerability privately. Please do not open a public

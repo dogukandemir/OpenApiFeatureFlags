@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/samples/">
     <Project Path="samples/OpenApiFeatureFlags.AspNetCore.Sample/OpenApiFeatureFlags.AspNetCore.Sample.csproj" />
+    <Project Path="samples/OpenApiFeatureFlags.FastEndpoints.Sample/OpenApiFeatureFlags.FastEndpoints.Sample.csproj" />
     <Project Path="samples/OpenApiFeatureFlags.NSwag.Sample/OpenApiFeatureFlags.NSwag.Sample.csproj" />
     <Project Path="samples/OpenApiFeatureFlags.Sample/OpenApiFeatureFlags.Sample.csproj" />
   </Folder>

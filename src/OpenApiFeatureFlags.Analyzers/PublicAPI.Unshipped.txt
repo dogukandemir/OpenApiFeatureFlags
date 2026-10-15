@@ -15,3 +15,7 @@ override OpenApiFeatureFlags.Analyzers.FastEndpointsAttributeAnalyzer.SupportedD
 override OpenApiFeatureFlags.Analyzers.GateWithoutFlagAnalyzer.SupportedDiagnostics.get -> System.Collections.Immutable.ImmutableArray<Microsoft.CodeAnalysis.DiagnosticDescriptor!>
 override OpenApiFeatureFlags.Analyzers.MinimalApiParameterAnalyzer.SupportedDiagnostics.get -> System.Collections.Immutable.ImmutableArray<Microsoft.CodeAnalysis.DiagnosticDescriptor!>
 override OpenApiFeatureFlags.Analyzers.NSwagEscapeGateAnalyzer.SupportedDiagnostics.get -> System.Collections.Immutable.ImmutableArray<Microsoft.CodeAnalysis.DiagnosticDescriptor!>
+OpenApiFeatureFlags.Analyzers.MissingAdapterAnalyzer
+OpenApiFeatureFlags.Analyzers.MissingAdapterAnalyzer.MissingAdapterAnalyzer() -> void
+override OpenApiFeatureFlags.Analyzers.MissingAdapterAnalyzer.Initialize(Microsoft.CodeAnalysis.Diagnostics.AnalysisContext! context) -> void
+override OpenApiFeatureFlags.Analyzers.MissingAdapterAnalyzer.SupportedDiagnostics.get -> System.Collections.Immutable.ImmutableArray<Microsoft.CodeAnalysis.DiagnosticDescriptor!>

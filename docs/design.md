@@ -310,9 +310,14 @@ engine produced.
   question, because it changes the shape: annotate schema properties as well, or leave properties
   unmarked and treat the root array as the only machine-readable signal. Documented rather than changed,
   so that a consumer already parsing the current shape is not broken by a review.
-- **Q4: should the core expose an async resolution path?** `IFeatureFlagSource` is sync because the
-  filter pipeline is sync. Some flag providers are async-only. Decide whether to add an async interface
-  later rather than now.
+- **Q4: should the core expose an async resolution path?** **Resolved 2026-10-15: no, and now
+  documented.** `IFeatureFlagSource` stays synchronous because every extension point it feeds is
+  synchronous (Swashbuckle's filters, the built-in engine's transformers, NSwag's processors), and
+  none of them has an async variant to await on. The shipped adapters already bridge the async
+  providers they wrap with `GetAwaiter().GetResult()`, which is safe here because ASP.NET Core
+  installs no synchronization context. [`flag-sources.md`](flag-sources.md) records the three
+  supported patterns for an async-only store: cache in the source, use a snapshot provider, or block
+  deliberately. Revisit only if a real provider makes all three impossible.
 - **Q5: is `Include` mode needed at all**, given fail-closed already makes the library inert when no
   attributes are present? Kept for the per-environment off switch; revisit if it earns no usage.
 - **Q6: Swagger setup helpers.** Absorbing `AddSwaggerGen`/`UseSwagger`/`MapScalar` wrappers would

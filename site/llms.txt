@@ -46,6 +46,7 @@ The engine line differs per engine: `options.AddOpenApiFeatureFlagFilters()` (Sw
 
 ## Docs
 
+- [Website](https://dogukandemir.github.io/OpenApiFeatureFlags/): the landing page with the quickstart, the FAQ and a documentation index.
 - [README](https://github.com/dogukandemir/OpenApiFeatureFlags): full quickstart, modes, guarantees, FAQ.
 - [docs/aspnetcore.md](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/aspnetcore.md): the built-in-engine adapter, its net10.0 restriction, and the minimal-API parameter boundary.
 - [docs/nswag.md](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/nswag.md): the NSwag adapter, including the escaped-gate rule in XML comments.
@@ -61,6 +62,7 @@ The engine line differs per engine: `options.AddOpenApiFeatureFlagFilters()` (Sw
 ## Optional
 
 - [docs/azure-app-configuration.md](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/azure-app-configuration.md): reading flags from Azure App Configuration.
+- [docs/flag-sources.md](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/flag-sources.md): where flags come from, and how to bridge an async-only store.
 - [docs/trying-locally.md](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/docs/trying-locally.md): build the packages from source into a local feed.
-- [samples](https://github.com/dogukandemir/OpenApiFeatureFlags/tree/main/samples): three runnable sample applications (Swashbuckle, built-in, NSwag).
+- [samples](https://github.com/dogukandemir/OpenApiFeatureFlags/tree/main/samples): four runnable sample applications (Swashbuckle, built-in, NSwag, FastEndpoints).
 - [CONTRIBUTING.md](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/CONTRIBUTING.md), [SECURITY.md](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/SECURITY.md), [CODE_OF_CONDUCT.md](https://github.com/dogukandemir/OpenApiFeatureFlags/blob/main/CODE_OF_CONDUCT.md) in the repository root.

@@ -10,6 +10,7 @@ namespace OpenApiFeatureFlags.Analyzers;
 internal static class DiagnosticIds
 {
     internal const string GateWithoutFlag = "OAFF1001";
+    internal const string MissingAdapter = "OAFF1002";
     internal const string MinimalApiParameter = "OAFF2001";
     internal const string NswagEscapeGate = "OAFF3001";
     internal const string FastEndpointsAttribute = "OAFF5001";
