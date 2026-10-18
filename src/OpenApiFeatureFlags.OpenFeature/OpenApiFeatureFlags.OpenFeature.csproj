@@ -6,7 +6,7 @@
     <AssemblyName>OpenApiFeatureFlags.OpenFeature</AssemblyName>
     <RootNamespace>OpenApiFeatureFlags.OpenFeature</RootNamespace>
     <Title>OpenApiFeatureFlags.OpenFeature</Title>
-    <Description>OpenFeature flag source for OpenApiFeatureFlags: reads flags through the CNCF vendor-neutral standard instead of a vendor SDK.</Description>
+    <Description>OpenFeature flag source for OpenApiFeatureFlags. Install this to read flags through the CNCF vendor-neutral OpenFeature API instead of a vendor SDK. Any OpenFeature provider works, so the document follows the same flags as the rest of the app.</Description>
   </PropertyGroup>
 
   <ItemGroup>

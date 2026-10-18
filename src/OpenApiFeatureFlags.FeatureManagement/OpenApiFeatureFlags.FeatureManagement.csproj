@@ -6,7 +6,7 @@
     <AssemblyName>OpenApiFeatureFlags.FeatureManagement</AssemblyName>
     <RootNamespace>OpenApiFeatureFlags.FeatureManagement</RootNamespace>
     <Title>OpenApiFeatureFlags.FeatureManagement</Title>
-    <Description>Microsoft.FeatureManagement flag source for OpenApiFeatureFlags: point the library at your existing IFeatureManager and one call wires the whole thing up.</Description>
+    <Description>Microsoft.FeatureManagement flag source for OpenApiFeatureFlags. Install this when flags already live in IFeatureManager, from appsettings or Azure App Configuration: one registration call and the document follows the same flags the runtime reads.</Description>
   </PropertyGroup>
 
   <ItemGroup>

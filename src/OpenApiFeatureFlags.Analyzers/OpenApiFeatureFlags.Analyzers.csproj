@@ -6,7 +6,7 @@
     <AssemblyName>OpenApiFeatureFlags.Analyzers</AssemblyName>
     <RootNamespace>OpenApiFeatureFlags.Analyzers</RootNamespace>
     <Title>OpenApiFeatureFlags.Analyzers</Title>
-    <Description>Roslyn analyzers for OpenApiFeatureFlags. Catches at build time the cases that used to fail silently at document time: a gate fragment without a flag attribute, a literal &lt;gate&gt; in an XML comment under NSwag (the reader drops it, so the fragment leaks in every flag state), a gated minimal API parameter under the built-in engine, and [OpenApiFeatureFlag] on a FastEndpoints endpoint. Install alongside the adapter package you use.</Description>
+    <Description>Roslyn analyzers for OpenApiFeatureFlags. Reports at build time the cases that otherwise fail silently at document time: a gate without a flag, a literal &lt;gate&gt; in an XML comment under NSwag, a gated minimal API parameter under the built-in engine, and [OpenApiFeatureFlag] on a FastEndpoints endpoint. Install beside the adapter you use.</Description>
     <!-- netstandard2.0: the Roslyn analyzer contract. The plural property is cleared because the
          repository props set it for the other projects; with a single framework the SDK must treat
          this project as single-target, which is what keeps $(OutputPath) framework-qualified and

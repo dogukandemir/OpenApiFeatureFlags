@@ -6,7 +6,7 @@
     <AssemblyName>OpenApiFeatureFlags</AssemblyName>
     <RootNamespace>OpenApiFeatureFlags</RootNamespace>
     <Title>OpenApiFeatureFlags</Title>
-    <Description>Hides endpoints, parameters and schema properties from Swagger/OpenAPI documents while their feature flag is off, using the same flags the runtime already reads. The core builds an engine-agnostic visibility plan; document-engine adapters apply it.</Description>
+    <Description>Hide feature-flagged endpoints, parameters and schema properties from Swagger/OpenAPI documents in .NET, using the flags the app already reads. This core package builds the engine-agnostic plan. Install one adapter next: OpenApiFeatureFlags.Swashbuckle, OpenApiFeatureFlags.AspNetCore or OpenApiFeatureFlags.NSwag.</Description>
   </PropertyGroup>
 
   <ItemGroup>

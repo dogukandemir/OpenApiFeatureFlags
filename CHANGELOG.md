@@ -21,6 +21,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 - The README, the site and `llms.txt` link the project website,
   <https://dogukandemir.github.io/OpenApiFeatureFlags/>, and `PackageProjectUrl` points there too.
 - The repository now carries a Sponsor button (`.github/FUNDING.yml`).
+- The package descriptions now say what each package is and when to install it: the core names the
+  three engine adapters, each adapter names its engine and its `net10.0` scope, and
+  `OpenApiFeatureFlags.Abstractions` opens with "Not an entry point" so a search result cannot send
+  someone to a contracts-only package.
 
 ## [0.4.1] - 2026-10-12
 

@@ -6,7 +6,7 @@
     <AssemblyName>OpenApiFeatureFlags.AspNetCore</AssemblyName>
     <RootNamespace>OpenApiFeatureFlags.AspNetCore</RootNamespace>
     <Title>OpenApiFeatureFlags.AspNetCore</Title>
-    <Description>Adapter for OpenApiFeatureFlags for the built-in Microsoft.AspNetCore.OpenApi document engine: hides gated operations, parameters and schema properties from the generated document while their feature flag is off.</Description>
+    <Description>Adapter for the built-in Microsoft.AspNetCore.OpenApi engine, .NET 10 only. Install this package if the API documents through AddOpenApi and MapOpenApi: gated operations, controller parameters and schema properties are left out of the document while their flag is off. A minimal API endpoint can be gated; a minimal API parameter cannot.</Description>
     <!-- net10.0 only, and that is a documented cost rather than an oversight: the engine's 8.x and 9.x
          lines sit on the Microsoft.OpenApi 1.x document model, which is a different set of types, so
          multi-targeting would mean three implementations rather than one source file. See

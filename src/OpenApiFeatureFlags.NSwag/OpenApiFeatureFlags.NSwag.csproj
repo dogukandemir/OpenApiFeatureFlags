@@ -6,7 +6,7 @@
     <AssemblyName>OpenApiFeatureFlags.NSwag</AssemblyName>
     <RootNamespace>OpenApiFeatureFlags.NSwag</RootNamespace>
     <Title>OpenApiFeatureFlags.NSwag</Title>
-    <Description>NSwag adapter for OpenApiFeatureFlags: hides gated operations, parameters and schema properties from the generated Swagger/OpenAPI document while their feature flag is off.</Description>
+    <Description>NSwag adapter for OpenApiFeatureFlags. Install this package if the API documents through NSwag: gated endpoints, parameters and schema properties are removed from the generated Swagger/OpenAPI document while their flag is off. Minimal API endpoints are supported when the app registers AddEndpointsApiExplorer.</Description>
   </PropertyGroup>
 
   <ItemGroup>

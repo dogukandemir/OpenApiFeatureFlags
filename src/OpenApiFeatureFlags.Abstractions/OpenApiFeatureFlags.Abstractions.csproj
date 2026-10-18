@@ -7,7 +7,7 @@
     <!-- Consumers write `using OpenApiFeatureFlags;` and never see ".Abstractions" (D10/D11). -->
     <RootNamespace>OpenApiFeatureFlags</RootNamespace>
     <Title>OpenApiFeatureFlags.Abstractions</Title>
-    <Description>Dependency-free contracts for OpenApiFeatureFlags: the [OpenApiFeatureFlag] attribute, DocumentMode, the IFeatureFlagSource seam and the engine-agnostic document visibility plan. Reference this from contract assemblies.</Description>
+    <Description>Not an entry point. Dependency-free contracts for OpenApiFeatureFlags: the [OpenApiFeatureFlag] attribute, DocumentMode, IFeatureFlagSource and the document visibility plan. Install OpenApiFeatureFlags with one adapter; reference this only from assemblies that must stay free of a document engine.</Description>
   </PropertyGroup>
 
   <!-- D10 / invariant 1: this project intentionally has NO PackageReference and
