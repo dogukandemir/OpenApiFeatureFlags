@@ -74,7 +74,7 @@
     <!-- Test projects run on xunit.v3 + Microsoft.Testing.Platform, which the
          .NET 10 SDK requires: VSTest is no longer supported for MTP projects, so
          Microsoft.NET.Test.Sdk is deliberately absent. -->
-    <PackageVersion Include="xunit.v3" Version="4.0.2" />
+    <PackageVersion Include="xunit.v3" Version="4.0.3" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.1" />
     <!-- Shouldly, not FluentAssertions: v8 of the latter is no longer free for
          commercial use, and this library is MIT. -->
