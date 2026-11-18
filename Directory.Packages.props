@@ -42,8 +42,8 @@
     <!-- Used only by the FastEndpoints test project: since v8.2 the framework generates its document
          through Microsoft.AspNetCore.OpenApi, so the adapter under test there is the AspNetCore one
          (docs/fastendpoints.md). -->
-    <PackageVersion Include="FastEndpoints" Version="8.3.0" />
-    <PackageVersion Include="FastEndpoints.OpenApi" Version="8.3.0" />
+    <PackageVersion Include="FastEndpoints" Version="9.0.0" />
+    <PackageVersion Include="FastEndpoints.OpenApi" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup Label="Flag sources">
