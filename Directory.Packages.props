@@ -53,7 +53,7 @@
     <!-- Azure App Configuration is not referenced by the library: it is reached through
          IFeatureManager, so there is no Azure-specific code to ship. See docs/azure-app-configuration.md. -->
     <!-- OpenFeature is the CNCF vendor-neutral standard. -->
-    <PackageVersion Include="OpenFeature" Version="2.14.1" />
+    <PackageVersion Include="OpenFeature" Version="2.14.2" />
   </ItemGroup>
 
   <ItemGroup Label="Build">
